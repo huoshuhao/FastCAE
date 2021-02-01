@@ -1,4 +1,4 @@
-#include "Smooth_QuadrangleFacet.h"
+﻿#include "Smooth_QuadrangleFacet.h"
 
 Smooth_QuadrangleFacet::Smooth_QuadrangleFacet()
 {

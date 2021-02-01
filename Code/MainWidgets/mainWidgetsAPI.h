@@ -1,4 +1,4 @@
-#ifndef _MAINWIDGETSEAPI_H_
+﻿#ifndef _MAINWIDGETSEAPI_H_
 #define _MAINWIDGETSEAPI_H_
 
 #include <QtCore/QtGlobal>

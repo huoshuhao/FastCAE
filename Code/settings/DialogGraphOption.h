@@ -1,4 +1,4 @@
-#ifndef DIALOGGRAPHOPTION_H_
+﻿#ifndef DIALOGGRAPHOPTION_H_
 #define DIALOGGRAPHOPTION_H_
 
 //#include "SelfDefObject/QFDialog.h"

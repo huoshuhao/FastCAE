@@ -1,4 +1,4 @@
-#ifndef _BCBASEAPI_H_
+﻿#ifndef _BCBASEAPI_H_
 #define _BCBASEAPI_H_
 
 #include <QtCore/QtGlobal>

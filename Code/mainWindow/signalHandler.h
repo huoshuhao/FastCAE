@@ -1,4 +1,4 @@
-#ifndef _SIGNALHANDLER_H_
+ï»¿#ifndef _SIGNALHANDLER_H_
 #define _SIGNALHANDLER_H_
 
 #include <QObject>
@@ -27,66 +27,79 @@ namespace GUI
 		~SignalHandler();
 
 	signals:
-		void importMeshPySig(QStringList);
-		void exportMeshPySig(QString);
+		void importMeshPySig(QString, QString, int);
+		void exportMeshPySig(QString, QString, int);
 		void open3DGraphWindowPySig();
 		void open2DPlotWindowPySig();
 		bool openProjectFileSig(QString fileName);
-		void saveToProjectFileSig(QString filename);
+		void saveToProjectFileSig(QString fileName);
 		void solveProjectSig(int projectIndex, int solverIndex);
+		void projectFileProcessedSig(QString file, bool success, bool isread);
 		
 
 	public:
-		bool importMesh(const QStringList &filenames);
+		//ä¸è¦é€šè¿‡è¿”å›å€¼åˆ¤æ–­
 		bool importGeometry(const QStringList &filenames);
 		bool exportGeometry(QString f);
 		QString getMD5();
-		/*´´½¨¹¤³Ì */
+		/*åˆ›å»ºå·¥ç¨‹ */
 		void on_actionNew();
-		///Çå³ıÊı¾İ
-		void clearData();
-
+		///è·å–æ±‚è§£ç®¡ç†å™¨
+		SolveProcessManager* getSolveProcessManager();
+		
+	
 	public slots:
-		/*Çó½â */
+		//å¯¼å…¥ç½‘æ ¼
+		bool importMeshSlot(const QString &fileName, const QString& suffix, int modelId);
+		//å¯¼å‡ºç½‘æ ¼
+		bool exportMeshSlot(const QString &fileName, const QString& suffix, int modelId);
+		///æ¸…é™¤æ•°æ®
+		void clearData(bool unlock = true);
+		/*æ±‚è§£ */
 		void on_actionSolve();
-		/*ÇĞ»»ÎªÓ¢Óï */
+		/*åˆ‡æ¢ä¸ºè‹±è¯­ */
 		void on_actionEnglish();
-		/*ÇĞ»»ÎªÖĞÎÄ */
+		/*åˆ‡æ¢ä¸ºä¸­æ–‡ */
 		void on_actionChinese();
-		/*´¦ÀíÄ£ĞÍÊ÷ÊÂ¼ş */
+		//åˆ‡æ¢åˆ°Ribboné£æ ¼
+		void on_actionRibbon();
+		//åˆ‡æ¢åˆ°æ­£å¸¸é£æ ¼
+		void on_actionNormal();
+		/*å¤„ç†æ¨¡å‹æ ‘äº‹ä»¶ */
 		void handleTreeMouseEvent(int eventtype, QTreeWidgetItem*item, int proID);
-		///Çó½â
+		///æ±‚è§£
 		void solveProjectPy(int projectIndex, int solverIndex);
 		void solveProject(int projectIndex, int solverIndex);
-		///Éú³ÉÃæÍø¸ñ
+		///ç”Ÿæˆé¢ç½‘æ ¼
 		void generateSurfaceMesh();
-		///Éú³ÉÌåÍø¸ñ
+		///ç”Ÿæˆä½“ç½‘æ ¼
 		void generateSolidMesh();
-		///Éú³ÉÍø¸ñ
+		//ç”Ÿæˆæµä½“åŸŸç½‘æ ¼
+		void generateFluidMesh();
+		///ç”Ÿæˆç½‘æ ¼
 		void genMesh();
-		//Ìí¼ÓÇó½âÆ÷Éú³ÉÍø¸ñ
+		//æ·»åŠ æ±‚è§£å™¨ç”Ÿæˆç½‘æ ¼
 		void appendGeneratedMesh(QString name, vtkDataSet* dataset);
-		//µ¼³öÍø¸ñ
-		void exportMeshByID(QString filename, int kenerlID = -1);
-		void exportMeshPy(QString filename);
-		///Ë¢ĞÂAction×´Ì¬
+		///åˆ·æ–°ActionçŠ¶æ€
 		void updateActionsStates();
-		//¶ÀÁ¢´ò¿ª2Dºó´¦Àí´°¿Ú
+		//ç‹¬ç«‹æ‰“å¼€2Dåå¤„ç†çª—å£
 		void open2DPlotWindow();
-		void open2DPlotWindowPy();//Ìá½»py´úÂë
-		//¶ÀÁ¢´ò¿ª3Dºó´¦Àí´°¿Ú
+		void open2DPlotWindowPy();//æäº¤pyä»£ç 
+		//ç‹¬ç«‹æ‰“å¼€3Dåå¤„ç†çª—å£
 		void open3DGraphWindow();
 		void open3DGraphWindowPy();
-		//¹Ø±Õºó´¦Àí´°¿Ú
+		//å…³é—­åå¤„ç†çª—å£
 		void closePostWindow(Post::PostWindowBase* p);
-		//±£´æÍ¼Æ¬
+		//ä¿å­˜å›¾ç‰‡
 		void saveImange();
 		bool openProjectFile(QString fileName);
-		void saveToProjectFile(QString filename);
-		//¼ì²éÍø¸ñÖÊÁ¿
+		void projectFileProcessed(QString filename, bool success, bool read);
+		void saveToProjectFile(QString fileName);
+		//æ£€æŸ¥ç½‘æ ¼è´¨é‡
 		void meshChecking();
-		//´´½¨¼¸ºÎ
-		
+		//æ˜¾ç¤ºç”¨æˆ·å¼•å¯¼
+		void showUserGuidence(bool start = false);
+		//åˆ›å»ºå‡ ä½•
 		void undo();
 		void redo();
 		void createBox();
@@ -120,8 +133,11 @@ namespace GUI
 		void DrawGraphSpline();
 		void showDialog(QDialog* d);
 		void MakeMatrix();
-		//void showDemo();
-
+		void MeasureDistance();
+		void GeoSplitter();
+		void MakeFillHole();
+		void MakeRemoveSurface();
+		void MakeFillGap();
 	private:
 		void handleSingleClickEvent(QTreeWidgetItem*item, int proID);
 		void openPreWinPy();
@@ -130,10 +146,10 @@ namespace GUI
 		MainWindow* _mainWindow{};
 		int _proID{ -1 };
 		SolveProcessManager* _solveProcessManager{};
+		bool _launched{ false };
 //		QString _currentFilePath{};
 
 	};
 }
-
 
 #endif

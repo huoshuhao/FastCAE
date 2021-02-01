@@ -1,8 +1,7 @@
-#ifndef PICKCELLINTERACTORSTYLE_H
+﻿#ifndef PICKCELLINTERACTORSTYLE_H
 #define PICKCELLINTERACTORSTYLE_H
 
 #include <QObject>
-#include "heudatasrcio_global.h"
 #include <vtkCellPicker.h>
 #include <vtkCommand.h>
 #include <vtkInteractorStyleTrackballCamera.h>
@@ -15,8 +14,9 @@
 #include <vtkDataSetMapper.h>
 #include <vtkIdTypeArray.h>
 #include <vtkUnstructuredGrid.h>
+#include "graphicsanalyse_global.h"
 
-class HEUDATASRCIOSHARED_EXPORT pickCellInteractorStyle : public QObject, public vtkInteractorStyleTrackballCamera
+class GRAPHICSANALYSESHARED_EXPORT pickCellInteractorStyle : public QObject, public vtkInteractorStyleTrackballCamera
 {
 	Q_OBJECT
 public:

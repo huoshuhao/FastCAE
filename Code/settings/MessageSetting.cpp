@@ -1,4 +1,4 @@
-#include "MessageSetting.h"
+﻿#include "MessageSetting.h"
 #include <QSettings>
 
 namespace Setting {

@@ -1,4 +1,4 @@
-#include "simulationSettingBase.h"
+﻿#include "simulationSettingBase.h"
 #include "modelDataBase.h"
 #include <QDomElement>
 #include <QDomDocument>

@@ -1,4 +1,4 @@
-#include "WriterDataConfig.h"
+ï»¿#include "WriterDataConfig.h"
 #include "Common.h"
 #include "ModelBase.h"
 #include "BoundaryModel.h"
@@ -24,7 +24,7 @@ namespace FastCAEDesigner
 	{
 	}
 
-	//bcModelLlist:±ß½ç²ÎÊıÁĞ±í
+	//bcModelLlist:è¾¹ç•Œå‚æ•°åˆ—è¡¨
 	bool WriteDataConfig::Write(QList<ModelBase*> list)
 	{
 		QDomDocument doc;
@@ -97,7 +97,6 @@ namespace FastCAEDesigner
 		QDomElement dataBlock = doc.createElement("DataBlock");
 		dataBlock.setAttribute("TreeType", typeName);
 
-		int index = 1;
 		int count = list.count();
 		
 		for (int i = 0; i < count; i++)
@@ -108,7 +107,7 @@ namespace FastCAEDesigner
 				continue;
 
 			QDomElement block = doc.createElement("Block");
-			block.setAttribute("ID", index);
+			block.setAttribute("ID", _index);
 			block.setAttribute("TreeNode", model->GetEngName());
 			DataProperty::DataBase *dataBase = model->GetDataBase();
 
@@ -116,13 +115,15 @@ namespace FastCAEDesigner
 				dataBase->writeParameters(&doc, &block);
 
 			dataBlock.appendChild(block);
-			index++;
+			_index++;
+
+			writeTreeGrandSonPara(doc, dataBlock, model, number);
 		}
 
 		root.appendChild(dataBlock);
 		return true;
 	}
-	//¼àÊÓÆ÷Ïà¹ØĞÅÏ¢Ğ´Èëxml
+	//ç›‘è§†å™¨ç›¸å…³ä¿¡æ¯å†™å…¥xml
 	bool WriteDataConfig::WriteMonitorDataPara(QDomDocument &doc, QDomElement &root, QList<ModelBase*> list, int number)
 	{
 		QString nodeTypeName = QString("Type%1").arg(number);
@@ -146,7 +147,7 @@ namespace FastCAEDesigner
 		root.appendChild(dataRootNode);
 		return true;
 	}
-	//postÏà¹ØĞÅÏ¢Ğ´Èëxml
+	//postç›¸å…³ä¿¡æ¯å†™å…¥xml
 	bool WriteDataConfig::WritePostDataPara(QDomDocument &doc, QDomElement &root, QList<ModelBase*> list, int number)
 	{
 		QString nodeTypeName = QString("Type%1").arg(number);
@@ -172,7 +173,7 @@ namespace FastCAEDesigner
 		root.appendChild(dataRootNode);
 		return true;
 	}
-	//curveĞÅÏ¢Ğ´Èë
+	//curveä¿¡æ¯å†™å…¥
 	bool WriteDataConfig::WritePost2DDataPara(QDomDocument &doc, QDomElement &root, QList<ModelBase*> list)
 	{
 		for (int i = 0; i < list.count(); i++)
@@ -192,7 +193,7 @@ namespace FastCAEDesigner
 
 		return true;
 	}
-	//vectorĞÅÏ¢Ğ´Èë
+	//vectorä¿¡æ¯å†™å…¥
 	bool WriteDataConfig::WritePost3DDataPara(QDomDocument &doc, QDomElement &root, QList<ModelBase*> list)
 	{
 		QList<ModelBase*> childList;
@@ -267,7 +268,7 @@ namespace FastCAEDesigner
 
 		return true;
 	}
-	//ÇúÏßÏêÏ¸ĞÅÏ¢Ğ´Èë
+	//æ›²çº¿è¯¦ç»†ä¿¡æ¯å†™å…¥
 	bool WriteDataConfig::WriteCurveDataPara(QDomDocument &doc, QDomElement &root, QList<ModelBase*> list)
 	{
 		QMap<TreeItemType, QString> useModelDict;
@@ -327,6 +328,35 @@ namespace FastCAEDesigner
 			
 
 			root.appendChild(fileNode);
+		}
+
+		return true;
+	}
+
+	bool WriteDataConfig::writeTreeGrandSonPara(QDomDocument &doc, QDomElement &root, ModelBase* base, int number)
+	{
+		
+		QList<ModelBase*> list = base->GetChildList();
+
+		int count = list.count();
+
+		for (int i = 0; i < count; i++)
+		{
+			ModelBase* model = list.at(i);
+
+			if (nullptr == model)
+				continue;
+
+			QDomElement block = doc.createElement("Block");
+			block.setAttribute("ID", _index);
+			block.setAttribute("TreeNode", model->GetEngName());
+			DataProperty::DataBase *dataBase = model->GetDataBase();
+
+			if (nullptr != dataBase)
+				dataBase->writeParameters(&doc, &block);
+
+			root.appendChild(block);
+			_index++;
 		}
 
 		return true;

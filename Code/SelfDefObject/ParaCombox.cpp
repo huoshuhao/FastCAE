@@ -1,4 +1,4 @@
-#include "ParaCombox.h"
+﻿#include "ParaCombox.h"
 #include "DataProperty/ParameterSelectable.h"
 #include "mainWindow/mainWindow.h"
 #include <QStringList>

@@ -1,4 +1,4 @@
-#include "ReportWindow.h"
+ï»¿#include "ReportWindow.h"
 #include "ui_ReportWindow.h"
 #include "mainWindow/mainWindow.h"
 #include <QAxWidget>
@@ -20,7 +20,7 @@ namespace XReport
 	void ReportWindow::open()
 	{
 		_officeCon = new QAxWidget("Word.Application", this);
-		_officeCon->dynamicCall("SetVisible (bool Visible)", "false");//²»ÏÔÊ¾´°Ìå
+		_officeCon->dynamicCall("SetVisible (bool Visible)", "false");//ä¸æ˜¾ç¤ºçª—ä½“
 		_officeCon->setProperty("DisplayAlerts", false);
 		auto rect = _ui->OfficeWidget->geometry();
 		_officeCon->setGeometry(rect);

@@ -1,4 +1,4 @@
-#ifndef MONITORMODEL_H
+﻿#ifndef MONITORMODEL_H
 #define MONITORMODEL_H
 
 #include "ModelBase.h"

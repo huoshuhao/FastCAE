@@ -1,4 +1,4 @@
-#include "geometryExporter.h"
+﻿#include "geometryExporter.h"
 #include "geometryData.h"
 #include "geometrySet.h"
 #include <QFileInfo>
@@ -12,9 +12,9 @@
 
 namespace Geometry
 {
-	GeometryExporter::GeometryExporter(QString filename)
+	GeometryExporter::GeometryExporter(QString fileName)
 	{
-		_fileName = filename;
+		_fileName = fileName;
 		_geoData = GeometryData::getInstance();
 	}
 
@@ -104,7 +104,7 @@ namespace Geometry
 			if (set == nullptr) continue;
 			TopoDS_Shape* shape = set->getShape();
 			
-			stpWriter.Transfer(*shape, STEPControl_ManifoldSolidBrep);
+			stpWriter.Transfer(*shape, STEPControl_AsIs);
 			success = true;
 		}
 		if (!success) return false;

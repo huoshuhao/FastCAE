@@ -1,4 +1,4 @@
-#ifndef _DIALOGADDBC_H_
+﻿#ifndef _DIALOGADDBC_H_
 #define _DIALOGADDBC_H_
 
 #include "SelfDefObject/QFDialog.h"
@@ -30,7 +30,7 @@ namespace ProjectTree
 		void init();
 
 		virtual void initBCType();
-		virtual void initMeshSet();
+		virtual void initComponents();
 		virtual void accept() override;
 
 	private:

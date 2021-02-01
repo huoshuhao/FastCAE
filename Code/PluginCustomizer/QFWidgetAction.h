@@ -1,4 +1,4 @@
-#ifndef QMYWIDGETACTION_H
+﻿#ifndef QMYWIDGETACTION_H
 #define QMYWIDGETACTION_H
 
 #include <QWidgetAction>

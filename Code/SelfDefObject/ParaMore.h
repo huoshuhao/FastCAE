@@ -1,4 +1,4 @@
-#ifndef _PARAMORE_H_
+﻿#ifndef _PARAMORE_H_
 #define _PARAMORE_H_
 
 #include "SelfDefObjectAPI.h"

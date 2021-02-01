@@ -1,4 +1,4 @@
-#ifndef XGENERATEREPORT_H
+﻿#ifndef XGENERATEREPORT_H
 #define XGENERATEREPORT_H
 
 #include "xgeneratereport_global.h"

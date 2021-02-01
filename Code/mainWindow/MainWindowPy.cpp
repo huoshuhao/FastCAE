@@ -1,5 +1,6 @@
-#include "MainWindowPy.h"
+﻿#include "MainWindowPy.h"
 #include <QDebug>
+#include <QMessageBox>
 #include <assert.h>
 #include "mainWindow.h"
 #include "signalHandler.h"
@@ -11,8 +12,16 @@
 #include <vtkIdTypeArray.h>
 #include "meshData/meshSingleton.h"
 #include "meshData/meshSet.h"
-#include "meshData/setMember.h"
 #include "GeometryCommand/GeoCommandList.h"
+#include "geometry/GeoComponent.h"
+#include "geometry/geometryData.h"
+#include "IO/vtkDataRelated.h"
+#include "meshData/meshKernal.h"
+#include "vtkDataSet.h"
+#include "GeometryCommand/GeoCommandList.h"
+#include "GeometryCommand/GeoCommandRemove.h"
+#include "MainWidgets/preWindow.h"
+#include "GeometryCommand/GeoCommandCreateComponent.h"
 namespace GUI
 {
 
@@ -29,11 +38,13 @@ namespace GUI
 	void MainWindowPy::undo()
 	{
 		Command::GeoComandList::getInstance()->undo();
+		_pyAgent->unLock();
 	}
 
 	void MainWindowPy::redo()
 	{
 		Command::GeoComandList::getInstance()->redo();
+		_pyAgent->unLock();
 	}
 
 	void MainWindowPy::init(GUI::MainWindow* m, GUI::SignalHandler* sg)
@@ -44,19 +55,25 @@ namespace GUI
 		_pyAgent = Py::PythonAagent::getInstance();
 	}
 
-	void MainWindowPy::importMesh(char* f)
+	void MainWindowPy::clearData()
 	{
-		QString file(f);
-		QStringList fl = file.split(",");
-		emit _signalHander->importMeshPySig(fl);
-		//_pyAgent->unLock();
-
+		emit _mainWindow->clearDataSig();
 	}
 
-	void MainWindowPy::exportMesh(char* f)
+	void MainWindowPy::importMesh(char* f, char* s, int modelId)
 	{
 		QString file(f);
-		emit _signalHander->exportMeshPySig(file);
+		QString suffix(s);
+		emit _signalHander->importMeshPySig(file, suffix, modelId);
+		//_signalHander->importMesh(file, suffix, modelId);
+		//_pyAgent->unLock();
+	}
+
+	void MainWindowPy::exportMesh(char* f, char* s, int modelId)
+	{
+		QString file(f);
+		QString suffix(s);
+		emit _signalHander->exportMeshPySig(file, s, modelId);
 	}
 
 	void MainWindowPy::importGeometry(char* f)
@@ -128,14 +145,14 @@ namespace GUI
 	void MainWindowPy::quit()
 	{
 		_subWindowManager->closeAllSubWindow();
-		_signalHander->clearData();
+		_signalHander->clearData(false);
 		_mainWindow->close();
 	}
 
 	void MainWindowPy::solveProject(int projectIndex, int solverIndex)
 	{
 		emit _signalHander->solveProjectSig(projectIndex, solverIndex);
-		//_pyAgent->unLock();
+		//_pyAgent->lock();
 	}
 
 	void MainWindowPy::script_openFile(int id, char* type, char* file)
@@ -1223,12 +1240,25 @@ namespace GUI
 		emit w->Properties_streamline_reflectionAxesSig(obj_id, val);
 	}
 
-	void MainWindowPy::createSet(char* name, char* type, char* idstring)
+	void MainWindowPy::deleteGeometry(int id)
+	{
+		MainWidget::PreWindow* pre = _subWindowManager->getPreWindow();
+		if (id < 0) return; 
+		auto geo = Geometry::GeometryData::getInstance()->getGeometrySetByID(id);
+		Geometry::GeometryData::getInstance()->removeTopGeometrySet(geo);
+		emit pre->removeGemoActors(geo);
+		emit _mainWindow->updateGeometryTreeSig();
+		emit _mainWindow->updateActionStatesSig();
+		emit _mainWindow->updateGraphOptionsSig();
+		_pyAgent->unLock();
+	}
+
+	void MainWindowPy::createSet(const char* name, const char* type, const char* idstring)
 	{
 		QString cname(name);
 		QString cidstring(idstring);
 		MeshData::SetType settype = MeshData::MeshSet::stringToSettype(type);
-
+		
 		QStringList strlist = cidstring.simplified().split(";");
 		MeshData::MeshSet* s = new MeshData::MeshSet(cname, settype);
 		for (QString idstring : strlist)
@@ -1250,23 +1280,141 @@ namespace GUI
 		}
 		
 		s->generateDisplayDataSet();
-		MeshData::MeshData*  _meshData = MeshData::MeshData::getInstance();
-		_meshData->appendMeshSet(s);
+		MeshData::MeshData* meshData = MeshData::MeshData::getInstance();
+		meshData->appendMeshSet(s);
 		emit _mainWindow->updateSetTreeSig();
+		Py::PythonAagent::getInstance()->unLock();
 	}
 
+	void MainWindowPy::createGeoComponent(char* name, char* type, char* strgIDs, char* striIDs)
+	{
+		QString sname(name);
+		QString stype(type);
+		QStringList geoIds = QString(strgIDs).split(';');
+		QStringList itemIds = QString(striIDs).split(';');
+		if (geoIds.size() != itemIds.size())	return;
+		Command::CommandCreateComponent* command = new Command::CommandCreateComponent(_mainWindow, _subWindowManager->getPreWindow());
+		command->setName(sname);
+		command->setType(stype);
+		command->setMembers(geoIds, itemIds);
+		bool success = Command::GeoComandList::getInstance()->executeCommand(command);
+		if (!success) 
+			QMessageBox::warning(nullptr, QObject::tr("Warning"), QObject::tr("Create failed !"));
+		else
+			emit _mainWindow->updateGeometryTreeSig();
+			emit _mainWindow->clearAllHighLight();
+		Py::PythonAagent::getInstance()->unLock();
+	}
 
+	void MainWindowPy::createVTKTransform(const char* componentIds, const char* rotate, const char* moveLocation, const char* scale)
+	{
+		QStringList qCompontIds = QString(componentIds).split(',');
+		QStringList qRotate = QString(rotate).split(',');
+		QStringList qMoveLocation = QString(moveLocation).split(',');
+		QStringList qScale = QString(scale).split(',');
+		
+		vtkDataRelated vtkRela;
+		vtkRela.SetRotateWXYZ(qRotate.at(0).toDouble(), qRotate.at(1).toDouble(), qRotate.at(2).toDouble(), qRotate.at(3).toDouble());
+		vtkRela.Translate(qMoveLocation.at(0).toDouble(), qMoveLocation.at(1).toDouble(), qMoveLocation.at(2).toDouble());
+		vtkRela.Scale(qScale.at(0).toDouble(), qScale.at(1).toDouble(), qScale.at(2).toDouble());
+
+		MeshData::MeshSet* meshSet = NULL;
+		MeshData::MeshKernal* meshKernal = NULL;
+		MeshData::MeshData* meshData = MeshData::MeshData::getInstance();
+		QString kernalName, transformedName, setType, ids;
+
+		for (QString compontId : qCompontIds)
+		{
+			meshSet = meshData->getMeshSetByID(compontId.toInt());
+			if (!meshSet)	continue;
+
+			vtkRela.SetData(meshSet->getDisplayDataSet());
+			vtkSmartPointer<vtkDataSet> transformed = vtkRela.StartTransform();
+
+			meshKernal = new MeshData::MeshKernal;
+			kernalName = QString("transfrom%1_%2").arg(meshSet->getName()).arg(meshKernal->getID());
+			meshKernal->setName(kernalName);
+			meshKernal->setMeshData(transformed);
+			meshData->appendMeshKernal(meshKernal);
+
+			transformedName = QString(meshSet->getName() + "_transform%1").arg(meshSet->getMaxID() + 1);
+			setType = MeshData::MeshSet::setTypeToString(meshSet->getSetType());
+			ids.append(QString::number(meshKernal->getID()) + ":");
+
+			int nCount = 0;
+			if (setType == "Node")
+				nCount = transformed->GetNumberOfPoints();
+			else if (setType == "Element")
+				nCount = transformed->GetNumberOfCells();
+			if (nCount == 0)
+			{
+				emit _pyAgent->printInfo(ModuleBase::Error_Message, "Transform Failed!");
+				meshData->removeKernalByID(meshKernal->getID());
+				Py::PythonAagent::getInstance()->unLock();
+				return;
+			}
+			for (int i = 0; i < nCount; i++)
+ 					ids.append(QString::number(i) + ' ');
+
+			createSet(transformedName.toStdString().c_str(), setType.toStdString().c_str(), ids.toStdString().c_str());
+			ids.clear();
+		}
+		emit _mainWindow->updatePreMeshActorSig();
+		emit _mainWindow->updateMeshTreeSig();
+		emit _mainWindow->updateActionStatesSig();
+		Py::PythonAagent::getInstance()->unLock();
+	}
+
+	void MainWindowPy::findConplanarPorC(const char* seedType, int seedId, double minAngle, int kernalId, const char* setName)
+	{
+		MeshData::MeshData* meshData = MeshData::MeshData::getInstance();
+		vtkDataSet* data = meshData->getKernalByID(kernalId)->getMeshData();
+		if (!data)	return;
+		vtkDataRelated vtkRela;
+		std::set<vtkIdType> coplanarIds;
+		QString error, setType(seedType);
+		if (setType == "Node")
+		{
+			coplanarIds = vtkRela.GetCoplanarPointId(data, seedId, minAngle);
+			error = "No Point Coplanar With This Point";
+		}					  
+		else if (setType == "Element")
+		{
+			coplanarIds = vtkRela.GetCoplanarCellId(data, seedId, minAngle);
+			error = "No Cell Coplanar With This Cell(only support lookup surface grid)";
+		}
+		if (coplanarIds.size() == 0)
+		{
+			emit _pyAgent->printInfo(ModuleBase::Error_Message, error);
+			Py::PythonAagent::getInstance()->unLock();
+			return;
+		}
+				
+		std::set<vtkIdType>::const_iterator cit;
+		QString ids(QString::number(kernalId) + ":");
+		for (cit = coplanarIds.cbegin(); cit != coplanarIds.cend(); cit++)
+			ids.append(QString::number(*cit) + ' ');
+
+		//emit _pyAgent->printInfo(ModuleBase::Normal_Message, "CoplanarIds: " + ids);
+		createSet(setName, setType.toStdString().c_str(), ids.toStdString().c_str());
+		Py::PythonAagent::getInstance()->unLock();
+	}
+
+	void MainWindowPy::updateInterface()
+	{
+		emit _mainWindow->updateInterfaces();
+	}
 
 }
 
-void importMesh(char* f)
+void importMesh(char* f,char* s,int modelId)
 {
-	GUI::MainWindowPy::importMesh(f);
+	GUI::MainWindowPy::importMesh(f, s, modelId);
 }
 
-void exportMesh(char* f)
+void exportMesh(char* f, char* s, int modelId)
 {
-	GUI::MainWindowPy::exportMesh(f);
+	GUI::MainWindowPy::exportMesh(f, s, modelId);
 }
 
 void importGeometry(char* f)
@@ -1341,6 +1489,11 @@ void MAINWINDOWAPI script_applyClicked(int id, char* type)
 void MAINWINDOWAPI createSet(char* name, char* type, char* idstring)
 {
 	GUI::MainWindowPy::createSet(name, type, idstring);
+}
+
+void MAINWINDOWAPI createGeoComponent(char* name, char* type, char* strgIDs, char* striIDs)
+{
+	GUI::MainWindowPy::createGeoComponent(name, type, strgIDs, striIDs);
 }
 
 void MAINWINDOWAPI script_Properties_Opacity(int id, char* type, int obj_id, double mOpacity)
@@ -1796,3 +1949,26 @@ void MAINWINDOWAPI redo()
 	GUI::MainWindowPy::redo();
 }
 
+void MAINWINDOWAPI clearData()
+{
+	GUI::MainWindowPy::clearData();
+}
+
+void MAINWINDOWAPI updateInterface()
+{
+	GUI::MainWindowPy::updateInterface();
+}
+
+void MAINWINDOWAPI createVTKTransform(char* componentIds, char* rotate, char* moveLocation, char* scale)
+{
+	GUI::MainWindowPy::createVTKTransform(componentIds, rotate, moveLocation, scale);
+}
+
+void MAINWINDOWAPI findConplanarPorC(const char* seedType, int seedId, double minAngle, int kernalId, const char* setName)
+{
+	GUI::MainWindowPy::findConplanarPorC(seedType, seedId, minAngle, kernalId, setName);
+}
+void MAINWINDOWAPI deleteGeometry(int id)
+{
+	GUI::MainWindowPy::deleteGeometry(id);
+}

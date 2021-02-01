@@ -1,4 +1,4 @@
-#ifndef _GEOMETRYCOMMANDAPI_H_
+﻿#ifndef _GEOMETRYCOMMANDAPI_H_
 #define _GEOMETRYCOMMANDAPI_H_
 
 #include <QtCore/QtGlobal>

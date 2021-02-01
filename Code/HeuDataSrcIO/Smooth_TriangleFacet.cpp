@@ -1,4 +1,4 @@
-#include "Smooth_TriangleFacet.h"
+﻿#include "Smooth_TriangleFacet.h"
 
 Smooth_TriangleFacet::Smooth_TriangleFacet()
 {

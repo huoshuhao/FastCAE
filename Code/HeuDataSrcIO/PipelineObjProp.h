@@ -1,4 +1,4 @@
-#ifndef PIPELINEOBJPROP_H
+ï»¿#ifndef PIPELINEOBJPROP_H
 #define PIPELINEOBJPROP_H
 
 #include "heudatasrcio_global.h"
@@ -15,10 +15,10 @@
 struct HEUDATASRCIOSHARED_EXPORT pipelineObj_propData
 {
 	int obj_id;
-	bool flag_rectilinear = false;//ÊÇ·ñÊÇÏßĞÔÍø¸ñ£¬ÈçÊÇ¿É×öµÈÖµÃæ
+	bool flag_rectilinear = false;//æ˜¯å¦æ˜¯çº¿æ€§ç½‘æ ¼ï¼Œå¦‚æ˜¯å¯åšç­‰å€¼é¢
 	QStringList fileList;
 	QStringList fileListBak;
-	QString filename;
+	QString fileName;
 	int file_xh;
 	QMap<QString, bool> scalarBar_showMap;
 	QMap<QString, bool> scalarBar_opacityMap;
@@ -43,7 +43,7 @@ struct HEUDATASRCIOSHARED_EXPORT pipelineObj_propData
 	int mPointSize;
 	int mLineWidth;
 	//Lighting
-	//ÑÕÉ«Ïà¹Ø
+	//é¢œè‰²ç›¸å…³
 	scolor mSolidColor;
 	double mSpecular;
 	scolor mSpecularColor;
@@ -79,7 +79,7 @@ struct HEUDATASRCIOSHARED_EXPORT pipelineObj_propData
 struct HEUDATASRCIOSHARED_EXPORT aniDisplace_pipelineObj_propData
 {
 	QVector<FrameDisplace> m_aniDisplaceList;
-	bool flag_AniDisplaceFile;//ÊÇ·ñÊ¹ÓÃ¶¯»­Î»ÒÆÎÄ¼ş
+	bool flag_AniDisplaceFile;//æ˜¯å¦ä½¿ç”¨åŠ¨ç”»ä½ç§»æ–‡ä»¶
 	bool flag_exeDisplace;
 	QString path_AniDisplaceFile;
 	FrameDisplace m_pre_displace;

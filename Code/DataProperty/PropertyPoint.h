@@ -1,4 +1,4 @@
-#ifndef PROPERTYPOINT_H
+﻿#ifndef PROPERTYPOINT_H
 #define PROPERTYPOINT_H
 
 #include "DataPropertyAPI.h"

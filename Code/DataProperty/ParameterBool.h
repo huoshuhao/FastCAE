@@ -1,4 +1,4 @@
-#ifndef _PARAMEYTERBOOL_H_
+Ôªø#ifndef _PARAMEYTERBOOL_H_
 #define _PARAMEYTERBOOL_H_
 
 #include "ParameterBase.h"
@@ -11,10 +11,10 @@ namespace DataProperty
 		ParameterBool();
 		~ParameterBool() = default;
 
-		void copy(ParameterBase* ori) override;
-		//…Ë÷√÷µ
+		void copy(ParameterBase* ori, bool valueOnly = false) override;
+		//ËÆæÁΩÆÂÄº
 		void setValue(bool ok);
-		//ªÒ»°÷µ
+		//Ëé∑ÂèñÂÄº
 		bool getValue();
 		bool isSameValueWith(ParameterBase* p) override;
 		void writeParameter(QDomDocument* doc, QDomElement* parent) override;

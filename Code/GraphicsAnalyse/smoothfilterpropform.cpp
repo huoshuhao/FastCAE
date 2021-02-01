@@ -1,4 +1,4 @@
-#include "smoothfilterpropform.h"
+﻿#include "smoothfilterpropform.h"
 #include "ui_smoothfilterpropform.h"
 
 smoothFilterPropForm::smoothFilterPropForm(PipelineObjPropWidget *parent) :

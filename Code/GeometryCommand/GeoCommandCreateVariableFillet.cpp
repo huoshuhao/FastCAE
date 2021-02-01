@@ -1,4 +1,4 @@
-#include "GeoCommandCreateVariableFillet.h"
+﻿#include "GeoCommandCreateVariableFillet.h"
 #include <TopExp.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_TShape.hxx>
@@ -83,8 +83,11 @@ namespace Command
 
 		Geometry::GeometryParaVariableFillet* para = new Geometry::GeometryParaVariableFillet;
 		para->setInputSet(_edgeSet);
+		QPair<Geometry::GeometrySet*, int> edgpair{_edgeSet,_edgeIndex};
+		para->setEdgePair(edgpair);
+/*
 		para->setEdgeSet(_edgeSet);
-		para->setEdgeIndex(_edgeIndex);
+		para->setEdgeIndex(_edgeIndex);*/
 		para->setRadiuMap(_radiusMap); 
 		para->setBasicRadius(_basicRadius);
 		

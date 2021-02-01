@@ -1,4 +1,4 @@
-#ifndef _MESHCONFIG_H_
+ï»¿#ifndef _MESHCONFIG_H_
 #define _MESHCONFIG_H_
 
 #include "ConfigOptionsAPI.h"
@@ -10,7 +10,7 @@ namespace ConfigOption
 	class CONFIGOPTIONSAPI MeshConfig
 	{
 	public:
-		MeshConfig() = default;
+		MeshConfig();
 		~MeshConfig() = default;
 		void clearData();
 
@@ -33,8 +33,17 @@ namespace ConfigOption
 		void enableComponent(bool on);
 		bool isComponentEnabled();
 
-		void setCheckMesh(bool on);		//ÉèÖÃ¼ì²âÍø¸ñÖÊÁ¿
-		bool getCheckMeshEnabled();			//»ñÈ¡¼ì²âÍø¸ñÖÊÁ¿×´Ì¬
+		void setCheckMesh(bool on);		//è®¾ç½®æ£€æµ‹ç½‘æ ¼è´¨é‡
+		bool getCheckMeshEnabled();			//è·å–æ£€æµ‹ç½‘æ ¼è´¨é‡çŠ¶æ€
+
+		void enableFluidMesh(bool on);
+		bool isFluidMeshEnabled();
+
+		void enableFilterMesh(bool on);
+		bool isFilterMeshEnabled();
+
+		void enableMeshModeling(bool on);
+		bool isMeshModelingEnabled();
 		
 	private:
 // 		bool _enableMesh{ false };
@@ -50,7 +59,11 @@ namespace ConfigOption
 //		bool _enableFluidMesh{ false };
 		bool _enableComponent{ false };
 
-		bool _checkMesh{ false };		//check mesh	
+		bool _checkMesh{ false };		//check mesh
+
+		bool _fluidMesh{ false };
+		bool _filterMesh{ false };
+		bool _meshModeling{ false };
 		
 
 	};

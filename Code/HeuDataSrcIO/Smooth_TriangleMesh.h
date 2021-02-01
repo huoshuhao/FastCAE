@@ -1,4 +1,4 @@
-#ifndef SMOOTH_TRIANGLEMESH_H
+﻿#ifndef SMOOTH_TRIANGLEMESH_H
 #define SMOOTH_TRIANGLEMESH_H
 #include <queue>
 #include "Smooth_Point.h"

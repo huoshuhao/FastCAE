@@ -1,4 +1,4 @@
-#include "XGenerateReportThread.h"
+﻿#include "XGenerateReportThread.h"
 #include <QDir>
 namespace XReport{
 

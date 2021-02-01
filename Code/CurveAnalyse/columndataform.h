@@ -1,4 +1,4 @@
-#ifndef COLUMNDATAFORM_H
+﻿#ifndef COLUMNDATAFORM_H
 #define COLUMNDATAFORM_H
 
 #include <QWidget>

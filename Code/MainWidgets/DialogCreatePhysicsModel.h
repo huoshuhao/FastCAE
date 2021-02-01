@@ -1,4 +1,4 @@
-#ifndef CREATEPHYSICSMODEL_H
+﻿#ifndef CREATEPHYSICSMODEL_H
 #define CREATEPHYSICSMODEL_H
 
 #include <QMap>

@@ -1,4 +1,4 @@
-#ifndef SCALARRANGEDIALOG_H
+﻿#ifndef SCALARRANGEDIALOG_H
 #define SCALARRANGEDIALOG_H
 
 #include <QDialog>

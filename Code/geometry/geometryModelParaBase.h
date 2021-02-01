@@ -1,4 +1,4 @@
-#ifndef GEOMETRYMODELBASE_H_
+ï»¿#ifndef GEOMETRYMODELBASE_H_
 #define GEOMETRYMODELBASE_H_
 
 #include "geometryAPI.h"
@@ -28,6 +28,10 @@ namespace Geometry
 		GeometryParaMakeLoft,
 		GeometryParaMakeSweep,
 		GeometryParaMakeRevol,
+		GeometryParaSplitter,
+		GeometryParaFillHole,
+		GeometryParaRemoveSurface,
+		GeometryParaFillGap,
 
 	};
 
@@ -36,12 +40,12 @@ namespace Geometry
 	class GEOMETRYAPI GeometryModelParaBase : public DataProperty::DataBase
 	{
 	public:
-		//¹¹Ôìº¯Êı
+		//æ„é€ å‡½æ•°
 		GeometryModelParaBase();
 		~GeometryModelParaBase() = default;
-		//»ñÈ¡ÀàĞÍ
+		//è·å–ç±»å‹
 		GeometryParaType getParaType();
-		//Í¨¹ı×Ö·û´®´´½¨²Ù×÷²ÎÊı
+		//é€šè¿‡å­—ç¬¦ä¸²åˆ›å»ºæ“ä½œå‚æ•°
 		static GeometryModelParaBase* createParaByString(QString s);
 
 	protected:

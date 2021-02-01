@@ -1,4 +1,4 @@
-#include "SelfDefWidget.h"
+﻿#include "SelfDefWidget.h"
 #include "DataProperty/DataBase.h"
 #include "SelfDefObjectBase.h"
 #include <QHBoxLayout>

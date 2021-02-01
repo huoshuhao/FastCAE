@@ -1,9 +1,11 @@
-#include "TreeInformation.h"
+ï»¿#include "TreeInformation.h"
 #include "ui_TreeInformation.h"
 #include "ModelBase.h"
 #include <QFileDialog>
 #include <QTimer>
-#include "InputValidator.h"
+#include "InputValidator.h"-
+#include "DataManager.h"
+#include <QFileInfo>
 
 
 namespace FastCAEDesigner{
@@ -16,6 +18,11 @@ namespace FastCAEDesigner{
 		connect(ui->btnCancel, SIGNAL(clicked()), this, SLOT(close()));
 		connect(ui->btnLoadIcon, SIGNAL(clicked()), this, SLOT(OnBtnLoadIconClicked()));
 		InitErrorList();
+
+		QFileInfo icon(ui->txtIcon->text().trimmed());
+		DataManager::getInstance()->removeIconNameFromList(icon.fileName());
+
+		//_iconNameList = DataManager::getInstance()->getIconNameList();
 		//Init();
 	}
 
@@ -42,6 +49,12 @@ namespace FastCAEDesigner{
 	{
 		UpdateDataToUi();
 		SetIsEdit(_model->GetIsEdit());
+
+		//20200324 xuxinwei
+		QFileInfo icon(ui->txtIcon->text().trimmed());
+		DataManager::getInstance()->removeIconNameFromList(icon.fileName());
+		//20200324 xuxinwei
+
 		connect(ui->btnOk, SIGNAL(clicked()), this, SLOT(OnBtnOkClicked()));
 		connect(ui->btnCancel, SIGNAL(clicked()), this, SLOT(close()));
 		connect(ui->btnLoadIcon, SIGNAL(clicked()), this, SLOT(OnBtnLoadIconClicked()));
@@ -103,6 +116,19 @@ namespace FastCAEDesigner{
 			QTimer::singleShot(3000, this, SLOT(OnTimeout()));
 			return;
 		}
+
+		//xuxinwei 20200324
+		QFileInfo iconName(ui->txtIcon->text().trimmed());
+		if (!DataManager::getInstance()->getIconNameIsAvailable(iconName.fileName()))
+		{
+			ui->lbl_info->setText(tr("The icon file is already existed."));
+			ui->lbl_info->show();
+			QTimer::singleShot(3000, this, SLOT(OnTimeout()));
+			return;
+		}
+		
+		DataManager::getInstance()->setIconNameList(iconName.fileName());
+		//xuxinwei 20200324
 
 		UpdateUiToData();
 		
@@ -205,7 +231,7 @@ namespace FastCAEDesigner{
 	{
 		_usedEngNameList = nameList;
 	}
-	//³õÊ¼»¯´íÎó´úÂë¶ÔÓ¦µÄ´íÎóÐÅÏ¢ÁÐ±í
+	//åˆå§‹åŒ–é”™è¯¯ä»£ç å¯¹åº”çš„é”™è¯¯ä¿¡æ¯åˆ—è¡¨
 	void  TreeInformation::InitErrorList()
 	{
 		_errorList.insert(ChnNameIsEmpty, tr("Chinese name is empty."));
@@ -218,7 +244,7 @@ namespace FastCAEDesigner{
 
 	}
 
-	//Ð£ÑéÊý¾ÝÉè¶¨ÊÇ·ñÕýÈ·£¬¸ù¾Ý´íÎóµÄ×´¿ö·µ»ØÏìÓ¦µÄ´íÎó´úÂë
+	//æ ¡éªŒæ•°æ®è®¾å®šæ˜¯å¦æ­£ç¡®ï¼Œæ ¹æ®é”™è¯¯çš„çŠ¶å†µè¿”å›žå“åº”çš„é”™è¯¯ä»£ç 
 	int TreeInformation::IsDataOk()
 	{
 		QString nameChn = ui->txtChineseName->text().trimmed();
@@ -244,7 +270,7 @@ namespace FastCAEDesigner{
 
 		return 0;
 	}
-	//¶¨Ê±Æ÷²Ûº¯Êý
+	//å®šæ—¶å™¨æ§½å‡½æ•°
 	void TreeInformation::OnTimeout()
 	{
 		ui->lbl_info->setText("");

@@ -1,8 +1,7 @@
-#ifndef _SOLVERIO_H_
+ï»¿#ifndef _SOLVERIO_H_
 #define _SOLVERIO_H_
 
 #include "IOAPI.h"
-#include <QString>
 
 namespace ModelData
 {
@@ -16,26 +15,22 @@ namespace DataProperty
 
 namespace IO
 {
+	class GenerateMesh;
 
 	class IOAPI SolverIO
 	{
 	public:
 		SolverIO() = default;
 		~SolverIO() = default;
-
-		//Ğ´³öÎÄ¼ş
+		//å†™å‡ºæ–‡ä»¶
 		static bool writeInpFile(QString suffix, ModelData::ModelDataBase* data);
-		//Çó½âÊäÈëÎÄ¼şÄ£°åÌæ»»
+		//æ±‚è§£è¾“å…¥æ–‡ä»¶æ¨¡æ¿æ›¿æ¢
 		static bool replaceTemplate(QString templa, QString path, DataProperty::DataBase* data);
-		//½á¹ûÎÄ¼ş×ª»»
+		//ç»“æœæ–‡ä»¶è½¬æ¢
 		static bool transformFile(QString trans, QString path);
 
 	private:
 		static bool writeXml(ModelData::ModelDataBase* m);
-		
 	};
-
 }
-
-
 #endif

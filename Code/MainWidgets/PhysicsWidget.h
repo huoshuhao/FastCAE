@@ -1,4 +1,4 @@
-/***************
+﻿/***************
 模型树基类
 libaojun
 2017.09.05
@@ -55,11 +55,14 @@ namespace MainWidget
 	    void importProjectSig(int id);
 		void caseRenameSig(int pid, QString newname);
 		void showMessage(ModuleBase::Message);
+
 	public slots:
 		virtual void updateTree();
 		void updateMaterialTree();
 		void updatePhysicsTree();
-	
+		void removeCaseComponentSlot(int);
+		void renameCaseComponentSlot(int);
+
 
 	protected slots:
 		void contextMenuEvent(QContextMenuEvent *event) override;
@@ -70,7 +73,7 @@ namespace MainWidget
 		void renameProject();
 		void deleteProject();
 		void solveProject();
-		void importProjectPy();
+		void importProjectPy(); 
 		void importProject(int id);
 		void openProjectPath();
 

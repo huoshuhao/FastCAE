@@ -1,4 +1,4 @@
-#ifndef GEOCOMMANDMAKEREVOL_H_
+﻿#ifndef GEOCOMMANDMAKEREVOL_H_
 #define GEOCOMMANDMAKEREVOL_H_
 
 #include "geometryCommandAPI.h"

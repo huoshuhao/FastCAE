@@ -1,4 +1,4 @@
-#ifndef _PROJECTTREEAPI_H_
+﻿#ifndef _PROJECTTREEAPI_H_
 #define _PROJECTTREEAPI_H_
 
 #include <QtCore/QtGlobal>

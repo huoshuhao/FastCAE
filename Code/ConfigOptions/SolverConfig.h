@@ -1,4 +1,4 @@
-#ifndef _SOLVERCONFIG_H_
+﻿#ifndef _SOLVERCONFIG_H_
 #define _SOLVERCONFIG_H_
 
 #include "ConfigOptionsAPI.h"

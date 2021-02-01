@@ -1,4 +1,4 @@
-#ifndef EditorSolverValue_H
+﻿#ifndef EditorSolverValue_H
 #define EditorSolverValue_H
 
 #include <QDialog>

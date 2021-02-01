@@ -1,4 +1,4 @@
-#ifndef _DIALOGSELECTMESHER_H_
+﻿#ifndef _DIALOGSELECTMESHER_H_
 #define _DIALOGSELECTMESHER_H_
 
 #include "mainWidgetsAPI.h"

@@ -1,4 +1,4 @@
-#ifndef XOPERATEWORD_H
+﻿#ifndef XOPERATEWORD_H
 #define XOPERATEWORD_H
 
 #include <QObject>

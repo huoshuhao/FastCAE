@@ -1,4 +1,4 @@
-#ifndef SMOOTH_VTKSETDATA_H
+﻿#ifndef SMOOTH_VTKSETDATA_H
 #define SMOOTH_VTKSETDATA_H
 #include "vtkDataSet.h"
 #include "Smooth_TriangleMesh.h"

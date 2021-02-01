@@ -1,4 +1,4 @@
-#ifndef _ELEMENTTYPE_H_
+﻿#ifndef _ELEMENTTYPE_H_
 #define _ELEMENTTYPE_H_
 
 #include <QString>

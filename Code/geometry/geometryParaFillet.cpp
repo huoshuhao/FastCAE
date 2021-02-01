@@ -1,4 +1,4 @@
-#include "geometryParaFillet.h"
+ï»¿#include "geometryParaFillet.h"
 #include "geometrySet.h"
 #include "geometryData.h"
 #include <QDomElement>
@@ -44,7 +44,7 @@ namespace Geometry
 
 	QDomElement& GeometryParaFillet::writeToProjectFile(QDomDocument* doc, QDomElement* parent)
 	{
-		QDomElement element = doc->createElement("Parameter");  //´´½¨×Ó½Úµã
+		QDomElement element = doc->createElement("Parameter");  //åˆ›å»ºå­èŠ‚ç‚¹
 		QDomAttr typeattr = doc->createAttribute("Type");
 		typeattr.setValue(this->typeToString());
 		element.setAttributeNode(typeattr);
@@ -69,7 +69,7 @@ namespace Geometry
 		QDomText edgeText = doc->createTextNode(edgeIndexs.join(","));
 		edgeEle.appendChild(edgeText);
 		element.appendChild(edgeEle);
-
+		
 		parent->appendChild(element);
 		return element;
 	}
@@ -96,18 +96,6 @@ namespace Geometry
 			_edgeIndexList.append(inedx);
 		}
 	}
-
-// 	void GeometryParaFillet::setName(QString name)
-// 	{
-// 		_name = name;
-// 	}
-// 
-// 	QString GeometryParaFillet::getName()
-// 	{
-// 		return _name;
-// 	}
-
-
 
 
 }

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <QDate>
 #include <QObject>
 #include <QStringList>

@@ -1,4 +1,4 @@
-#ifndef _BCSCALARBASE_H_
+ï»¿#ifndef _BCSCALARBASE_H_
 #define _BCSCALARBASE_H_
 
 #include "BCBaseAPI.h"
@@ -17,11 +17,11 @@ namespace BCBase
 		BCScalarBase();
 		BCScalarBase(BCType type);
 		~BCScalarBase() = default;
-		//ÉèÖÃÖµ
+		//è®¾ç½®å€¼
 		void setValue(double v);
-		//»ñÈ¡Öµ
+		//è·å–å€¼
 		double getValue();
-		//ÉèÖÃ±äÁ¿Ãû³Æ
+		//è®¾ç½®å˜é‡åç§°
 		void setVariableName(QString s);
 
 		virtual QDomElement& writeToProjectFile(QDomDocument* doc, QDomElement* parent) override;

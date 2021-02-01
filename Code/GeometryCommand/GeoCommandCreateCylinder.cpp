@@ -1,4 +1,4 @@
-#include "GeoCommandCreateCylinder.h"
+﻿#include "GeoCommandCreateCylinder.h"
 #include <gp_Ax2.hxx>
 #include <BRepPrimAPI_MakeCylinder.hxx>
 #include "geometry/geometryData.h"
@@ -43,7 +43,7 @@ namespace Command
 		{
 			set->setName(_name);
 			_geoData->appendGeometrySet(set);
-		}
+		} 
 
 		Geometry::GeometryParaCylinder* para = new Geometry::GeometryParaCylinder;
 		para->setName(_name);

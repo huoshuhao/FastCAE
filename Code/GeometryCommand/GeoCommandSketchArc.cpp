@@ -1,4 +1,4 @@
-#include "GeoCommandSketchArc.h"
+﻿#include "GeoCommandSketchArc.h"
 #include <gp_Pnt.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_MakePolygon.hxx>

@@ -1,7 +1,10 @@
-#include "XDockTitleBarWidget.h"
+ï»¿#include "XDockTitleBarWidget.h"
 XDockTitleBarWidget::XDockTitleBarWidget(QString dockName, QWidget *parent)
 	: QWidget(parent)
 {
+// 	this->setFixedHeight(40);
+// 	this->setMinimumHeight(40);
+// 	this->setMaximumHeight(40);
 	//pixMap
 	minPix = style()->standardPixmap(QStyle::SP_TitleBarMinButton);
 	closePix = style()->standardPixmap(QStyle::SP_TitleBarCloseButton);
@@ -15,14 +18,14 @@ QSize XDockTitleBarWidget::minimumSizeHint() const
 	return QSize(256, 23);
 }
 
-//»æÖÆtitleBar
+//ç»˜åˆ¶titleBar
 void XDockTitleBarWidget::paintEvent(QPaintEvent*)
 {
 
 	QPainter painter(this);
 	painter.setRenderHint(QPainter::Antialiasing, true);
 
-	drawHat(painter);
+//	drawHat(painter);
 	drawTitle(name, painter);
 }
 
@@ -48,13 +51,13 @@ void XDockTitleBarWidget::drawHat(QPainter & painter)
 
 void XDockTitleBarWidget::drawTitle(const QString & name, QPainter & painter)
 {
-	///<MG¡¡color way
+	///<MGã€€color way
 	QRect rect = this->rect();
 	int radius = rect.height() / 5;
 	QLinearGradient linear(QPoint(rect.left(), rect.top()), QPoint(rect.left(), rect.bottom()));
 	linear.setColorAt(0, m_toColor);
 	linear.setColorAt(1, m_fromColor);
-	painter.setPen(QPen(QBrush(linear),5));
+	painter.setPen(QPen(QBrush(linear),10));
 
 	painter.setFont(m_titleFont);
 	painter.drawText(rect.left() + 10, rect.top() + radius /2, rect.width(), rect.height(), Qt::AlignVCenter, name);

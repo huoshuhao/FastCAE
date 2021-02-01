@@ -1,10 +1,11 @@
-#ifndef GEOMETRYSET_H
+ï»¿#ifndef GEOMETRYSET_H
 #define GEOMETRYSET_H
 
 #include "geometryAPI.h"
 #include "DataProperty/DataBase.h"
 #include <QString>
-#include <vtkSmartPointer.h>
+//#include <TopoDS_Shape.hxx>
+//#include <vtkSmartPointer.h>
 
 class TopoDS_Shape;
 class vtkDataSet;
@@ -25,57 +26,64 @@ namespace Geometry
 	class GEOMETRYAPI GeometrySet : public DataProperty::DataBase
 	{
 	public:
-		//¹¹Ôìº¯Êı
+		//æ„é€ å‡½æ•°
 		GeometrySet(GeometryType type = NONE, bool needID = true);
 		~GeometrySet();
-		//É¾³ıÈ«²¿×ÓĞÎ×´²¢ÊÍ·Å×ÓĞÎ×´ÄÚ´æ
+		//åˆ é™¤å…¨éƒ¨å­å½¢çŠ¶å¹¶é‡Šæ”¾å­å½¢çŠ¶å†…å­˜
 		void releaseSubSet();
 		void setID(int id) override;
-		//ÖØÖÃ×î´óID£¬²»ÒªÇáÒ×µ÷ÓÃ
+		//é‡ç½®æœ€å¤§IDï¼Œä¸è¦è½»æ˜“è°ƒç”¨
 		static void resetMaxID();
-		//¸ù¾İID»ñÈ¡×ÓĞÎ×´
+		//æ ¹æ®IDè·å–å­å½¢çŠ¶
 		GeometrySet* getSetByID(int id);
 // 		int getID();
 // 		void setName(const QString& name);
 // 		QString getName();
 // 		void setFilePath(const QString& filepath);
 // 		QString getFilePath();
-		//ÉèÖÃ¿É¼ûĞÔ
+
+		//è·å–ç‚¹çº¿é¢æ•°é‡ 1-ç‚¹ 2-çº¿ 3-é¢ 4-å®ä½“ï¼Œé”™è¯¯è¿”å›å€¼ï¼š-1
+		int getGeoMemberCount(int type);
+		//è·å–ç¬¬indexä¸ªå½¢çŠ¶ type 1-ç‚¹ 2-çº¿ 3-é¢ 4-å®ä½“ï¼Œ
+		TopoDS_Shape* getShape(int type, int index);
+		////è·å–ç¬¬indexä¸ªå½¢çŠ¶ type 1-ç‚¹ 2-çº¿ 3-é¢ 4-å®ä½“ï¼Œ
+		const TopoDS_Shape& getRealShape(int type, int index);
+		//è®¾ç½®å¯è§æ€§
 		void setVisible(bool v);
-		//ĞÎ×´ÊÇ·ñ¿É¼û
+		//å½¢çŠ¶æ˜¯å¦å¯è§
 		bool isVisible();
-		//ÉèÖÃÀàĞÍ
+		//è®¾ç½®ç±»å‹
 		void setType(GeometryType type);
-		//»ñÈ¡ÀàĞÍ
+		//è·å–ç±»å‹
 		GeometryType getType();
-		//ÉèÖÃĞÎ×´ÍØÆË
+		//è®¾ç½®å½¢çŠ¶æ‹“æ‰‘
 		void setShape(TopoDS_Shape* shape);
-		//»ñÈ¡ĞÎ×´ÍØÆË
+		//è·å–å½¢çŠ¶æ‹“æ‰‘
 		TopoDS_Shape* getShape();
-		void setStlDataSet(vtkSmartPointer<vtkDataSet> polyData);
-		vtkDataSet* getStlDataSet();
-		//»ñÈ¡×î´óID
+// 		void setStlDataSet(vtkSmartPointer<vtkDataSet> polyData);
+// 		vtkDataSet* getStlDataSet();
+		//è·å–æœ€å¤§ID
 		static int getMaxID();
-		//ÉèÖÃ²Ù×÷²ÎÊı
+		//è®¾ç½®æ“ä½œå‚æ•°
 		void setParameter(GeometryModelParaBase* p);
-		//»ñÈ¡²Ù×÷²ÎÊı
+		//è·å–æ“ä½œå‚æ•°
 		GeometryModelParaBase* getParameter();
 		bool isEditable();
-		//ÒÆ³ı×ÓĞÎ×´
+		//ç§»é™¤å­å½¢çŠ¶
 		void removeSubSet(GeometrySet* set);
-		//Ìí¼Ó×ÖĞÎ×´
+		//æ·»åŠ å­—å½¢çŠ¶
 		void appendSubSet(GeometrySet* set);
-		//»ñÈ¡×ÓĞÎ×´ÊıÄ¿
+		//è·å–å­å½¢çŠ¶æ•°ç›®
 		int getSubSetCount();
-		//»ñÈ¡µÚindex¸ö×ÓĞÎ×´
+		//è·å–ç¬¬indexä¸ªå­å½¢çŠ¶
 		GeometrySet* getSubSetAt(int index);
 
 		void dataToStream(QDataStream* s) override;
 		virtual QDomElement& writeToProjectFile(QDomDocument* doc, QDomElement* ele, bool isDisp = false);
 		virtual void readDataFromProjectFile(QDomElement* e, bool isDiso = false);
-		//Ğ´³öbrepÎÄ¼ş£¬Â·¾¶²»ÄÜ³öÏÖÖĞÎÄ
+		//å†™å‡ºbrepæ–‡ä»¶ï¼Œè·¯å¾„ä¸èƒ½å‡ºç°ä¸­æ–‡
 		bool writeBrep(QString name);
-		//¶ÁÈëbrepÎÄ¼ş£¬Â·¾¶²»ÄÜ³öÏÖÖĞÎÄ
+		//è¯»å…¥brepæ–‡ä»¶ï¼Œè·¯å¾„ä¸èƒ½å‡ºç°ä¸­æ–‡
 		bool readBrep(QString name);
 
 	protected:
@@ -89,12 +97,13 @@ namespace Geometry
 //		QString _filePath{};
 		bool _visible{ true };
 		TopoDS_Shape* _shape{};
-		vtkSmartPointer<vtkDataSet> _polyData{};
+//		vtkSmartPointer<vtkDataSet> _polyData{};
 		QList<GeometrySet*> _subSetList{};
 		GeometryModelParaBase* _parameter{};
 
 	private:
 		static int idOffset;
+		static TopoDS_Shape* tempShape;
 	};
 }
 

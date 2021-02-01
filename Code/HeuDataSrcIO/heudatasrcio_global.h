@@ -1,4 +1,4 @@
-#ifndef HEUDATASRCIO_GLOBAL_H
+﻿#ifndef HEUDATASRCIO_GLOBAL_H
 #define HEUDATASRCIO_GLOBAL_H
 
 #include <QtCore/qglobal.h>

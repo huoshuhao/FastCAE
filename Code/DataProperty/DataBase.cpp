@@ -1,4 +1,4 @@
-#include "DataBase.h"
+﻿#include "DataBase.h"
 #include "ParameterGroup.h"
 #include <QObject>
 #include <QDomElement>
@@ -94,6 +94,17 @@ namespace DataProperty
 	int DataBase::getParameterGroupCount()
 	{
 		return _paraGroupList.size();
+	}
+
+	int DataBase::getVisiableParameterGroupCount()
+	{
+		int c = 0;
+		for (auto g : _paraGroupList)
+		{
+			if (g->isVisible())
+				c++;
+		}
+		return c;
 	}
 
 	void DataBase::readParameters(QDomElement* ele)

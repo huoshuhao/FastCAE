@@ -1,4 +1,4 @@
-#ifndef _CUSTOMIZERPLUGINAPI_H__
+﻿#ifndef _CUSTOMIZERPLUGINAPI_H__
 #define _CUSTOMIZERPLUGINAPI_H__
 
 #include <QtCore/QtGlobal>

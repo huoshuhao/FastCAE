@@ -1,4 +1,4 @@
-#ifndef DIALOGMESHRENAME_H__
+﻿#ifndef DIALOGMESHRENAME_H__
 #define DIALOGMESHRENAME_H__
 
 #include "SelfDefObject/QFDialog.h"
@@ -6,7 +6,7 @@
 
 namespace Ui
 {
-	class DialogSetRename;
+	class DialogRename;
 }
 namespace GUI
 {
@@ -35,8 +35,12 @@ namespace MainWidget
 	private:
 		void accept() override;
 
+	signals:
+		//更新属性
+		void disPlayProp(DataProperty::DataBase* pops);
+
 	private:
-		Ui::DialogSetRename* _ui{};
+		Ui::DialogRename* _ui{};
 		QTreeWidgetItem* _item{};
 
 		MeshData::MeshData* _meshdata{};

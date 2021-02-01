@@ -1,4 +1,4 @@
-#ifndef SAVESCRIPTDIALOG_H
+﻿#ifndef SAVESCRIPTDIALOG_H
 #define SAVESCRIPTDIALOG_H
 
 #include <QDialog>

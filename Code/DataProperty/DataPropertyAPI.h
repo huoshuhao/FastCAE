@@ -1,4 +1,4 @@
-#ifndef _DATAPROPERTYAPI_H_
+﻿#ifndef _DATAPROPERTYAPI_H_
 #define _DATAPROPERTYAPI_H_
 
 #include <QtCore/QtGlobal>

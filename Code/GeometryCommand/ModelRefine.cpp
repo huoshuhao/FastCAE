@@ -1,4 +1,4 @@
-#include <algorithm>
+﻿#include <algorithm>
 #include <iterator>
 #include <Geom_Surface.hxx>
 #include <GeomAdaptor_Surface.hxx>

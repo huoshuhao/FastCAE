@@ -1,4 +1,4 @@
-#include "sketchViewProvider.h"
+﻿#include "sketchViewProvider.h"
 #include "preWindow.h"
 #include "moduleBase/PreWindowInteractorStyle.h"
 #include "geometry/geometryData.h"
@@ -141,7 +141,6 @@ namespace MainWidget
 		
 		_pointWidget = new GeometryWidget::SketchPointWidget(_mainWindow, _preWindow, _creater);
 		emit showDialog(_pointWidget);
-		
 	}
 
 	void SketchViewProvider::onMouseRelease(double* pt)

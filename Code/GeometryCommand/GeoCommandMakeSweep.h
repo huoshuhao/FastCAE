@@ -1,4 +1,4 @@
-#ifndef GEOCOMMANDMAKESWEEP_H_
+﻿#ifndef GEOCOMMANDMAKESWEEP_H_
 #define GEOCOMMANDMAKESWEEP_H_
 
 #include "GeoCommandBase.h"

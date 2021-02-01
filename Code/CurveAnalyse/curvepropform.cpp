@@ -1,4 +1,4 @@
-#include "curvepropform.h"
+﻿#include "curvepropform.h"
 #include "ui_curvepropform.h"
 
 CurvePropForm::CurvePropForm(QWidget *parent) :

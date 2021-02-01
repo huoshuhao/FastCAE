@@ -1,4 +1,4 @@
-#ifndef FILTERCALCULATOR_H
+﻿#ifndef FILTERCALCULATOR_H
 #define FILTERCALCULATOR_H
 
 #include "PipelineObject.h"

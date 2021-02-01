@@ -1,4 +1,4 @@
-#include "ReadData_Openfoam.h"
+﻿#include "ReadData_Openfoam.h"
 #include "qdebug.h"
 #include "vtkRectilinearGridToPointSet.h"
 #include "vtkSmartPointer.h"

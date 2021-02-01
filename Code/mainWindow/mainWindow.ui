@@ -113,6 +113,7 @@
    </attribute>
    <addaction name="actionSurfaceMesh"/>
    <addaction name="actionSolidMesh"/>
+   <addaction name="actionFluidMesh"/>
    <addaction name="actionGenMesh"/>
   </widget>
   <widget class="QToolBar" name="DisplayToolBar">
@@ -148,7 +149,10 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionChecking"/>
+   <addaction name="actionFilterMesh"/>
    <addaction name="actionCreate_Set"/>
+   <addaction name="actionCreateGeoComponent"/>
+   <addaction name="actionVTKTranslation"/>
   </widget>
   <widget class="QToolBar" name="RedoToolBar">
    <property name="windowTitle">
@@ -307,6 +311,7 @@
     <property name="title">
      <string>&amp;Help</string>
     </property>
+    <addaction name="actionUser_Guidance"/>
     <addaction name="actionUser_Manual"/>
     <addaction name="actionAbout"/>
    </widget>
@@ -329,12 +334,24 @@
      <property name="title">
       <string>Language</string>
      </property>
+     <property name="icon">
+      <iconset resource="../qrc/qianfan.qrc">
+       <normaloff>:/QUI/icon/language.png</normaloff>:/QUI/icon/language.png</iconset>
+     </property>
      <addaction name="actionChinese"/>
      <addaction name="actionEnglish"/>
+    </widget>
+    <widget class="QMenu" name="menuStyle">
+     <property name="title">
+      <string>Style</string>
+     </property>
+     <addaction name="actionNormal"/>
+     <addaction name="actionRibbon"/>
     </widget>
     <addaction name="actionGraph_Options"/>
     <addaction name="separator"/>
     <addaction name="menuLanguage"/>
+    <addaction name="menuStyle"/>
    </widget>
    <widget class="QMenu" name="menuMesher">
     <property name="title">
@@ -361,10 +378,13 @@
     </widget>
     <addaction name="actionSurfaceMesh"/>
     <addaction name="actionSolidMesh"/>
+    <addaction name="actionFluidMesh"/>
     <addaction name="actionGenMesh"/>
     <addaction name="separator"/>
     <addaction name="actionChecking"/>
+    <addaction name="actionFilterMesh"/>
     <addaction name="actionCreate_Set"/>
+    <addaction name="actionVTKTranslation"/>
     <addaction name="menuView_2"/>
     <addaction name="menuSelect"/>
    </widget>
@@ -429,6 +449,7 @@
      <addaction name="actionRevol"/>
      <addaction name="actionLoft"/>
      <addaction name="actionSweep"/>
+     <addaction name="actionGeoSplitter"/>
     </widget>
     <widget class="QMenu" name="menuSelect_2">
      <property name="title">
@@ -454,6 +475,15 @@
      <addaction name="actionDrawPolyline"/>
      <addaction name="actionDrawSpline"/>
     </widget>
+    <widget class="QMenu" name="menuGeometry_Edit">
+     <property name="title">
+      <string>Geometry Edit</string>
+     </property>
+     <addaction name="actionGeoSplitter"/>
+     <addaction name="actionFillHole"/>
+     <addaction name="actionRemoveSurface"/>
+     <addaction name="actionFillGap"/>
+    </widget>
     <addaction name="actionUndo"/>
     <addaction name="actionRedo"/>
     <addaction name="separator"/>
@@ -463,6 +493,9 @@
     <addaction name="separator"/>
     <addaction name="menuView_3"/>
     <addaction name="menuSelect_2"/>
+    <addaction name="menuGeometry_Edit"/>
+    <addaction name="actionMeasure_Distance"/>
+    <addaction name="actionCreateGeoComponent"/>
    </widget>
    <widget class="QMenu" name="menuPlugins">
     <property name="title">
@@ -480,6 +513,33 @@
    <addaction name="menuSettings"/>
    <addaction name="menuPlugins"/>
    <addaction name="menuHelp"/>
+  </widget>
+  <widget class="QToolBar" name="GeometryEditToolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionGeoSplitter"/>
+   <addaction name="actionFillHole"/>
+   <addaction name="actionRemoveSurface"/>
+   <addaction name="actionFillGap"/>
+  </widget>
+  <widget class="QToolBar" name="MeasureToolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionMeasure_Distance"/>
   </widget>
   <action name="actionNew">
    <property name="icon">
@@ -557,6 +617,9 @@
    </property>
   </action>
   <action name="actionChinese">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="icon">
     <iconset resource="../qrc/qianfan.qrc">
      <normaloff>:/QUI/icon/chinese_language.png</normaloff>:/QUI/icon/chinese_language.png</iconset>
@@ -569,6 +632,9 @@
    </property>
   </action>
   <action name="actionEnglish">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="icon">
     <iconset resource="../qrc/qianfan.qrc">
      <normaloff>:/QUI/icon/english_language.png</normaloff>:/QUI/icon/english_language.png</iconset>
@@ -589,7 +655,7 @@
     <string>Import Mesh</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+I</string>
+    <string>Ctrl+M</string>
    </property>
   </action>
   <action name="actionImportGeometry">
@@ -823,10 +889,16 @@
     <string>Export Mesh</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+E</string>
+    <string>Ctrl+Shift+M</string>
    </property>
   </action>
   <action name="actionUser_Manual">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
    <property name="icon">
     <iconset resource="../qrc/qianfan.qrc">
      <normaloff>:/QUI/icon/help.png</normaloff>:/QUI/icon/help.png</iconset>
@@ -919,18 +991,26 @@
    </property>
    <property name="icon">
     <iconset resource="../qrc/qianfan.qrc">
-     <normaloff>:/QUI/icon/createSet.png</normaloff>:/QUI/icon/createSet.png</iconset>
+     <normaloff>:/QUI/icon/meshComponent.png</normaloff>:/QUI/icon/meshComponent.png</iconset>
    </property>
    <property name="text">
     <string>Create Set</string>
    </property>
   </action>
   <action name="action2DPlot">
+   <property name="icon">
+    <iconset resource="../qrc/qianfan.qrc">
+     <normaloff>:/QUI/window/2dplot.png</normaloff>:/QUI/window/2dplot.png</iconset>
+   </property>
    <property name="text">
     <string>2D Plot</string>
    </property>
   </action>
   <action name="action3DGraph">
+   <property name="icon">
+    <iconset resource="../qrc/qianfan.qrc">
+     <normaloff>:/QUI/window/3dgraph.png</normaloff>:/QUI/window/3dgraph.png</iconset>
+   </property>
    <property name="text">
     <string>3D Graph</string>
    </property>
@@ -1008,11 +1088,19 @@
    </property>
   </action>
   <action name="actionStart_Page">
+   <property name="icon">
+    <iconset resource="../qrc/qianfan.qrc">
+     <normaloff>:/QUI/window/startpage.png</normaloff>:/QUI/window/startpage.png</iconset>
+   </property>
    <property name="text">
     <string>Start Page</string>
    </property>
   </action>
   <action name="actionPre_Window">
+   <property name="icon">
+    <iconset resource="../qrc/qianfan.qrc">
+     <normaloff>:/QUI/window/preWindow.png</normaloff>:/QUI/window/preWindow.png</iconset>
+   </property>
    <property name="text">
     <string>Pre Window</string>
    </property>
@@ -1133,6 +1221,9 @@
    </property>
    <property name="text">
     <string>ExportGeometry</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+G</string>
    </property>
   </action>
   <action name="actionCreaterCone">
@@ -1439,11 +1530,147 @@
    </property>
   </action>
   <action name="actionPluginManager">
+   <property name="icon">
+    <iconset resource="../qrc/qianfan.qrc">
+     <normaloff>:/QUI/icon/pluginManager.png</normaloff>:/QUI/icon/pluginManager.png</iconset>
+   </property>
    <property name="text">
     <string>Plugin Manager</string>
    </property>
    <property name="toolTip">
     <string>Plugin Manager</string>
+   </property>
+  </action>
+  <action name="actionUser_Guidance">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../qrc/qianfan.qrc">
+     <normaloff>:/QUI/icon/userguidance.png</normaloff>:/QUI/icon/userguidance.png</iconset>
+   </property>
+   <property name="text">
+    <string>User Guidance</string>
+   </property>
+  </action>
+  <action name="actionMeasure_Distance">
+   <property name="icon">
+    <iconset resource="../qrc/qianfan.qrc">
+     <normaloff>:/QUI/geometry/geoMeasure.png</normaloff>:/QUI/geometry/geoMeasure.png</iconset>
+   </property>
+   <property name="text">
+    <string>Measure Distance</string>
+   </property>
+  </action>
+  <action name="actionMeasure">
+   <property name="text">
+    <string>Measure</string>
+   </property>
+  </action>
+  <action name="actionGeoSplitter">
+   <property name="icon">
+    <iconset resource="../qrc/qianfan.qrc">
+     <normaloff>:/QUI/geometry/geoSSplit.png</normaloff>:/QUI/geometry/geoSSplit.png</iconset>
+   </property>
+   <property name="text">
+    <string>Split</string>
+   </property>
+  </action>
+  <action name="actionCreateGeoComponent">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../qrc/qianfan.qrc">
+     <normaloff>:/QUI/geometry/geoComponent.png</normaloff>:/QUI/geometry/geoComponent.png</iconset>
+   </property>
+   <property name="text">
+    <string>CreateGeoComponent</string>
+   </property>
+  </action>
+  <action name="actionFluidMesh">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../qrc/qianfan.qrc">
+     <normaloff>:/QUI/icon/meshFluid.png</normaloff>:/QUI/icon/meshFluid.png</iconset>
+   </property>
+   <property name="text">
+    <string>FluidMesh</string>
+   </property>
+  </action>
+  <action name="actionFilterMesh">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../qrc/qianfan.qrc">
+     <normaloff>:/QUI/icon/meshFilter.png</normaloff>:/QUI/icon/meshFilter.png</iconset>
+   </property>
+   <property name="text">
+    <string>FilterMesh</string>
+   </property>
+  </action>
+  <action name="actionFillHole">
+   <property name="icon">
+    <iconset resource="../qrc/qianfan.qrc">
+     <normaloff>:/QUI/geometry/geoFillHole.png</normaloff>:/QUI/geometry/geoFillHole.png</iconset>
+   </property>
+   <property name="text">
+    <string>FillHole</string>
+   </property>
+  </action>
+  <action name="actionRemoveSurface">
+   <property name="icon">
+    <iconset resource="../qrc/qianfan.qrc">
+     <normaloff>:/QUI/geometry/geoRemoveFace.png</normaloff>:/QUI/geometry/geoRemoveFace.png</iconset>
+   </property>
+   <property name="text">
+    <string>RemoveSurface</string>
+   </property>
+  </action>
+  <action name="actionFillGap">
+   <property name="icon">
+    <iconset resource="../qrc/qianfan.qrc">
+     <normaloff>:/QUI/geometry/geoFixSurface.png</normaloff>:/QUI/geometry/geoFixSurface.png</iconset>
+   </property>
+   <property name="text">
+    <string>FillGap</string>
+   </property>
+  </action>
+  <action name="actionVTKTranslation">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../qrc/qianfan.qrc">
+     <normaloff>:/QUI/icon/meshmodeling.png</normaloff>:/QUI/icon/meshmodeling.png</iconset>
+   </property>
+   <property name="text">
+    <string>Mesh Modeling</string>
+   </property>
+  </action>
+  <action name="actionNormal">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Normal</string>
+   </property>
+  </action>
+  <action name="actionRibbon">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Ribbon</string>
    </property>
   </action>
  </widget>

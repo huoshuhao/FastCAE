@@ -1,4 +1,4 @@
-#include "geometryDatum.h"
+ï»¿#include "geometryDatum.h"
 #include <QDomDocument>
 #include <QDomElement>
 #include <QCoreApplication>
@@ -27,7 +27,7 @@ namespace Geometry
 
 	QDomElement& GeometryDatum::writeToProjectFile(QDomDocument* doc, QDomElement* ele, bool isDiso /* = false */)
 	{
-		QDomElement element = doc->createElement("GeoDatum");  //´´½¨×Ó½Úµã
+		QDomElement element = doc->createElement("GeoDatum");  //åˆ›å»ºå­èŠ‚ç‚¹
 		QDomAttr idattr = doc->createAttribute("ID");
 		idattr.setValue(QString::number(_id));
 		element.setAttributeNode(idattr);
@@ -42,7 +42,7 @@ namespace Geometry
 		nameele.appendChild(nameText);
 		element.appendChild(nameele);
 
-		ele->appendChild(element);  //×Ó½Úµã¹ÒÔØ
+		ele->appendChild(element);  //å­èŠ‚ç‚¹æŒ‚è½½
 
 		if (isDiso)
 		{

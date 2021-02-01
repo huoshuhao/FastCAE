@@ -1,4 +1,4 @@
-#include "geometryParaSphere.h"
+ï»¿#include "geometryParaSphere.h"
 #include <QDomElement>
 #include <QDomDocument>
 #include <QDomAttr>
@@ -43,7 +43,7 @@ namespace Geometry
 
 	QDomElement& GeometryParaSphere::writeToProjectFile(QDomDocument* doc, QDomElement* parent)
 	{
-		QDomElement element = doc->createElement("Parameter");  //´´½¨×Ó½Úµã
+		QDomElement element = doc->createElement("Parameter");  //åˆ›å»ºå­èŠ‚ç‚¹
 		QDomAttr typeattr = doc->createAttribute("Type");
 		typeattr.setValue(this->typeToString());
 		element.setAttributeNode(typeattr);
@@ -73,9 +73,6 @@ namespace Geometry
 		_name = e->attribute("Name");
 		QDomNodeList radiusList = e->elementsByTagName("Radius");
 		_radius = radiusList.at(0).toElement().text().toDouble();
-
-		
-
 		QDomNodeList locList = e->elementsByTagName("Location");
 		if (locList.size() != 1) return;
 		QDomElement locele = locList.at(0).toElement();

@@ -1,4 +1,4 @@
-#include "GlobalConfigReader.h"
+﻿#include "GlobalConfigReader.h"
 #include "ConfigOptions.h"
 #include "GlobalConfig.h"
 #include "GeometryConfig.h"
@@ -12,17 +12,17 @@
 
 namespace ConfigOption
 {
-	GlobalConfigReader::GlobalConfigReader(QString filename, ConfigDataBase* data)
+	GlobalConfigReader::GlobalConfigReader(QString fileName, ConfigDataBase* data)
 	{
-		_file.setFileName(filename);
+		_file.setFileName(fileName);
 		_globalConfig = data->getGlobalConfig();
 		_geoConfig = data->getGeometryConfig();
 		_meshConfig = data->getMeshConfig();
 		_postConfig = data->getPostConfig();
-// 		_globalConfig = ConfigOption::getInstance()->getGlobalConfig();
-// 		_geoConfig = ConfigOption::getInstance()->getGeometryConfig();
-// 		_meshConfig = ConfigOption::getInstance()->getMeshConfig();
-// 		_postConfig = ConfigOption::getInstance()->getPostConfig();
+		// 		_globalConfig = ConfigOption::getInstance()->getGlobalConfig();
+		// 		_geoConfig = ConfigOption::getInstance()->getGeometryConfig();
+		// 		_meshConfig = ConfigOption::getInstance()->getMeshConfig();
+		// 		_postConfig = ConfigOption::getInstance()->getPostConfig();
 	}
 
 	GlobalConfigReader::~GlobalConfigReader()
@@ -36,7 +36,7 @@ namespace ConfigOption
 		_doc = new QDomDocument();
 		if (!_doc->setContent(&_file))
 		{
-		 	_file.close();
+			_file.close();
 			return false;
 		}
 
@@ -136,7 +136,13 @@ namespace ConfigOption
 			QString w = verele.text();
 			_globalConfig->SetUserManual(w);
 		}
-
+		// 		QDomNodeList useRibbons = e->elementsByTagName("UseRibbon");
+		// 		if (useRibbons.size() == 1)
+		// 		{
+		// 			QDomElement useRibbon = useRibbons.at(0).toElement();
+		// 			QString text = useRibbon.text();
+		// 			_globalConfig->setUseRibbon(text);
+		// 		}
 		return true;
 	}
 	bool GlobalConfigReader::readGeometry(QDomElement* e)
@@ -160,7 +166,7 @@ namespace ConfigOption
 
 		QDomNodeList fmodelList = e->elementsByTagName("FeatureModeling");
 		QDomElement fmodelele = fmodelList.at(0).toElement();
-	    on = false;
+		on = false;
 		son = fmodelele.attribute("Enable");
 		if (son.toLower() == "true") on = true;
 		_geoConfig->enableGeometryModeling(on);
@@ -171,6 +177,27 @@ namespace ConfigOption
 		son = fopele.attribute("Enable");
 		if (son.toLower() == "true") on = true;
 		_geoConfig->enableGeometryOperations(on);
+
+		QDomNodeList geditList = e->elementsByTagName("GeometryEdit");
+		QDomElement geditele = geditList.at(0).toElement();
+		on = false;
+		son = geditele.attribute("Enable");
+		if (son.toLower() == "true") on = true;
+		_geoConfig->enableGeometryEdit(on);
+
+		QDomNodeList csetList = e->elementsByTagName("CreateSet");
+		QDomElement csetele = csetList.at(0).toElement();
+		on = false;
+		son = csetele.attribute("Enable");
+		if (son.toLower() == "true") on = true;
+		_geoConfig->enableGeometryCreateSet(on);
+
+		QDomNodeList mdisList = e->elementsByTagName("MeasureDistance");
+		QDomElement mdisele = mdisList.at(0).toElement();
+		on = false;
+		son = mdisele.attribute("Enable");
+		if (son.toLower() == "true") on = true;
+		_geoConfig->enableMeasureDsitance(on);
 
 		return true;
 	}
@@ -194,26 +221,44 @@ namespace ConfigOption
 		nodeList = e->elementsByTagName("SurfaceMesh");
 		ele = nodeList.at(0).toElement();
 		text = ele.attribute("Enable");
-		if (text.toLower() == "true")
-			_meshConfig->enableSurfaceMesh(true);
+		if (text.toLower() != "true")
+			_meshConfig->enableSurfaceMesh(false);
 
 		nodeList = e->elementsByTagName("SolidMesh");
 		ele = nodeList.at(0).toElement();
 		text = ele.attribute("Enable");
-		if (text.toLower() == "true")
-			_meshConfig->enableSolidMesh(true);
+		if (text.toLower() != "true")
+			_meshConfig->enableSolidMesh(false);
 
 		nodeList = e->elementsByTagName("Component");
 		ele = nodeList.at(0).toElement();
 		text = ele.attribute("Enable");
-		if (text.toLower() == "true")
-			_meshConfig->enableComponent(true);
+		if (text.toLower() != "true")
+			_meshConfig->enableComponent(false);
 
 		nodeList = e->elementsByTagName("CheckMesh");
 		ele = nodeList.at(0).toElement();
 		text = ele.attribute("Enable");
-		if (text.toLower() == "true")
-			_meshConfig->setCheckMesh(true);
+		if (text.toLower() != "true")
+			_meshConfig->setCheckMesh(false);
+
+		nodeList = e->elementsByTagName("FluidMesh");
+		ele = nodeList.at(0).toElement();
+		text = ele.attribute("Enable");
+		if (text.toLower() != "true")
+			_meshConfig->enableFluidMesh(false);
+
+		nodeList = e->elementsByTagName("FilterMesh");
+		ele = nodeList.at(0).toElement();
+		text = ele.attribute("Enable");
+		if (text.toLower() != "true")
+			_meshConfig->enableFilterMesh(false);
+
+		nodeList = e->elementsByTagName("MeshModeling");
+		ele = nodeList.at(0).toElement();
+		text = ele.attribute("Enable");
+		if (text.toLower() != "true")
+			_meshConfig->enableMeshModeling(false);
 
 		return true;
 	}

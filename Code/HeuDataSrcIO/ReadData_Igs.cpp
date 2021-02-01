@@ -1,4 +1,4 @@
-#include "ReadData_Igs.h"
+﻿#include "ReadData_Igs.h"
 #include <IVtkOCC_Shape.hxx>
 #include <IVtkTools_ShapeDataSource.hxx>
 #include <IVtkTools_DisplayModeFilter.hxx>
@@ -62,7 +62,7 @@ ReadData_Igs::~ReadData_Igs()
 bool ReadData_Igs::Read(QString tep_filename)
 {
 	fileName = tep_filename;
-	//qDebug() << "read filename=  " << tep_filename << endl;
+	//qDebug() << "read fileName=  " << tep_filename << endl;
 	char * fileNamechar;
 	QByteArray ba = QStringToChar(fileName);
 	fileNamechar = ba.data();

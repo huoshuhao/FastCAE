@@ -1,4 +1,4 @@
-#ifndef _PLUGINMANAGERDIALOG_H_
+﻿#ifndef _PLUGINMANAGERDIALOG_H_
 #define _PLUGINMANAGERDIALOG_H_
 
 #include <QDialog>

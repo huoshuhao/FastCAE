@@ -1,4 +1,4 @@
-#ifndef EDITOR3DFILEVALUE_H
+﻿#ifndef EDITOR3DFILEVALUE_H
 #define EDITOR3DFILEVALUE_H
 
 #include <QDialog>

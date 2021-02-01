@@ -1,4 +1,4 @@
-#ifndef _DOCKWIDGETBASE_H_
+﻿#ifndef _DOCKWIDGETBASE_H_
 #define _DOCKWIDGETBASE_H_
 
 #include "moduleBaseAPI.h"

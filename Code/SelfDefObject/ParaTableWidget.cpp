@@ -1,4 +1,4 @@
-#include "SelfDefObject/ParaTableWidget.h"
+﻿#include "SelfDefObject/ParaTableWidget.h"
 #include "mainWindow/mainWindow.h"
 #include "LineEditDialog.h"
 #include <QMenu>

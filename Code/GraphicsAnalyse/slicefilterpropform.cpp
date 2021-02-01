@@ -1,4 +1,4 @@
-#include "slicefilterpropform.h"
+﻿#include "slicefilterpropform.h"
 #include "ui_slicefilterpropform.h"
 sliceFilterPropForm::sliceFilterPropForm(PipelineObjPropWidget *parent) :
 QWidget(parent), _parentWin(parent),

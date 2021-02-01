@@ -1,4 +1,4 @@
-#include "signalhandlerPy.h"
+﻿#include "signalhandlerPy.h"
 #include "ui_graph_mainwindow.h"
 #include "graph_mainwindow.h"
 #include <QTreeWidgetItem>

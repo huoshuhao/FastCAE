@@ -1,4 +1,4 @@
-#include "curve_aboutdialog.h"
+﻿#include "curve_aboutdialog.h"
 #include "ui_curve_aboutdialog.h"
 
 curve_aboutDialog::curve_aboutDialog(QWidget *parent) :

@@ -1,10 +1,11 @@
-#include "CgnsBCZone.h"
+﻿#include "CgnsBCZone.h"
 #include "meshSingleton.h"
 #include "meshKernal.h"
 #include <vtkDataSet.h>
 #include <vtkStructuredGrid.h>
 #include <QDomElement>
 #include <QDomAttr>
+#include <QDataStream>
 #include <QDebug>
 
 namespace MeshData

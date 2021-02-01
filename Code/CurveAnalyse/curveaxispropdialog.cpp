@@ -1,4 +1,4 @@
-#include "curveaxispropdialog.h"
+﻿#include "curveaxispropdialog.h"
 #include "ui_curveaxispropdialog.h"
 
 curveAxisPropDialog::curveAxisPropDialog(QWidget *parent) :

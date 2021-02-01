@@ -1,4 +1,4 @@
-#ifndef SKETCHCREATER_H_
+﻿#ifndef SKETCHCREATER_H_
 #define SKETCHCREATER_H_
 
 #include "geometryCommandAPI.h"

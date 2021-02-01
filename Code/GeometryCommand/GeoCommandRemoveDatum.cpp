@@ -1,4 +1,4 @@
-#include "GeoCommandRemoveDatum.h"
+﻿#include "GeoCommandRemoveDatum.h"
 #include "geometry/geometryData.h"
 #include "geometry/geometryDatum.h"
 #include <QDebug>

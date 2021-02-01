@@ -1,4 +1,4 @@
-/*读取模型树的Config*/
+﻿/*读取模型树的Config*/
 
 #ifndef TREECONFIGREADER_H
 #define TREECONFIGREADER_H
@@ -19,7 +19,7 @@ namespace ConfigOption
 	class CONFIGOPTIONSAPI TreeConfigReader /*: public ModuleBase::IOBase*/
 	{
 	public:
-		TreeConfigReader(const QString &filename, ProjectTreeConfig* treeconfig);
+		TreeConfigReader(const QString &fileName, ProjectTreeConfig* treeconfig);
 		~TreeConfigReader();
 		bool read();
 

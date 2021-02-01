@@ -1,4 +1,4 @@
-#include "GeoCommandCreateFillet.h"
+﻿#include "GeoCommandCreateFillet.h"
 #include "geometry/geometrySet.h"
 #include "geometry/geometryData.h"
 #include "geometry/geometryParaFillet.h"

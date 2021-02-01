@@ -1,4 +1,4 @@
-#ifndef _PLUGINMANAGERAPI_H__
+﻿#ifndef _PLUGINMANAGERAPI_H__
 #define _PLUGINMANAGERAPI_H__
 
 #include <QtCore/QtGlobal>

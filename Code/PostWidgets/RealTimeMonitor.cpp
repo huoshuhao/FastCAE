@@ -1,4 +1,4 @@
-#include "RealTimeMonitor.h"
+﻿#include "RealTimeMonitor.h"
 #include <QTimer>
 #include <QFileInfo>
 #include <QDebug>

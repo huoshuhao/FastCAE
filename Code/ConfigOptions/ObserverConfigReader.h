@@ -1,4 +1,4 @@
-#ifndef _OBSERVERCONFIGREADER_H_
+﻿#ifndef _OBSERVERCONFIGREADER_H_
 #define _OBSERVERCONFIGREADER_H_
 
 #include <QString>

@@ -1,4 +1,4 @@
-#ifndef _PROJECTTREEFACTORY_H_
+﻿#ifndef _PROJECTTREEFACTORY_H_
 #define _PROJECTTREEFACTORY_H_
 
 #include "mainWidgetsAPI.h"

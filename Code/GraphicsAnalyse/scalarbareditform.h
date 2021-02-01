@@ -1,4 +1,4 @@
-#ifndef SCALARBAREDITFORM_H
+﻿#ifndef SCALARBAREDITFORM_H
 #define SCALARBAREDITFORM_H
 #include <QWidget>
 #include "PipelineObject.h"

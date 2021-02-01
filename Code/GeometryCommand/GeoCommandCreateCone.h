@@ -1,4 +1,4 @@
-#ifndef GEOCOMMANDCREATECONE_H_
+﻿#ifndef GEOCOMMANDCREATECONE_H_
 #define GEOCOMMANDCREATECONE_H_
 
 #include "geometryCommandAPI.h"

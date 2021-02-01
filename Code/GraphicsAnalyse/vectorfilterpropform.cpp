@@ -1,4 +1,4 @@
-#include "vectorfilterpropform.h"
+﻿#include "vectorfilterpropform.h"
 #include "ui_vectorfilterpropform.h"
 vectorFilterPropForm::vectorFilterPropForm(PipelineObjPropWidget *parent) :
 QWidget(parent), _parentWin(parent),

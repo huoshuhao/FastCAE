@@ -1,4 +1,4 @@
-#ifndef ACTORMOVEINTERACTORSTYLE_H
+﻿#ifndef ACTORMOVEINTERACTORSTYLE_H
 #define ACTORMOVEINTERACTORSTYLE_H
 #include "qobject.h"
 #include "graphicsanalyse_global.h"

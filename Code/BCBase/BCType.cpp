@@ -1,4 +1,4 @@
-#include "BCType.h"
+﻿#include "BCType.h"
 
 namespace BCBase
 {
@@ -60,7 +60,7 @@ namespace BCBase
 		else if (s == "Symmetry") t = Symmetry;
 		else if (s == "Wall") t = Wall;
 		else if (s == "UserDefine") t = UserDef;
-		
+		else t = UserDef;
 		return t;
 	}
 

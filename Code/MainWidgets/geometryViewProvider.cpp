@@ -1,4 +1,4 @@
-#include "geometryViewProvider.h"
+﻿#include "geometryViewProvider.h"
 #include "mainWindow/mainWindow.h"
 #include "MainWidgets/preWindow.h"
 #include "geometry/geometryData.h"
@@ -13,6 +13,20 @@
 #include <vtkPolyDataMapper.h>
 #include <vtkRenderer.h>
 #include <vtkProperty.h>
+#include <vtkCleanPolyData.h>
+#include <vtkAppendPolyData.h>
+#include <vtkGenericCell.h>
+#include <vtkPolyLine.h>
+#include <vtkPolyVertex.h>
+#include <vtkPolygon.h>
+#include <vtkCellArray.h>
+#include <vtkLine.h>
+#include <vtkVertex.h>
+#include <vtkCellData.h>
+#include <vtkFloatArray.h>
+#include <vtkPlane.h>
+#include <vtkMath.h>
+#include <vtkSelectEnclosedPoints.h>
 #include <TopoDS.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopoDS_Iterator.hxx>
@@ -21,63 +35,317 @@
 #include <IVtkTools_DisplayModeFilter.hxx>
 #include <vtkSmoothPolyDataFilter.h>
 #include <vtkPolyDataNormals.h>
+#include <vtkIdTypeArray.h>
+#include <vtkRemoveDuplicatePolys.h>
+#include <BRepAdaptor_Surface.hxx>
+#include <IVtkOCC_ShapeMesher.hxx>
+#include <vtkTriangle.h>
 #include <QDebug>
 #include <TopExp.hxx>
+#include <QMenu>
+#include "geometryViewData.h"
+#include "geometryViewObject.h"
 
 
 namespace MainWidget
 {
-	GeometryViewProvider::GeometryViewProvider(GUI::MainWindow* mainwindow, PreWindow* renderWin):
+	GeometryViewProvider::GeometryViewProvider(GUI::MainWindow* mainwindow, PreWindow* renderWin) :
 		_mainWindow(mainwindow), _preWindow(renderWin)
 	{
 		_geoData = Geometry::GeometryData::getInstance();
-		connect(_preWindow, SIGNAL(showGeoSet(Geometry::GeometrySet*)), this, SLOT(showGeoSet(Geometry::GeometrySet*)));
+		connect(_preWindow, SIGNAL(showGeoSet(Geometry::GeometrySet*, bool)), this, SLOT(showGeoSet(Geometry::GeometrySet*, bool)));
 		connect(_preWindow, SIGNAL(showDatum(Geometry::GeometryDatum*)), this, SLOT(showDatum(Geometry::GeometryDatum*)));
 		connect(_preWindow, SIGNAL(removeGemoActors(Geometry::GeometrySet*)), this, SLOT(removeActors(Geometry::GeometrySet*)));
 		connect(_preWindow, SIGNAL(removeGeoDatumActors(Geometry::GeometryDatum*)), this, SLOT(removeDatumActors(Geometry::GeometryDatum*)));
+		connect(_preWindow, SIGNAL(selectGeometry(bool)), this, SLOT(selectGeometry(bool)));
+		connect(_preWindow, SIGNAL(preSelectGeometry(vtkActor*, int)), this, SLOT(preSelectGeometry(vtkActor*, int)));
+		connect(_preWindow, SIGNAL(setGeoSelectMode(int)), this, SLOT(setGeoSelectMode(int)));
+		//
 		connect(_mainWindow, SIGNAL(selectModelChangedSig(int)), this, SLOT(setGeoSelectMode(int)));
-		connect(_preWindow, SIGNAL(selectGeometry(vtkActor*,bool)), this, SLOT(selectGeometry(vtkActor*,bool)));
-		connect(_mainWindow, SIGNAL(highLightGeometrySetSig(Geometry::GeometrySet*, bool)), this, SLOT(highLightGeoset(Geometry::GeometrySet*, bool)));
-		connect(_mainWindow, SIGNAL(highLightGeometryPointSig(Geometry::GeometrySet*, int, QList<vtkActor*>*)), this, SLOT(highLightGeoPoint(Geometry::GeometrySet*, int, QList<vtkActor*>*)));
-		connect(_mainWindow, SIGNAL(highLightGeometryEdgeSig(Geometry::GeometrySet*, int, QList<vtkActor*>*)), this, SLOT(highLightGeoEdge(Geometry::GeometrySet*, int, QList<vtkActor*>*)));
-		connect(_mainWindow, SIGNAL(highLightGeometryFaceSig(Geometry::GeometrySet*, int, QList<vtkActor*>*)), this, SLOT(highLightGeoFace(Geometry::GeometrySet*, int, QList<vtkActor*>*)));
-		connect(_mainWindow, SIGNAL(selectGeometryDisplay(bool, bool, bool)), this, SLOT(setGeometryDisplay(bool,bool,bool)));
-// 		connect(_mainWindow, SIGNAL(selectGeoActiveSig(bool)), this, SLOT(activeSelectGeo(bool)));
-// 		
-// 		connect(_mainWindow, SIGNAL(selectGeoCloseSig(int)), this, SLOT(closeSelectGeo(int)));
-
-		auto gp = Setting::BusAPI::instance()->getGraphOption();
-		_showvertex = gp->isShowGeoPoint();
-		_showedge = gp->isShowGeoEdge();
-		_showface = gp->isShowGeoSurface();
-		//connet(_mainWindow, SIGNAL(RestoreGeoSig(),this,SLOT(RestoreGeo))
-//		init();
+		connect(_mainWindow, SIGNAL(selectGeometryDisplay(bool, bool, bool)), this, SLOT(setGeometryDisplay(bool, bool, bool)));
+		//新增
+		connect(this, SIGNAL(geoShapeSelected(Geometry::GeometrySet*, int)), _preWindow, SIGNAL(geoShapeSelected(Geometry::GeometrySet*, int)));
+		connect(_preWindow, SIGNAL(highLightGeometrySet(Geometry::GeometrySet*, bool)), this, SLOT(highLightGeometrySet(Geometry::GeometrySet*, bool)));
+		connect(_preWindow, SIGNAL(highLightGeometryPoint(Geometry::GeometrySet*, int, bool)), this, SLOT(highLightGeometryPoint(Geometry::GeometrySet*, int, bool)));
+		connect(_preWindow, SIGNAL(highLightGeometryEdge(Geometry::GeometrySet*, int, bool)), this, SLOT(highLightGeometryEdge(Geometry::GeometrySet*, int, bool)));
+		connect(_preWindow, SIGNAL(highLightGeometryFace(Geometry::GeometrySet*, int, bool)), this, SLOT(highLightGeometryFace(Geometry::GeometrySet*, int, bool)));
+		connect(_preWindow, SIGNAL(highLightGeometrySolid(Geometry::GeometrySet*, int, bool)), this, SLOT(highLightGeometrySolid(Geometry::GeometrySet*, int, bool)));
+		connect(_preWindow, SIGNAL(clearGeometryHighLight()), this, SLOT(clearAllHighLight()));
+		connect(_preWindow, SIGNAL(clearAllHighLight()), this, SLOT(clearAllHighLight()));
+		_viewData = new GeometryViewData;
+		this->init();
 	}
 
 	GeometryViewProvider::~GeometryViewProvider()
 	{
-		int c = _vertexActors.size();
-		for (int i = 0; i < c; ++i)
+		if (_viewData != nullptr)
+			delete _viewData;
+	}
+
+	void GeometryViewProvider::updateGeoActors()
+	{
+
+	}
+
+	void GeometryViewProvider::updateGraphOption()
+	{
+		_viewData->updateGraphOption();
+		QList<GeoViewObj> vieobjs = _geoViewHash.values();
+		int trans = Setting::BusAPI::instance()->getGraphOption()->getTransparency();
+		float ps = Setting::BusAPI::instance()->getGraphOption()->getGeoPointSize();
+		float cw = Setting::BusAPI::instance()->getGraphOption()->getGeoCurveWidth();
+		for (GeoViewObj object : vieobjs)
 		{
-			vtkActor* ac = _vertexActors.at(i);
-			_preWindow->RemoveActor(ac);
+			vtkActor* actor = nullptr;
+			actor = object._faceObj.first;
+			if (actor != nullptr) actor->GetProperty()->SetOpacity(1.0 - trans / 100.00);
+			actor = object._edgeObj.first;
+			if (actor != nullptr) actor->GetProperty()->SetLineWidth(cw);
+			actor = object._pointObj.first;
+			if (actor != nullptr) actor->GetProperty()->SetLineWidth(ps);
 		}
-		c = _edgeActors.size();
-		for (int i = 0; i < c; ++i)
+		_preWindow->reRender();
+	}
+
+	void GeometryViewProvider::updateDiaplayStates(Geometry::GeometrySet* s, bool visibility)
+	{
+		if (!_geoViewHash.contains(s)) return;
+		GeoViewObj setviewObj = _geoViewHash.value(s);
+		vtkActor* ac = nullptr;
+		ac = setviewObj._faceObj.first;
+		if (ac != nullptr) ac->SetVisibility(visibility);
+		ac = setviewObj._edgeObj.first;
+		if (ac != nullptr) ac->SetVisibility(visibility);
+		ac = setviewObj._pointObj.first;
+		if (ac != nullptr) ac->SetVisibility(visibility);
+		_preWindow->reRender();
+	}
+
+	QMultiHash<Geometry::GeometrySet*, int> GeometryViewProvider::getGeoSelectItems()
+	{
+		ModuleBase::SelectModel mod = _preWindow->getSelectModel();
+		QList<GeometryViewObject*> views = _viewData->getViewObjectByStates((int)mod, (int)GeometryViewObject::HighLigh);
+		QMultiHash<Geometry::GeometrySet*, int> setHash{};
+		for (auto vs : views)
 		{
-			vtkActor* ac = _edgeActors.at(i);
-			_preWindow->RemoveActor(ac);
+			auto set = vs->getGeometySet();
+			int index = vs->getIndex();
+			setHash.insert(set, index);
 		}
-		c = _faceActors.size();
-		for (int i = 0; i < c; ++i)
+		return setHash;
+	}
+
+	void GeometryViewProvider::showGeoSet(Geometry::GeometrySet* set, bool render /*= true*/)
+	{
+		QList<vtkPolyData*> viewPolys = _viewData->transferToPoly(set);
+		vtkPolyData* facePoly = viewPolys.at(0);
+		vtkPolyData* edgePoly = viewPolys.at(1);
+		vtkPolyData* pointPoly = viewPolys.at(2);
+		GeoViewObj viewObj;
+		if (facePoly != nullptr)
 		{
-			vtkActor* ac = _faceActors.at(i);
-			_preWindow->RemoveActor(ac);
+			vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
+			vtkSmartPointer<vtkPolyDataMapper> mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+			mapper->SetInputData(facePoly);
+			actor->SetMapper(mapper);
+			bool vis = set->isVisible();
+			bool show = Setting::BusAPI::instance()->getGraphOption()->isShowGeoSurface();
+			actor->SetVisibility(show && vis);
+			actor->SetPickable(false);
+			actor->GetProperty()->SetRepresentationToSurface();
+			_preWindow->AppendActor(actor, ModuleBase::D3, false);
+			viewObj._faceObj = QPair<vtkActor*, vtkPolyData*>(actor, facePoly);
 		}
-		_faceActors.clear();
-		_edgeActors.clear();
-		_vertexActors.clear();
-		_setActors.clear();
+		if (edgePoly != nullptr)
+		{
+			vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
+			vtkSmartPointer<vtkPolyDataMapper> mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+			mapper->SetInputData(edgePoly);
+			actor->SetMapper(mapper);
+			bool vis = set->isVisible();
+			bool show = Setting::BusAPI::instance()->getGraphOption()->isShowGeoEdge();
+			actor->SetVisibility(show && vis);
+			actor->SetPickable(false);
+			actor->GetProperty()->SetRepresentationToWireframe();
+			//			actor->GetProperty()->EdgeVisibilityOn();
+			float width = Setting::BusAPI::instance()->getGraphOption()->getGeoCurveWidth();
+			actor->GetProperty()->SetLineWidth(width);
+			_preWindow->AppendActor(actor, ModuleBase::D3, false);
+			viewObj._edgeObj = QPair<vtkActor*, vtkPolyData*>(actor, edgePoly);
+		}
+		if (pointPoly != nullptr)
+		{
+			vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
+			vtkSmartPointer<vtkPolyDataMapper> mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+			float size = Setting::BusAPI::instance()->getGraphOption()->getGeoPointSize();
+			mapper->SetInputData(pointPoly);
+			actor->SetMapper(mapper);
+			bool vis = set->isVisible();
+			bool show = Setting::BusAPI::instance()->getGraphOption()->isShowGeoPoint();
+			actor->SetVisibility(show && vis);
+			actor->SetPickable(false);
+			actor->GetProperty()->SetRepresentationToPoints();
+			actor->GetProperty()->SetPointSize(size);
+			_preWindow->AppendActor(actor, ModuleBase::D3, false);
+			viewObj._pointObj = QPair<vtkActor*, vtkPolyData*>(actor, pointPoly);
+		}
+		_geoViewHash.insert(set, viewObj);
+		if (render)
+			_preWindow->resetCamera();
+	}
+
+	void GeometryViewProvider::showDatum(Geometry::GeometryDatum* datm)
+	{
+
+	}
+
+	void GeometryViewProvider::removeActors(Geometry::GeometrySet* set)
+	{
+		if (!_geoViewHash.contains(set)) return;
+		GeoViewObj views = _geoViewHash.value(set);
+		_geoViewHash.remove(set);
+		vtkActor* ac = views._faceObj.first;
+		_preWindow->RemoveActor(ac);
+		ac = views._edgeObj.first;
+		_preWindow->RemoveActor(ac);
+		ac = views._pointObj.first;
+		_preWindow->RemoveActor(ac);
+		_preWindow->reRender();
+		_viewData->removeViewObjs(set);
+	}
+
+	void GeometryViewProvider::setGeometryDisplay(bool v, bool c, bool f)
+	{
+		QList<Geometry::GeometrySet*> setList = _geoViewHash.keys();
+		for (auto set : setList)
+		{
+			bool sv = set->isVisible();
+			GeoViewObj viewObj = _geoViewHash.value(set);
+			vtkActor* ac = nullptr;
+			ac = viewObj._faceObj.first; if (ac != nullptr)  ac->SetVisibility(f && sv);
+			ac = viewObj._edgeObj.first; if (ac != nullptr)  ac->SetVisibility(c && sv);
+			ac = viewObj._pointObj.first; if (ac != nullptr)  ac->SetVisibility(v && sv);
+		}
+		_preWindow->reRender();
+	}
+
+	void GeometryViewProvider::setGeoSelectMode(int m)
+	{
+		_viewData->updateGraphOption();
+		ModuleBase::SelectModel selectType = (ModuleBase::SelectModel)m;
+		QList<GeoViewObj> viewObjs = _geoViewHash.values();
+		vtkActor* actor = nullptr;
+		for (GeoViewObj vobj : viewObjs)
+		{
+			actor = vobj._faceObj.first; if (actor != nullptr) actor->SetPickable(false);
+			actor = vobj._edgeObj.first; if (actor != nullptr) actor->SetPickable(false);
+			actor = vobj._pointObj.first; if (actor != nullptr) actor->SetPickable(false);
+			switch (selectType)
+			{
+			case ModuleBase::GeometryBody:
+			case ModuleBase::GeometrySurface:
+			case ModuleBase::GeometryWinBody:
+			case ModuleBase::GeometryWinSurface:
+				actor = vobj._faceObj.first; if (actor != nullptr) actor->SetPickable(true); break;
+			case ModuleBase::GeometryWinCurve:
+			case ModuleBase::GeometryCurve:
+				actor = vobj._edgeObj.first; if (actor != nullptr) actor->SetPickable(true); break;
+			case ModuleBase::GeometryWinPoint:
+			case ModuleBase::GeometryPoint:
+				actor = vobj._pointObj.first; if (actor != nullptr) actor->SetPickable(true); break;
+			default: break;
+			}
+		}
+	}
+
+	void GeometryViewProvider::selectGeometry(bool ctrlpress)
+	{
+		auto p = _viewData->getPreHighLightObj();
+		if (p == nullptr)return;
+		ModuleBase::SelectModel sm = _preWindow->getSelectModel();
+		if ((int)sm >= (int)ModuleBase::GeometryWinBody && (int)sm <= (int)ModuleBase::GeometryWinPoint)
+		{
+			if (!ctrlpress) updateGraphOption();
+			p->highLight();
+			_viewData->preHighLight(nullptr);
+		}
+		else
+		{
+			auto set = p->getGeometySet();
+			int index = p->getIndex();
+			_viewData->preHighLight(nullptr);
+			emit geoShapeSelected(set, index);
+		}
+	}
+
+	void GeometryViewProvider::preSelectGeometry(vtkActor* ac, int index)
+	{
+		if (ac == nullptr || index < 0)
+		{
+			_viewData->preHighLight(nullptr);
+			_preWindow->reRender();
+			return;
+		}
+
+		ModuleBase::SelectModel selectMod = _preWindow->getSelectModel();
+		vtkDataSet* dataSet = ac->GetMapper()->GetInputAsDataSet();
+		vtkPolyData *poly = vtkPolyData::SafeDownCast(dataSet);
+		if (poly == nullptr) return;
+		GeometryViewObject *vobj = nullptr;
+		switch (selectMod)
+		{
+		case ModuleBase::GeometryWinBody:
+		case ModuleBase::GeometryBody:
+			vobj = _viewData->getSolidViewObj(poly, index); break;
+		case ModuleBase::GeometryWinSurface:
+		case ModuleBase::GeometrySurface:
+			vobj = _viewData->getFaceViewObj(poly, index); break;
+		case ModuleBase::GeometryWinCurve:
+		case ModuleBase::GeometryCurve:
+			vobj = _viewData->getEdgeViewObj(poly, index); break;
+		case ModuleBase::GeometryWinPoint:
+		case ModuleBase::GeometryPoint:
+			vobj = _viewData->getPointViewObj(poly, index); break;
+		default: break;
+		}
+		if (vobj == nullptr)  return;
+		_viewData->preHighLight(vobj);
+		_preWindow->reRender();
+	}
+
+	void GeometryViewProvider::clearAllHighLight()
+	{
+		_viewData->updateGraphOption();
+	}
+
+	void GeometryViewProvider::highLightGeometrySet(Geometry::GeometrySet* s, bool on)
+	{
+		_viewData->highLight(s, on);
+		_preWindow->reRender();
+	}
+
+	void GeometryViewProvider::highLightGeometryFace(Geometry::GeometrySet* s, int id, bool on)
+	{
+		_viewData->highLightFace(s, id, on);
+		_preWindow->reRender();
+	}
+
+	void GeometryViewProvider::highLightGeometryEdge(Geometry::GeometrySet* s, int id, bool on)
+	{
+		_viewData->highLightEdge(s, id, on);
+		_preWindow->reRender();
+	}
+
+	void GeometryViewProvider::highLightGeometryPoint(Geometry::GeometrySet* s, int id, bool on)
+	{
+		_viewData->highLightPoint(s, id, on);
+		_preWindow->reRender();
+	}
+
+	void GeometryViewProvider::highLightGeometrySolid(Geometry::GeometrySet* s, int id, bool on)
+	{
+		_viewData->highLightSolid(s, id, on);
+		_preWindow->reRender();
 	}
 
 	void GeometryViewProvider::init()
@@ -88,9 +356,9 @@ namespace MainWidget
 			Geometry::GeometrySet* set = _geoData->getGeometrySetAt(i);
 			TopoDS_Shape* shape = set->getShape();
 			if (shape == nullptr) continue;
-			showShape(*shape, set);
-
+			showGeoSet(set, false);
 		}
+		_preWindow->resetCamera();
 		QList<Geometry::GeometryDatum*> dl = _geoData->getGeometryDatum();
 		for (auto da : dl)
 		{
@@ -98,649 +366,6 @@ namespace MainWidget
 			if (shape == nullptr) continue;
 			showDatum(da);
 		}
-	}
-
-	void GeometryViewProvider::showShape(TopoDS_Shape& shape, Geometry::GeometrySet* set)
-	{
-		showVertex(set);
-		showEdge(set);
-		showFace(set);
-		_preWindow->resetCamera();
-		
-	}
-
-	void GeometryViewProvider::showVertex(Geometry::GeometrySet* set)
-	{
-		TopoDS_Shape* shape = set->getShape();
-		QColor color = Setting::BusAPI::instance()->getGraphOption()->getGeometryPointColor();
-		float size = Setting::BusAPI::instance()->getGraphOption()->getGeoCurveWidth();
-		
-		TopExp_Explorer ptExp(*shape, TopAbs_VERTEX);
-		QList<Handle(TopoDS_TShape)> tshapelist;
-		for (int index= 0; ptExp.More(); ptExp.Next(), ++index)
-		{
-			TopoDS_Shape s = ptExp.Current();
-			Handle(TopoDS_TShape) ts = s.TShape();
-			if (tshapelist.contains(ts)) continue;
-			tshapelist.append(ts);
-
-			IVtkOCC_Shape::Handle aShapeImpl = new IVtkOCC_Shape(s);
-			vtkSmartPointer<IVtkTools_ShapeDataSource> DS = vtkSmartPointer<IVtkTools_ShapeDataSource>::New();
-			DS->SetShape(aShapeImpl);
-
-			vtkSmartPointer<vtkPolyDataMapper> Mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
-			Mapper->SetInputConnection(DS->GetOutputPort());
-			vtkSmartPointer<vtkActor> Actor = vtkSmartPointer<vtkActor>::New();
-			Actor->SetMapper(Mapper);
-
-			Actor->GetProperty()->SetColor(color.redF(), color.greenF(), color.blueF());
-			Actor->GetProperty()->SetPointSize(size);
-			Actor->GetProperty()->SetRepresentationToPoints();
-			_vertexActors.append(Actor);
-			_actotShapeHash.insert(Actor, index);
-			_setActors.insert(set, Actor);
-			bool v = set->isVisible();
-			Actor->SetVisibility(v);
-			if (v)
-				Actor->SetVisibility(_showvertex);
-			Actor->SetPickable(false);
-
-			_preWindow->AppendActor(Actor, ModuleBase::D3, false);
-
-		}
-	}
-	void GeometryViewProvider::showEdge(Geometry::GeometrySet* set)
-	{
-		TopoDS_Shape* shape = set->getShape();
-		QColor color = Setting::BusAPI::instance()->getGraphOption()->getGeometryCurveColor();
-		float width = Setting::BusAPI::instance()->getGraphOption()->getGeoCurveWidth();
-
-		TopExp_Explorer edgeExp(*shape, TopAbs_EDGE);
-		QList<Handle(TopoDS_TShape)> tshapelist;
-		for (int index =0 ; edgeExp.More(); edgeExp.Next(), ++index)
-		{
-			TopoDS_Shape s = edgeExp.Current();
-
-			Handle(TopoDS_TShape) ts = s.TShape();
-			if (tshapelist.contains(ts)) continue;
-			tshapelist.append(ts);
-
-			IVtkOCC_Shape::Handle aShapeImpl = new IVtkOCC_Shape(s);
-			vtkSmartPointer<IVtkTools_ShapeDataSource> DS = vtkSmartPointer<IVtkTools_ShapeDataSource>::New();
-			DS->SetShape(aShapeImpl);
-
-			vtkSmartPointer<vtkPolyDataMapper> Mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
-			Mapper->SetInputConnection(DS->GetOutputPort());
-			vtkSmartPointer<vtkActor> Actor = vtkSmartPointer<vtkActor>::New();
-			Actor->SetMapper(Mapper);
-
-			Actor->GetProperty()->SetColor(color.redF(), color.greenF(), color.blueF());
-			Actor->GetProperty()->SetLineWidth(width);
-			Actor->GetProperty()->SetRepresentationToWireframe();
-			_edgeActors.append(Actor);
-			_actotShapeHash.insert(Actor,index);
-			_setActors.insert(set, Actor);
-		
-			bool v = set->isVisible();
-			Actor->SetVisibility(v);
-			if (v)
-				Actor->SetVisibility(_showedge);
-			Actor->SetPickable(false);
-			_preWindow->AppendActor(Actor, ModuleBase::D3, false);
-		}
-
-	}
-
-	void GeometryViewProvider::showFace(Geometry::GeometrySet* set)
-	{
-		QColor color = Setting::BusAPI::instance()->getGraphOption()->getGeometrySurfaceColor();
-		int trans = Setting::BusAPI::instance()->getGraphOption()->getTransparency();
-		TopoDS_Shape* shape = set->getShape();
-
-		TopExp_Explorer faceExp(*shape, TopAbs_FACE);
-		QList<Handle(TopoDS_TShape)> tshapelist;
-		for (int index =0 ; faceExp.More(); faceExp.Next(), ++index)
-		{
-			TopoDS_Shape s = faceExp.Current();
-
-			IVtkOCC_Shape::Handle aShapeImpl = new IVtkOCC_Shape(s);
-			vtkSmartPointer<IVtkTools_ShapeDataSource> DS = vtkSmartPointer<IVtkTools_ShapeDataSource>::New();
-			DS->SetShape(aShapeImpl);
-
-			vtkSmartPointer<IVtkTools_DisplayModeFilter> DMFilter = vtkSmartPointer<IVtkTools_DisplayModeFilter>::New();
-			DMFilter->AddInputConnection(DS->GetOutputPort());
-			DMFilter->SetDisplayMode(DM_Shading);
-
-			vtkSmartPointer<vtkPolyDataNormals> normals = vtkSmartPointer<vtkPolyDataNormals>::New();
-			normals->SetInputConnection(DMFilter->GetOutputPort());
-			normals->FlipNormalsOn();
-
-			vtkSmartPointer<vtkPolyDataMapper> Mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
-			Mapper->SetInputConnection(normals->GetOutputPort());
-			vtkSmartPointer<vtkActor> Actor = vtkSmartPointer<vtkActor>::New();
-			Actor->SetMapper(Mapper);
-			Actor->GetProperty()->SetRepresentationToSurface();
-			Actor->GetProperty()->SetColor(color.redF(), color.greenF(), color.blueF());
-			Actor->GetProperty()->SetOpacity(1.0-trans / 100.0);
-			bool v = set->isVisible();
-			Actor->SetVisibility(v);
-			if (v)
-				Actor->SetVisibility(_showface);
-			_faceActors.append(Actor);
-			_setActors.insert(set, Actor);
-			_actotShapeHash.insert(Actor, index);
-			Actor->SetPickable(false);
-			_preWindow->AppendActor(Actor,ModuleBase::D3,false);
-		}
-	}
-	
-	void GeometryViewProvider::updateGeoActors()
-	{
-		int c = _vertexActors.size();
-		for (int i = 0; i < c; ++i)
-		{
-			vtkActor* ac = _vertexActors.at(i);
-			_preWindow->RemoveActor(ac);
-		}
-		c = _edgeActors.size();
-		for (int i = 0; i < c; ++i)
-		{
-			vtkActor* ac = _edgeActors.at(i);
-			_preWindow->RemoveActor(ac);
-		}
-		c = _faceActors.size();
-		for (int i = 0; i < c; ++i)
-		{
-			vtkActor* ac = _faceActors.at(i);
-			_preWindow->RemoveActor(ac);
-		}
-		_faceActors.clear();
-		_edgeActors.clear();
-		_vertexActors.clear();
-		_setActors.clear();
-		init();
-	}
-
-	void GeometryViewProvider::updateGraphOption()
-	{
-		QColor sc = Setting::BusAPI::instance()->getGraphOption()->getGeometrySurfaceColor();
-		QColor cc = Setting::BusAPI::instance()->getGraphOption()->getGeometryCurveColor();
-		QColor pc = Setting::BusAPI::instance()->getGraphOption()->getGeometryPointColor();
-		int trans = Setting::BusAPI::instance()->getGraphOption()->getTransparency();
-
-		float ps = Setting::BusAPI::instance()->getGraphOption()->getGeoPointSize();
-		float cw = Setting::BusAPI::instance()->getGraphOption()->getGeoCurveWidth();
-
-		int n = _vertexActors.size();
-		for (int i = 0; i < n; ++i)
-		{
-			vtkActor* ac = _vertexActors.at(i);
-			ac->GetProperty()->SetColor(pc.redF(), pc.greenF(), pc.blueF());
-			ac->GetProperty()->SetPointSize(ps);
-		}
-		n = _edgeActors.size();
-		for (int i = 0; i < n; ++i)
-		{
-			vtkActor* ac = _edgeActors.at(i);
-			ac->GetProperty()->SetColor(cc.redF(), cc.greenF(), cc.blueF());
-			ac->GetProperty()->SetLineWidth(cw);
-		}
-		n = _faceActors.size();
-		for (int i = 0; i < n; ++i)
-		{
-			vtkActor* ac = _faceActors.at(i);
-			ac->GetProperty()->SetColor(sc.redF(), sc.greenF(), sc.blueF());
-			ac->GetProperty()->SetOpacity(1.0-trans / 100.00);
-		}
-	}
-
-	void GeometryViewProvider::showGeoSet(Geometry::GeometrySet* set)
-	{
-		TopoDS_Shape* shape = set->getShape();
-		showShape(*shape, set);
-	}
-
-	void GeometryViewProvider::showDatum(Geometry::GeometryDatum* datum)
-	{
-		Geometry::DatumType type = datum->getDatumType();
-		switch (type)
-		{
-		case Geometry::DatumPoint:
-			break;
-		case Geometry::DatumAxis:
-			break;
-		case Geometry::DatumPlane:
-			showDatumPlane(datum); break;
-		default:
-			break;
-		}
-	}
-
-	void GeometryViewProvider::removeActors(Geometry::GeometrySet* set)
-	{
-		QList<vtkActor*> setActors = _setActors.values(set);
-		
-		const int n = setActors.size();
-		for (int i = 0; i < n; ++i)
-		{
-			vtkActor* ac = setActors.at(i);
-			_preWindow->RemoveActor(ac);
-
-			if (_vertexActors.contains(ac))
-				_vertexActors.removeOne(ac);
-			else if (_edgeActors.contains(ac))
-				_edgeActors.removeOne(ac);
-			else if (_faceActors.contains(ac))
-				_faceActors.removeOne(ac);
-			_actotShapeHash.remove(ac);
-		}
-		_preWindow->reRender();
-		_setActors.remove(set);
-	}
-	void GeometryViewProvider::removeDatumActors(Geometry::GeometryDatum* plane)
-	{
-		Geometry::DatumType type = plane->getDatumType();
-		QList<vtkActor*> setActors = _datumActors.values(plane);
-
-		const int n = setActors.size();
-		for (int i = 0; i < n; ++i)
-		{
-			vtkActor* ac = setActors.at(i);
-			_preWindow->RemoveActor(ac);
-			switch (type)
-			{
-			case Geometry::DatumPoint:
-				_vertexActors.removeOne(ac); break;
-			case  Geometry::DatumAxis:
-				_edgeActors.removeOne(ac); break;
-			case Geometry::DatumPlane:
-				_faceActors.removeOne(ac); break;
-			default:
-				break;
-			}
-		}
-
-		_datumActors.remove(plane);
-		_preWindow->reRender();
-		
-	}
-
-	void GeometryViewProvider::updateDiaplayStates(Geometry::GeometrySet* s, bool visibility)
-	{
-		QList<vtkActor*> acs = _setActors.values(s);
-		for (int i = 0; i < acs.size(); ++i)
-		{
-//			acs.at(i)->SetVisibility(visibility);
-			vtkActor* ac = acs.at(i);
-			if (!visibility)
-			{
-				ac->SetVisibility(false); 
-				continue;
-			}
-			if (_faceActors.contains(ac)) ac->SetVisibility(_showface);
-			if (_edgeActors.contains(ac)) ac->SetVisibility(_showedge);
-			if (_vertexActors.contains(ac)) ac->SetVisibility(_showvertex);
-		}
-		_preWindow->reRender();
-	}
-
-	void GeometryViewProvider::setGeoSelectMode(int m)
-	{
-		_selectItems.clear();
-		if (m > ModuleBase::GeometryPoint) return;
-		_selectType = (ModuleBase::SelectModel)m;
-		
-		this->setPickable(_vertexActors, false);
-		this->setPickable(_edgeActors, false);
-		this->setPickable(_faceActors, false);
-
-		switch (_selectType)
-		{
-		case ModuleBase::GeometryBody:
-		case ModuleBase::GeometryWinBody:
-			this->setPickable(_faceActors, true);
-			break;
-		case ModuleBase::GeometrySurface:
-		case ModuleBase::GeometryWinSurface:
-			this->setPickable(_faceActors, true);
-			break;
-		case ModuleBase::GeometryCurve:
-		case ModuleBase::GeometryWinCurve:
-			this->setPickable(_edgeActors, true);
-			break;
-		case ModuleBase::GeometryPoint:
-		case ModuleBase::GeometryWinPoint:
-			this->setPickable(_vertexActors, true);
-			break;
-		default:
-			break;
-		}
-
-		RestoreGeoColor();
-	}
-
-	void GeometryViewProvider::setPickable(QList<vtkActor*> acs, bool visibility)
-	{
-		for (int i = 0; i < acs.size(); ++i)
-		{
-			vtkActor* ac = acs.at(i);
-			ac->SetPickable(visibility);
-		}
-	}
-
-	void GeometryViewProvider::selectGeometry(vtkActor* ac,bool ctrlpress)
-	{
-	
-		int shape = -1;
-		bool winselect = false;
-		switch (_selectType)
-		{
-		case ModuleBase::GeometryWinPoint: winselect = true;
-		case ModuleBase::GeometryPoint:
-			if (!_vertexActors.contains(ac)) return;
-			shape = _actotShapeHash.value(ac);
-			break;
-		case ModuleBase::GeometryWinCurve:  winselect = true;
-		case ModuleBase::GeometryCurve:
-			if (!_edgeActors.contains(ac)) return;
-			shape = _actotShapeHash.value(ac);
-			break;
-		case ModuleBase::GeometryWinSurface: winselect = true;
-		case ModuleBase::GeometrySurface:
-			if (!_faceActors.contains(ac)) return;
-			shape = _actotShapeHash.value(ac);
-			break;
-		case ModuleBase::GeometryWinBody : winselect = true;
-			break;
-		default:
-			break;
-		}
-		Geometry::GeometrySet* set = _setActors.key(ac);
-		if (set != nullptr)
-		{
-			emit _preWindow->selectGeoActorShape(ac, shape, set);
-		//	_preWindow->reRender();
-		}
-
-		if (!winselect)  return;
-
-		for(auto var : _vertexActors)
-		{
-			QColor color = Setting::BusAPI::instance()->getGraphOption()->getGeometryPointColor();
-			var->GetProperty()->SetColor(color.redF(), color.greenF(), color.blueF());
-		}
-		for (auto var : _edgeActors)
-		{
-			QColor color = Setting::BusAPI::instance()->getGraphOption()->getGeometryCurveColor();
-			var->GetProperty()->SetColor(color.redF(), color.greenF(), color.blueF());
-		}
-		for (auto var : _faceActors)
-		{
-			QColor color = Setting::BusAPI::instance()->getGraphOption()->getGeometrySurfaceColor();
-			var->GetProperty()->SetColor(color.redF(), color.greenF(), color.blueF());
-		}
-			
-		if (set == nullptr) return;
-
-		if (!ctrlpress)
-		{
-			_selectItems.clear();
-			_addActors.clear();
-			_selectItems.insert(set, shape);
-			_addActors.append(ac);
-		}
-		else
-		{
-			if (_addActors.contains(ac))
-			{
-				_addActors.removeOne(ac);
-				_selectItems.remove(set, shape);
-			}
-			else
-			{
-				_selectItems.insert(set, shape);
-				_addActors.append(ac);
-			}
-		}
-
-		QColor colorhigh = Setting::BusAPI::instance()->getGraphOption()->getHighLightColor();
-		if (_selectType == ModuleBase::GeometryBody || _selectType == ModuleBase::GeometryWinBody)
-		{
-			QList<Geometry::GeometrySet*> setList = _selectItems.uniqueKeys();
-			for (auto set : setList)
-			{
-				QList<vtkActor*> setactors = _setActors.values(set);
-				for (auto var : setactors)
-				{
-					var->GetProperty()->SetColor(colorhigh.redF(), colorhigh.greenF(), colorhigh.blueF());
-				}
-			}
-
-		}
-		else
-		{
-			for (auto actor : _addActors)
-			{
-				actor->GetProperty()->SetColor(colorhigh.redF(), colorhigh.greenF(), colorhigh.blueF());
-			}
-				
-		}
-			
-		
-		_preWindow->reRender();
-	}
-
-
-
-
-
-
-	void GeometryViewProvider::highLightGeoset(Geometry::GeometrySet* s, bool on)
-	{
-		if (s == nullptr) return;
-		QList<vtkActor*> actors = _setActors.values(s);
-		if (!on)
-		{
-			QColor color;
-			for (int i = 0; i < actors.size(); ++i)
-			{
-				vtkActor* ac = actors.at(i);
-				if (_vertexActors.contains(ac))
-					color = Setting::BusAPI::instance()->getGraphOption()->getGeometryPointColor();
-				else if (_edgeActors.contains(ac))
-					color = Setting::BusAPI::instance()->getGraphOption()->getGeometryCurveColor();
-				else if (_faceActors.contains(ac))
-					color = Setting::BusAPI::instance()->getGraphOption()->getGeometrySurfaceColor();
-				else return;
-
-				ac->GetProperty()->SetColor(color.redF(), color.greenF(), color.blueF());
-			}
-		}
-		else
-		{
-			QColor color = Setting::BusAPI::instance()->getGraphOption()->getHighLightColor();
-			for (int i = 0; i < actors.size(); ++i)
-			{
-				vtkActor* ac = actors.at(i);
-				ac->GetProperty()->SetColor(color.redF(), color.greenF(), color.blueF());
-			}
-		}
-		_preWindow->reRender();
-	}
-
-	void GeometryViewProvider::showDatumPlane(Geometry::GeometryDatum* datum)
-	{
-		QColor color = Setting::BusAPI::instance()->getGraphOption()->getGeometrySurfaceColor();
-		TopoDS_Shape* shape = datum->getShape();
-		bool visible = datum->isVisible();
-		visible = visible && _showface;
-		TopExp_Explorer faceExp(*shape, TopAbs_FACE);
-		QList<Handle(TopoDS_TShape)> tshapelist;
-		for (int index = 0; faceExp.More(); faceExp.Next(), ++index)
-		{
-			TopoDS_Shape s = faceExp.Current();
-
-			IVtkOCC_Shape::Handle aShapeImpl = new IVtkOCC_Shape(s);
-			vtkSmartPointer<IVtkTools_ShapeDataSource> DS = vtkSmartPointer<IVtkTools_ShapeDataSource>::New();
-			DS->SetShape(aShapeImpl);
-
-			vtkSmartPointer<IVtkTools_DisplayModeFilter> DMFilter = vtkSmartPointer<IVtkTools_DisplayModeFilter>::New();
-			DMFilter->AddInputConnection(DS->GetOutputPort());
-			DMFilter->SetDisplayMode(DM_Shading);
-
-		
-			vtkSmartPointer<vtkPolyDataMapper> Mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
-			Mapper->SetInputConnection(DMFilter->GetOutputPort());
-			vtkSmartPointer<vtkActor> Actor = vtkSmartPointer<vtkActor>::New();
-			Actor->SetMapper(Mapper);
-			Actor->GetProperty()->SetRepresentationToSurface();
-			Actor->GetProperty()->SetColor(color.redF(), color.greenF(), color.blueF());
-			Actor->GetProperty()->SetOpacity(0.6);
-
-			_faceActors.append(Actor);
-			_datumActors.insert(datum, Actor);
-			_setActors.insert(datum, Actor);
-			_actotShapeHash.insert(Actor, index);
-			Actor->SetPickable(false);
-			Actor->SetVisibility(visible);
-			_preWindow->AppendActor(Actor, ModuleBase::D3, false);
-		}
-		_preWindow->reRender();
-	}
-
-	void GeometryViewProvider::highLightGeoEdge(Geometry::GeometrySet* s, int id, QList<vtkActor*>* acs)
-	{
-		QList<vtkActor*> setActors = _setActors.values(s);
-		QList<vtkActor*> idActors = _actotShapeHash.keys(id);
-		
-		vtkActor* ac = nullptr;
-		for (int i = 0; i < idActors.size(); ++i)
-		{
-			vtkActor* a = idActors.at(i);
-			bool ok = setActors.contains(a);
-			ok = _edgeActors.contains(a);
-			if (setActors.contains(a) && _edgeActors.contains(a))
-			{
-				ac = a;
-				break;
-			}
-		}
-		if (ac == nullptr) return;
-		acs->append(ac);
-		QColor c = Setting::BusAPI::instance()->getGraphOption()->getHighLightColor();
-		ac->GetProperty()->SetColor(c.redF(), c.greenF(), c.blueF());
-		_preWindow->reRender();
-	}
-
-	void GeometryViewProvider::highLightGeoPoint(Geometry::GeometrySet* s, int id, QList<vtkActor*>* acs)
-	{
-		QList<vtkActor*> setActors = _setActors.values(s);
-		QList<vtkActor*> idActors = _actotShapeHash.keys(id);
-
-		vtkActor* ac = nullptr;
-		for (int i = 0; i < idActors.size(); ++i)
-		{
-			vtkActor* a = idActors.at(i);
-			bool ok = setActors.contains(a);
-			ok = _edgeActors.contains(a);
-			if (setActors.contains(a) && _vertexActors.contains(a))
-			{
-				ac = a;
-				break;
-			}
-		}
-		if (ac == nullptr) return;
-		acs->append(ac);
-		QColor c = Setting::BusAPI::instance()->getGraphOption()->getHighLightColor();
-		ac->GetProperty()->SetColor(c.redF(), c.greenF(), c.blueF());
-		_preWindow->reRender();
-	}
-
-	void GeometryViewProvider::highLightGeoFace(Geometry::GeometrySet* s, int id, QList<vtkActor*>* acs)
-	{
-		QList<vtkActor*> setActors = _setActors.values(s);
-		QList<vtkActor*> idActors = _actotShapeHash.keys(id);
-
-		vtkActor* ac = nullptr;
-		for (int i = 0; i < idActors.size(); ++i)
-		{
-			vtkActor* a = idActors.at(i);
-			bool ok = setActors.contains(a);
-			ok = _edgeActors.contains(a);
-			if (setActors.contains(a) && _faceActors.contains(a))
-			{
-				ac = a;
-				break;
-			}
-		}
-		if (ac == nullptr) return;
-		acs->append(ac);
-		QColor c = Setting::BusAPI::instance()->getGraphOption()->getHighLightColor();
-		ac->GetProperty()->SetColor(c.redF(), c.greenF(), c.blueF());
-		ac->GetProperty()->SetOpacity(1.0);
-		_preWindow->reRender();
-	}
- 
-	void GeometryViewProvider::setGeometryDisplay( bool v, bool c, bool f)
-	{
-		auto gp = Setting::BusAPI::instance()->getGraphOption();
-		_showvertex = gp->isShowGeoPoint();
-		_showedge = gp->isShowGeoEdge();
-		_showface = gp->isShowGeoSurface();
-		for (auto var : _vertexActors) var->SetVisibility(v);
-		for (auto var : _edgeActors) var->SetVisibility(c);
-		for (auto var : _faceActors) var->SetVisibility(f);
-
-		QList<Geometry::GeometrySet*> setList = _setActors.keys();
-		for (auto set : setList)
-		{
-			bool v = set->isVisible();
-			if (v) continue;
-			QList<vtkActor*> acs = _setActors.values(set);
-			for (auto ac : acs) ac->SetVisibility(false);
-		}
-		_preWindow->reRender();
-	}
-
-	void GeometryViewProvider::RestoreGeoColor()
-	{
-		for (auto var : _vertexActors)
-		{
-			QColor color = Setting::BusAPI::instance()->getGraphOption()->getGeometryPointColor();
-			var->GetProperty()->SetColor(color.redF(), color.greenF(), color.blueF());
-		}
-		for (auto var : _edgeActors)
-		{
-			QColor color = Setting::BusAPI::instance()->getGraphOption()->getGeometryCurveColor();
-			var->GetProperty()->SetColor(color.redF(), color.greenF(), color.blueF());
-		}
-		for (auto var : _faceActors)
-		{
-			QColor color = Setting::BusAPI::instance()->getGraphOption()->getGeometrySurfaceColor();
-			int tp = Setting::BusAPI::instance()->getGraphOption()->getTransparency();
-			var->GetProperty()->SetColor(color.redF(), color.greenF(), color.blueF());
-			var->GetProperty()->SetOpacity(1.0 - tp / 100.0);
-		}
-		_preWindow->reRender();
-		_selectItems.clear();
-	}
-
-// 	void GeometryViewProvider::activeSelectGeo(bool on)
-// 	{
-// 		_activeSeletGeo = on;
-// 	}
-// 
-// 	void GeometryViewProvider::closeSelectGeo(int geomodel)
-// 	{
-// 		if (geomodel>-1)
-// 		{
-// 			_activeSeletGeo = false;
-// 		}
-// 	}
-
-	QMultiHash<Geometry::GeometrySet*, int> GeometryViewProvider::getGeoSelectItems()
-	{
-		return _selectItems;
 	}
 
 }

@@ -1,4 +1,4 @@
-#include "GeoCommandRemove.h"
+﻿#include "GeoCommandRemove.h"
 #include "geometry/geometryData.h"
 
 namespace Command
@@ -50,7 +50,7 @@ namespace Command
 
 	GeoCommandRemove::~GeoCommandRemove()
 	{
-		if (!needRelease && _res != nullptr)
+		if (needRelease && _res != nullptr)
 			delete _res;
 	}
 

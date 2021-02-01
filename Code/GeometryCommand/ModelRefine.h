@@ -1,4 +1,4 @@
-/***************************************************************************
+﻿/***************************************************************************
  *   Copyright (c) 2011 Thomas Anderson <blobfish[at]gmx.com>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *

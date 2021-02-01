@@ -1,4 +1,4 @@
-#include "EditorNameValue.h"
+ï»¿#include "EditorNameValue.h"
 #include "ui_EditorNameValue.h"
 #include "InputValidator.h"
 #include <QTimer>
@@ -79,7 +79,7 @@ namespace FastCAEDesigner
 		ui->txtName->setText(name);
 	}
 
-	//È·ÈÏÉè¶¨²Ûº¯Êý
+	//ç¡®è®¤è®¾å®šæ§½å‡½æ•°
 	void EditorNameValue::OnBtnOkClicked()
 	{
 		QString name = ui->txtName->text().trimmed();
@@ -139,7 +139,7 @@ namespace FastCAEDesigner
 		_usedNameList = usedNameList;
 	}
 
-	//¶¨Ê±Æ÷²Ûº¯Êý
+	//å®šæ—¶å™¨æ§½å‡½æ•°
 	void EditorNameValue::OnTimeout()
 	{
 		ui->lbl_info->setText("");

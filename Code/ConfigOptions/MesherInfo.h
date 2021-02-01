@@ -1,4 +1,4 @@
-#ifndef _MESHERINFO_H_
+﻿#ifndef _MESHERINFO_H_
 #define _MESHERINFO_H_
 
 #include "ConfigOptionsAPI.h"

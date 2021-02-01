@@ -1,4 +1,4 @@
-#include "generateLicense.h"
+﻿#include "generateLicense.h"
 #include <time.h>
 
 generateLicense::generateLicense()

@@ -10,6 +10,7 @@ HEADERS += \
 	$$PWD/MainWindowPy.h \
 	$$PWD/CustomizerHelper.h \
 	$$PWD/solveProcessManager.h \
+	$$PWD/SARibbonMWUi.h \
 
 SOURCES += \
 	$$PWD/mainWindow.cpp \
@@ -22,8 +23,9 @@ SOURCES += \
 	$$PWD/DownloadManager.cpp \
 	$$PWD/CustomizerHelper.cpp \
 	$$PWD/solveProcessManager.cpp \
-	
+	$$PWD/SARibbonMWUi.cpp \
+
 FORMS +=  \
-	$$PWD/MainWindow.ui \
+	$$PWD/mainWindow.ui \
 	$$PWD/DialogAbout.ui \
 	$$PWD/StartPage.ui \

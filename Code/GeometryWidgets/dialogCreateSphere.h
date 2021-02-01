@@ -1,4 +1,4 @@
-#ifndef DIALOGCREATESPHERE_H_
+﻿#ifndef DIALOGCREATESPHERE_H_
 #define DIALOGCREATESPHERE_H_
 
 #include "geometryWidgetsAPI.h"
@@ -23,7 +23,7 @@ namespace GeometryWidget
  
 	private:
 		void init();
-		void closeEvent(QCloseEvent *);
+//		void closeEvent(QCloseEvent *);
 		void reject() override;
 		void accept() override;
 

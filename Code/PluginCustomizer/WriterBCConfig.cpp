@@ -1,4 +1,4 @@
-#include "WriterBCConfig.h"
+ï»¿#include "WriterBCConfig.h"
 #include "Common.h"
 #include "ModelBase.h"
 #include "BoundaryModel.h"
@@ -20,7 +20,7 @@ namespace FastCAEDesigner
 	{
 	}
 
-	//bcModelLlist:±ß½ç²ÎÊıÁĞ±í
+	//bcModelLlist:è¾¹ç•Œå‚æ•°åˆ—è¡¨
 	bool WriteBCConfig::Write(QList<ModelBase*> bcModelList)
 	{
 		QDomDocument doc;

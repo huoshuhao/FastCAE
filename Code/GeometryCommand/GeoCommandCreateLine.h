@@ -1,4 +1,4 @@
-#ifndef GEOCOMMANDCREATELINE_H_
+﻿#ifndef GEOCOMMANDCREATELINE_H_
 #define GEOCOMMANDCREATELINE_H_
 
 #include "GeoCommandBase.h"

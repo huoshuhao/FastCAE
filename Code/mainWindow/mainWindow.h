@@ -1,4 +1,4 @@
-/****************************
+﻿/****************************
 声明主窗口基本元素，以及实现布局
 libaojun
 2017.08.28
@@ -12,7 +12,7 @@ libaojun
 #include <QPair>
 #include <QString>
 #include "moduleBase/messageWindowBase.h"
-
+#include "SARibbonBar/SARibbonMainWindow.h"
 
 class XToolManger;
 class QTreeWidgetItem;
@@ -24,25 +24,31 @@ class QLabel;
 class vtkActor;
 class QAction;
 class QToolBar;
+class SARibbonCategory;
 
 namespace Ui
 {
 	class MainWindow;
+	class MainWindowRibbon;
 }
 
 namespace DataProperty
 {
 	class DataBase;
 }
+
 namespace MeshData
 {
 	class MeshSet;
 	class MeshKernal;
 }
+
 namespace Geometry
 {
 	class GeometrySet;
+	class GeoComponent;
 }
+
 namespace MainWidget
 {
 	class ControlPanel;
@@ -50,16 +56,17 @@ namespace MainWidget
 	class ProcessWindow;
 	class PreWindow;
 }
+
 namespace Post
 {
 	class PostWindowBase;
 	class RealTimeWindowBase;
 }
+
 namespace XReport
 {
 	class ReportWindow;
 }
-
 namespace GUI
 {
 	class SubWindowManager;
@@ -67,17 +74,18 @@ namespace GUI
 	class Translator;
 	class CustomizerHelper;
 
-	class MAINWINDOWAPI MainWindow : public QMainWindow
+
+	class MAINWINDOWAPI MainWindow : public SARibbonMainWindow
 	{
 		Q_OBJECT
 
-	friend CustomizerHelper;
-
+			friend CustomizerHelper;
+		    friend SignalHandler;
 	public:
-		MainWindow();
+		MainWindow(bool useRibbon = true);
 		~MainWindow();
 		//获取ui
-		Ui::MainWindow* getUi();
+		Ui::MainWindowRibbon* getUi();
 		//获取翻译
 		Translator* GetTranslator();
 		QString getMD5();
@@ -105,7 +113,8 @@ namespace GUI
 		QToolBar* getToolBar(QString& objName);
 		//根据object name 获取menu
 		QMenu* getMenu(QString& objName);
-		
+		QPair<QWidget*, QList<QAction*>> createWidgetAndAction(const QString& title, const QStringList& actionStrs);
+
 	signals:
 		/*更新注册接口*/
 		void updateInterfaces();
@@ -147,22 +156,25 @@ namespace GUI
 		void updateGeoDispalyStateSig(int index, bool display);
 		void removeGeometryActorSig(int index);
 		void highLightGeometrySetSig(Geometry::GeometrySet* s, bool on);
-		void highLightGeometryPointSig(Geometry::GeometrySet* set, int index, QList<vtkActor*>*);
-		void highLightGeometryEdgeSig(Geometry::GeometrySet* set, int index, QList<vtkActor*>*);
-		void highLightGeometryFaceSig(Geometry::GeometrySet* set, int index, QList<vtkActor*>*);
 		/****网格相关信号***** */
-		void importMeshByNamesSig(QStringList names);
+		void importMeshByNamesSig(QString name);
 		void importMeshDataSetSig(vtkDataSet* dataset);
-		void exportMeshByIDSig(QString filename, int kID);
+        //		void exportMeshByIDSig(QString fileName, QString suffix, int kID);
+		void editMeshSig(int dim, int kindex);
 		void updateMeshTreeSig();
 		void updateSetTreeSig();
 		void updateMeshDispalyStateSig(int index, bool display);
+		void updateMeshSetVisibleSig(MeshData::MeshSet*);
 		void removeMeshActorSig(int index);
+		void removeSetDataSig(int index);
 		void highLightSetSig(MeshData::MeshSet* set);
+		void highLightGeoComponentSig(Geometry::GeoComponent*);
 		void highLightKernelSig(MeshData::MeshKernal* k);
 		void highLightDataSetSig(vtkDataSet* dataset);
+		//清空数据
+		void clearDataSig();
 		///更新前处理窗口所有几何网格Actor
-//		void updatePreActors();
+		//		void updatePreActors();
 		/*创建物理模型 */
 		void createPhysiceModelSig();
 		/*更新属性框 */
@@ -182,7 +194,7 @@ namespace GUI
 		///关闭实时曲线窗口
 		void closeRealTimeWindowSig(Post::RealTimeWindowBase* w);
 		///更新实时曲线窗口
-		void updateRealTimePlotSig(QString filename);
+		void updateRealTimePlotSig(QString fileName);
 		///切换选择模式
 		void selectModelChangedSig(int i);
 		///切换显示模型
@@ -201,16 +213,18 @@ namespace GUI
 		void enableGraphWindowKeyBoard(bool on);
 		///更新Action状态
 		void updateActionStatesSig();
+		void updatePreMeshActorSig();
+		void updatePreGeometryActorSig();//徐文强2020/6/4添加
 		///根据绘图设置更新绘图
 		void updateGraphOptionsSig();
 		//保存图片 winType 0- 前处理窗口 1-后处理   Wintype为前处理时winhandle可任意
-		void saveImageSig(QString filename, int winType, Post::PostWindowBase*winhandle, int w, int h);
-// 		//面网格划分
-// 		void surfaceMeshSig(Geometry::GeometrySet*);
-// 		//体网格划分
-// 		void solidMeshSig(Geometry::GeometrySet*);
+		void saveImageSig(QString fileName, int winType, Post::PostWindowBase*winhandle, int w, int h);
+		// 		//面网格划分
+		// 		void surfaceMeshSig(Geometry::GeometrySet*);
+		// 		//体网格划分
+		// 		void solidMeshSig(Geometry::GeometrySet*);
 		//保存图片
-		void saveImage(int w, int h, QString file); 
+		void saveImage(int w, int h, QString file);
 		//清除高亮
 		void clearHighLightSig();
 		//前处理窗口打开
@@ -221,13 +235,10 @@ namespace GUI
 		void selectGeometryDisplay(bool, bool, bool);
 		//在几何上选取点、线、面。
 		void selectGeometryModelChangedSig(int);
-// 		//激活标记。
-// 		void selectGeoActiveSig(bool a);
-// 		//关闭标记
-// 		void selectGeoCloseSig(int);
 		//更新工具栏状态
 		void updateActionsStatesSig();
-
+		//关闭主窗口
+		void closeMainWindow();
 	public slots:
 		/*状态栏显示信息 */
 		void setStatusBarInfo(QString);
@@ -240,9 +251,10 @@ namespace GUI
 		//切换几何显示模式
 		void selectGeometryModelChanged(int m);
 		void setGeometryDisplay();
-// 		///<MG 显示/隐藏 工具栏/菜单栏 中的某一菜单/某一项
-// 		void showToolMenu(QString name, bool show);
+		// 		///<MG 显示/隐藏 工具栏/菜单栏 中的某一菜单/某一项
+		// 		void showToolMenu(QString name, bool show);
 
+		void updatePreGeometryActor();
 		void updatePreMeshActor();
 		///导入几何
 		void on_importGeometry();
@@ -257,10 +269,10 @@ namespace GUI
 		//打印信息
 		void printMessage(int type, QString m);
 		//导入网格
-		void importMesh(QStringList filename);
+//		void importMesh(QString fileName, QString s, int modelId);
 		//导入几何
 		void importGeometry(QStringList f);
-		//导出网格
+		//导出几何
 		void exportGeometry(QString f);
 		//更新工具栏信息
 		void updateActionsStates();
@@ -278,7 +290,7 @@ namespace GUI
 		void on_actionSaveAs();
 		///导入网格
 		void on_importMesh();
-		
+
 		//导入网格
 		void importMeshDataset(vtkDataSet* dataset);
 		//导出网格
@@ -303,6 +315,7 @@ namespace GUI
 		void openRencentFile(QString file);
 		//创建组件（Set）
 		void on_CreateSet();
+		void on_CreateGeoComponent();
 		//保存脚本
 		void on_SaveScript();
 		//执行脚本
@@ -313,35 +326,45 @@ namespace GUI
 		void showGraphRange(double, double);
 		//开始草绘
 		void startSketch(bool s);
-		
+		//网格过滤
+		void on_FilterMesh();
+		//创建VTK空间变换窗口
+		void on_VTKTranslation();
 
 	private:
 		/*初始化Menu*/
-//		void initMenu();
-		
+		//		void initMenu();
+
 		/*信号槽关联 */
 		void connectSignals();
 		/*注册模块 */
 		void registerMoudel();
 		///初始化工具栏
 		void initToolBar();
-		/*重写QWidget虚函数  关闭主窗口事件 */ 
+		/*重写QWidget虚函数  关闭主窗口事件 */
 		void closeEvent(QCloseEvent *event) override;
-		
+
 		//键盘按下事件
 		void keyPressEvent(QKeyEvent *e) override;
 		void keyReleaseEvent(QKeyEvent *e) override;
+		void showEvent(QShowEvent *e) override;
+
+		bool isLoadRecordScripFile();
+		//ribbon
+		void setSketchPageVisible(bool visible);
+        //切换到Ribbon 若ok为false则为一般模式
+		void changeStyleToRibbon(bool ok);
 
 	private:
-		Ui::MainWindow* _ui{};
+		Ui::MainWindowRibbon* _ui{};
 		Translator* _translator{};
 		SignalHandler* _signalHandler{};
 		SubWindowManager* _subWindowManager{};
 		CustomizerHelper* _customizerHelper{};
-//		bool _designModel{ false };
-		
+		//		bool _designModel{ false };
 
-//		QHash<int, Post3D::Post3DWindow*> _post3DWindow{};
+
+		//		QHash<int, Post3D::Post3DWindow*> _post3DWindow{};
 		QString _currentFile{};
 		QString _MD5{};
 
@@ -353,25 +376,20 @@ namespace GUI
 		QSignalMapper* _selectSignalMapper{};
 		QSignalMapper* _displayModeSignalMapper{};
 		QSignalMapper* _selectGeometryModeMapper{};
-		
+
 		QMenu* _recentMenu{};
 		QSignalMapper* _recentFileMapper{};
 
 		QLabel* _graphRange{};
 		///<MG tool manger
-// 		XToolManger * _toolManger;
-// 
-// 		///<MG external menu 
-// 		QMap<QString, QMenu *> _externalMenus{};
-// 
-// 		///<MG external action
-// 		QMap<QString, QAction*> _externalActions{};
+		// 		XToolManger * _toolManger;
+		// 
+		// 		///<MG external menu 
+		// 		QMap<QString, QMenu *> _externalMenus{};
+		// 
+		// 		///<MG external action
+		// 		QMap<QString, QAction*> _externalActions{};
 
 	};
-
 }
-
 #endif
-
-
-

@@ -1,4 +1,4 @@
-#ifndef _PARAMETEROBSERVER_H_
+﻿#ifndef _PARAMETEROBSERVER_H_
 #define _PARAMETEROBSERVER_H_
 
 #include "ConfigOptionsAPI.h"

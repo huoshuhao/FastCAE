@@ -1,4 +1,4 @@
-#include "saveanidialog.h"
+﻿#include "saveanidialog.h"
 #include "ui_saveanidialog.h"
 
 saveAniDialog::saveAniDialog(QWidget *parent) :

@@ -1,4 +1,4 @@
-#include "ParaTable.h"
+﻿#include "ParaTable.h"
 #include "DataProperty/ParameterTable.h"
 #include "ParaTabViewer.h"
 #include <QString>

@@ -40,8 +40,8 @@ def caseRename(pid,newname):
   lib.caseRename(pid,newname)
   pass
   
-def updateMeshSubTree(caseid):
-  lib.updateMeshSubTree(caseid)
+def updateComponentSubTree(caseid):
+  lib.updateComponentSubTree(caseid)
   pass
   
 def updateBCSubTree(caseid):
@@ -51,15 +51,35 @@ def updateBCSubTree(caseid):
 def updatePostTree(caseid):
   lib.updatePostTree(caseid)
   pass
-
-   
   
 def updateGeometrySubTree(caseid):
   lib.updateGeometrySubTree(caseid)
   pass
   
-	
+def loadFromMaterialLib(namelist):
+  namelist=bytes(namelist,encoding='utf-8')
+  lib.loadFromMaterialLib(namelist)
 
+def CreateMaterial(name,type):
+  name=bytes(name,encoding='utf-8')
+  type=bytes(type,encoding='utf-8')
+  lib.CreateMaterial(name, type)
+  pass
+  
+def RemoveFromMaterialLib(namelist):
+  namelist=bytes(namelist,encoding='utf-8')
+  lib.RemoveFromMaterialLib(namelist)
+  pass
+  
+def DeleteMaterial(id, name):
+  name=bytes(name,encoding='utf-8')
+  lib.DeleteMaterial(id,name)
+  pass
+  
+def AddMaterialToLib(id, name):
+  name=bytes(name,encoding='utf-8')
+  lib.AddMaterialToLib(id,name)
+  pass
 
   
 

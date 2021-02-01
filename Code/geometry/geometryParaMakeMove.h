@@ -1,9 +1,9 @@
-#ifndef _GEOMETRYPARAMAKEMOVE_H_
+ï»¿#ifndef _GEOMETRYPARAMAKEMOVE_H_
 #define _GEOMETRYPARAMAKEMOVE_H_
 
 #include "geometryModelParaBase.h"
 #include <QString>
-
+#include <QMultiHash>
 namespace Geometry
 {
 	class GeometrySet;
@@ -16,8 +16,8 @@ namespace Geometry
 		void setOptionIndex(int index);
 		int getOptionIndex();
 
-		void setBodyList(QList<Geometry::GeometrySet*> bodylist);
-		QList<Geometry::GeometrySet*> getBodyList();
+		void appendBody(Geometry::GeometrySet* set, int bodyindex);
+		QMultiHash<Geometry::GeometrySet*, int> getBodys();
 
 		void setSaveOrigion(bool s);
 		bool getSaveOrigion();
@@ -40,16 +40,15 @@ namespace Geometry
 		void setOriSet(Geometry::GeometrySet* s);
 		Geometry::GeometrySet* getOriSet();
 
-		///Êı¾İĞ´Èë¹¤³ÌÎÄ¼ş
+		///æ•°æ®å†™å…¥å·¥ç¨‹æ–‡ä»¶
 		QDomElement& writeToProjectFile(QDomDocument* doc, QDomElement* parent) override;
-		///´Ó¹¤³ÌÎÄ¼ş¶ÁÈëÊı¾İ
+		///ä»å·¥ç¨‹æ–‡ä»¶è¯»å…¥æ•°æ®
 		virtual void readDataFromProjectFile(QDomElement* e) override;
 
 
 	private:
-		QList<Geometry::GeometrySet*> _bodylist{};
 		int _optionindex{};
-		
+		QMultiHash<Geometry::GeometrySet*, int>_solidHash{};
 		Geometry::GeometrySet* _oriset{};
 		double _startpoint[3]{};
 		double _endpoint[3]{};

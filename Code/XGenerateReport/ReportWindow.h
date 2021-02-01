@@ -1,5 +1,5 @@
-//*******************************
-//±¨¸æÏÔÊ¾´°¿Ú
+ï»¿//*******************************
+//æŠ¥å‘Šæ˜¾ç¤ºçª—å£
 //libaojun
 //*******************************
 #ifndef REPORTWINDOW_H_
@@ -27,7 +27,7 @@ namespace XReport
 	public:
 		ReportWindow(GUI::MainWindow* mainwindow, QString file);
 		~ReportWindow();
-		//ÓïÑÔÇĞ»»
+		//è¯­è¨€åˆ‡æ¢
 		virtual void reTranslate();
 
 	signals:

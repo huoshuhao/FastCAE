@@ -1,4 +1,4 @@
-#ifndef SELFDEFWIDGETBASE_H_
+﻿#ifndef SELFDEFWIDGETBASE_H_
 #define SELFDEFWIDGETBASE_H_
 
 #include "SelfDefObjectAPI.h"

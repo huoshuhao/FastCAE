@@ -1,4 +1,4 @@
-#ifndef _MATERIALAAPI_H_
+﻿#ifndef _MATERIALAAPI_H_
 #define _MATERIALAAPI_H_
 
 #include <QtCore/QtGlobal>

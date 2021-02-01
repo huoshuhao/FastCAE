@@ -1,4 +1,4 @@
-#ifndef _BCCONFIG_H_
+﻿#ifndef _BCCONFIG_H_
 #define _BCCONFIG_H_
 
 #include "ConfigOptionsAPI.h"

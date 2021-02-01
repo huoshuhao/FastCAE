@@ -1,4 +1,4 @@
-#include "GeoSketchCreater.h"
+﻿#include "GeoSketchCreater.h"
 #include "MainWidgets/sketchViewProvider.h"
 #include "MainWidgets/preWindow.h"
 #include "geometry/geometryData.h"

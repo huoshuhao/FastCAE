@@ -1,4 +1,4 @@
-#include "GeoCommandCreateSphere.h"
+﻿#include "GeoCommandCreateSphere.h"
 #include <BRepPrimAPI_MakeSphere.hxx>
 #include "geometry/geometryData.h"
 #include "geometry/geometrySet.h"

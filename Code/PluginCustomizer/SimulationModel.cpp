@@ -1,4 +1,4 @@
-#include "SimulationModel.h"
+﻿#include "SimulationModel.h"
 #include "EditorDescripttionSetup.h"
 #include "DataProperty/modelTreeItemType.h"
 #include <QTreeWidgetItem>

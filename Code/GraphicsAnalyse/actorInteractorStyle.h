@@ -1,4 +1,4 @@
-#ifndef ACTORINTERACTORSTYLE_H
+﻿#ifndef ACTORINTERACTORSTYLE_H
 #define ACTORINTERACTORSTYLE_H
 
 #include "graphicsanalyse_global.h"

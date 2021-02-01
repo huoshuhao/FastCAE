@@ -1,4 +1,4 @@
-#ifndef _TRANSLATER_H_
+﻿#ifndef _TRANSLATER_H_
 #define _TRANSLATER_H_
 
 #include <QObject>

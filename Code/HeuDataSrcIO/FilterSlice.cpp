@@ -1,4 +1,4 @@
-#include "FilterSlice.h"
+ï»¿#include "FilterSlice.h"
 #include "qdebug.h"
 
 FilterSlice::FilterSlice(const QString& dataFile, PipelineObject * parent)
@@ -35,9 +35,9 @@ FilterSlice::FilterSlice(const QString& dataFile, PipelineObject * parent)
 	mPipeLineObjProp.plane_propData.m_plane_normal.x = 1;
 	mPipeLineObjProp.plane_propData.m_plane_normal.y = 0;
 	mPipeLineObjProp.plane_propData.m_plane_normal.z = 0;
-	mPipeLineObjProp.pipelineObj_base_propData.filename = "SliceFilter";
+	mPipeLineObjProp.pipelineObj_base_propData.fileName = "SliceFilter";
 	mPipeLineObjProp.pipelineObj_base_propData.file_xh = 0;
-	mPipeLineObjProp.pipelineObj_base_propData.filename = GetObjParent()->mPipeLineObjProp.pipelineObj_base_propData.filename;
+	mPipeLineObjProp.pipelineObj_base_propData.fileName = GetObjParent()->mPipeLineObjProp.pipelineObj_base_propData.fileName;
 	SetObjectType(dSlice_DataSource);
 	GetObjParent()->mPipeLineObjProp.pipelineObj_base_propData.count_total_child++;
 }
@@ -122,7 +122,7 @@ void FilterSlice::func_init_plane()
 	if (sliceRep == NULL)
 	{
 		sliceRep = vtkSmartPointer<vtkImplicitPlaneRepresentation>::New();
-		sliceRep->SetPlaceFactor(1.0);//±ÈÀýÏµÊý
+		sliceRep->SetPlaceFactor(1.0);//æ¯”ä¾‹ç³»æ•°
 		sliceRep->SetOutlineTranslation(0);
 		sliceRep->GetPlaneProperty()->SetOpacity(0.4);
 	}

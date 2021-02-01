@@ -1,4 +1,4 @@
-#include "DialogGraphOption.h"
+﻿#include "DialogGraphOption.h"
 #include "GraphOption.h"
 #include "ui_DialogGraphOption.h"
 #include "mainWindow/mainWindow.h"

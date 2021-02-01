@@ -1,4 +1,4 @@
-#ifndef _PARADOUBLESPIN_H_
+﻿#ifndef _PARADOUBLESPIN_H_
 #define _PARADOUBLESPIN_H_
 
 #include "SelfDefObjectAPI.h"

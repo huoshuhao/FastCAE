@@ -1,4 +1,4 @@
-#include "PickAreaInteractorStyle.h"
+﻿#include "PickAreaInteractorStyle.h"
 #include "qmap.h"
 #include "vtkPlane.h"
 #include "vtkKdTreePointLocator.h"

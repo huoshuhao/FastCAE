@@ -1,4 +1,4 @@
-#ifndef GLOBALDEFINE_H
+﻿#ifndef GLOBALDEFINE_H
 #define GLOBALDEFINE_H
 #include "qstringlist.h"
 #define scalarBar_FontSize 12

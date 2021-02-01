@@ -1,4 +1,4 @@
-#ifndef XML2JSON_HPP_INCLUDED
+﻿#ifndef XML2JSON_HPP_INCLUDED
 #define XML2JSON_HPP_INCLUDED
 
 // Copyright (C) 2015 Alan Zhuang (Cheedoong)	HKUST.  [Updated to the latest version of rapidjson]

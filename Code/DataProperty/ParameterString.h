@@ -1,4 +1,4 @@
-#ifndef _PARAMETERSTRING_H_
+ï»¿#ifndef _PARAMETERSTRING_H_
 #define _PARAMETERSTRING_H_
 
 #include "ParameterBase.h"
@@ -13,10 +13,10 @@ namespace DataProperty
 		ParameterString();
 		~ParameterString() = default;
 
-		void copy(ParameterBase* ori) override;
-		//»ñÈ¡Öµ
+		void copy(ParameterBase* ori, bool valueOnly = false) override;
+		//è·å–å€¼
 		QString getValue();
-		//ÉèÖÃÖµ
+		//è®¾ç½®å€¼
 		void setValue(QString s);
 		bool isSameValueWith(ParameterBase* p) override;
 

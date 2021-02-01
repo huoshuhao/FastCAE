@@ -1,4 +1,4 @@
-#ifndef SKETCHWIDGETPOINT_H_
+﻿#ifndef SKETCHWIDGETPOINT_H_
 #define SKETCHWIDGETPOINT_H_
 
 #include "geoDialogBase.h"

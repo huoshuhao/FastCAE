@@ -1,4 +1,4 @@
-#ifndef _SELFDEFINEOBJAPI_H_
+﻿#ifndef _SELFDEFINEOBJAPI_H_
 #define _SELFDEFINEOBJAPI_H_
 
 #include <QtCore/QtGlobal>

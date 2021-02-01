@@ -1,4 +1,4 @@
-#ifndef SKETCHVIEWPROVIDER_H_
+﻿#ifndef SKETCHVIEWPROVIDER_H_
 #define SKETCHVIEWPROVIDER_H_
 
 #include <QObject>

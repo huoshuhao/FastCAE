@@ -1,4 +1,4 @@
-#include "EditorSolverManager.h"
+﻿#include "EditorSolverManager.h"
 #include "ui_EditorSolverManager.h"
 #include "EditorSolverValue.h"
 #include "ConfigOptions/ConfigOptions.h"

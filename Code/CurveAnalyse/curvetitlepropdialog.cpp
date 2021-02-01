@@ -1,4 +1,4 @@
-#include "curvetitlepropdialog.h"
+﻿#include "curvetitlepropdialog.h"
 #include "ui_curvetitlepropdialog.h"
 #include "qcolordialog.h"
 

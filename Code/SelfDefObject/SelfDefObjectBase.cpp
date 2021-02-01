@@ -1,4 +1,4 @@
-#include "SelfDefObjectBase.h"
+﻿#include "SelfDefObjectBase.h"
 #include <QHBoxLayout>
 
 SelfDefObjBase::SelfDefObjBase(ObjType type)

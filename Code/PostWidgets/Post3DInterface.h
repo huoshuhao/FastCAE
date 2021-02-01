@@ -1,4 +1,4 @@
-#ifndef _POST3DWINDOWINTERFACE_H_
+ï»¿#ifndef _POST3DWINDOWINTERFACE_H_
 #define _POST3DWINDOWINTERFACE_H_
 
 #include "PostWindowBase.h"
@@ -22,10 +22,10 @@ namespace Post
 	public:
 		Post3DWindowInterface(GUI::MainWindow* m, int proid);
 		~Post3DWindowInterface();
-		//»ñÈ¡ÈıÎ¬»æÍ¼´°¿Ú
+		//è·å–ä¸‰ç»´ç»˜å›¾çª—å£
 		Post3DWindow* getWindow();
 		virtual void reTranslate() override;
-		void saveImage(QString filename, int width, int heigh, bool showDlg) override;
+		void saveImage(QString fileName, int width, int heigh, bool showDlg) override;
 
 	private:
 		void init();

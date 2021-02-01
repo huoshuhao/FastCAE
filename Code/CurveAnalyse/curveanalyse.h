@@ -1,4 +1,4 @@
-#ifndef CURVEANALYSE_H
+﻿#ifndef CURVEANALYSE_H
 #define CURVEANALYSE_H
 
 #include "curveanalyse_global.h"

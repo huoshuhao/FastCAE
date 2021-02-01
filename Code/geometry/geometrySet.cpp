@@ -1,4 +1,4 @@
-#include "geometrySet.h"
+ï»¿#include "geometrySet.h"
 #include "geometryModelParaBase.h"
 #include "geometry/geometryModelParaBase.h"
 #include <vtkDataSet.h>
@@ -19,6 +19,8 @@
 namespace Geometry
 {
 	int GeometrySet::idOffset = 0;
+	TopoDS_Shape* GeometrySet::tempShape = new TopoDS_Shape;
+
 	int GeometrySet::getMaxID()
 	{
 		return idOffset;
@@ -80,18 +82,66 @@ namespace Geometry
 	{
 		return _shape;
 	}
-	void GeometrySet::setStlDataSet(vtkSmartPointer<vtkDataSet> polyData)
+
+	TopoDS_Shape* GeometrySet::getShape(int type, int index)
 	{
-		_polyData = polyData;
-		appendProperty(QObject::tr("Triangles"), (int)polyData->GetNumberOfCells());
+		*tempShape = TopoDS_Shape();
+		TopAbs_ShapeEnum shapeType;
+		switch (type)
+		{
+		case 1: shapeType = TopAbs_VERTEX; break;
+		case 2: shapeType = TopAbs_EDGE; break;
+		case 3: shapeType = TopAbs_FACE; break;
+		case 4: shapeType = TopAbs_SOLID; break;
+		default:  return tempShape;
+		}
+		TopExp_Explorer ptExp(*_shape, shapeType);
+		for (int i = 0; ptExp.More(); ptExp.Next(), ++i)
+		{
+			if (i == index)
+			{
+				*tempShape = ptExp.Current();
+				break;
+			}
+				
+		}
+		return tempShape;
+		
 	}
-	vtkDataSet* GeometrySet::getStlDataSet()
+
+	const TopoDS_Shape& GeometrySet::getRealShape(int type, int index)
 	{
-		return _polyData;
+		*tempShape = TopoDS_Shape();
+		TopAbs_ShapeEnum shapeType;
+		switch (type)
+		{
+		case 1: shapeType = TopAbs_VERTEX; break;
+		case 2: shapeType = TopAbs_EDGE; break;
+		case 3: shapeType = TopAbs_FACE; break;
+		case 4: shapeType = TopAbs_SOLID; break;
+		default: return TopoDS_Shape();
+		}
+		TopExp_Explorer ptExp(*_shape, shapeType);
+		for (int i = 0; ptExp.More(); ptExp.Next(), ++i)
+		{
+			if (i == index)
+				return ptExp.Current();
+		}
+		return TopoDS_Shape();
 	}
+
+// 	void GeometrySet::setStlDataSet(vtkSmartPointer<vtkDataSet> polyData)
+// 	{
+// 		_polyData = polyData;
+// 		appendProperty(QObject::tr("Triangles"), (int)polyData->GetNumberOfCells());
+// 	}
+// 	vtkDataSet* GeometrySet::getStlDataSet()
+// 	{
+// 		return _polyData;
+// 	}
 	QDomElement& GeometrySet::writeToProjectFile(QDomDocument* doc, QDomElement* ele, bool isDiso)
 	{
-		QDomElement element = doc->createElement("GeoSet");  //´´½¨×Ó½Úµã
+		QDomElement element = doc->createElement("GeoSet");  //åˆ›å»ºå­èŠ‚ç‚¹
 		QDomAttr idattr = doc->createAttribute("ID");
 		idattr.setValue(QString::number(_id));
 		element.setAttributeNode(idattr);
@@ -108,7 +158,7 @@ namespace Geometry
 // 		pathele.appendChild(pathtext);
 // 		element.appendChild(pathele);
 		
-		ele->appendChild(element);  //×Ó½Úµã¹ÒÔØ
+		ele->appendChild(element);  //å­èŠ‚ç‚¹æŒ‚è½½
 		if (_parameter != nullptr)
 			_parameter->writeToProjectFile(doc, &element);
 
@@ -255,7 +305,7 @@ namespace Geometry
 
 	void GeometrySet::writeSubSet(QDomDocument* doc, QDomElement* parent, bool isdiso)
 	{
-		QDomElement element = doc->createElement("SubSet");  //´´½¨×Ó½Úµã
+		QDomElement element = doc->createElement("SubSet");  //åˆ›å»ºå­èŠ‚ç‚¹
 		QDomAttr idattr = doc->createAttribute("ID");
 		idattr.setValue(QString::number(_id));
 		element.setAttributeNode(idattr);
@@ -268,7 +318,7 @@ namespace Geometry
 		nameele.appendChild(nameText);
 		element.appendChild(nameele);
 
-		parent->appendChild(element);  //×Ó½Úµã¹ÒÔØ
+		parent->appendChild(element);  //å­èŠ‚ç‚¹æŒ‚è½½
 		if (_parameter != nullptr)
 			_parameter->writeToProjectFile(doc, &element);
 
@@ -334,6 +384,29 @@ namespace Geometry
 		}
 		return s;
 			
+	}
+
+	int GeometrySet::getGeoMemberCount(int type)
+	{
+		TopAbs_ShapeEnum shapeType;
+		switch (type)
+		{
+		case 1: shapeType = TopAbs_VERTEX; break;
+		case 2: shapeType = TopAbs_EDGE; break;
+		case 3: shapeType = TopAbs_FACE; break;
+		case 4: shapeType = TopAbs_SOLID; break;
+		default:  return -1;
+		}
+		TopExp_Explorer ptExp(*_shape, shapeType);
+		QList<Handle(TopoDS_TShape)> tshapelist;
+		for (int index = 0; ptExp.More(); ptExp.Next(), ++index)
+		{
+			TopoDS_Shape s = ptExp.Current();
+			Handle(TopoDS_TShape) ts = s.TShape();
+			if (tshapelist.contains(ts)) continue;
+			tshapelist.append(ts);
+		}
+		return tshapelist.size();
 	}
 
 	void GeometrySet::releaseSubSet()

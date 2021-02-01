@@ -1,4 +1,4 @@
-#ifndef SMOOTH_QUADRANGLEFACET_H
+﻿#ifndef SMOOTH_QUADRANGLEFACET_H
 #define SMOOTH_QUADRANGLEFACET_H
 #include "Smooth_Point.h"
 #include <set>

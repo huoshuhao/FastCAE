@@ -1,15 +1,13 @@
-#ifndef GEOMETRYVIEWPROVIDER_H_
+Ôªø#ifndef GEOMETRYVIEWPROVIDER_H_
 #define GEOMETRYVIEWPROVIDER_H_
 
 #include <QObject>
-#include <QMultiHash>
+#include <QPair>
 #include <QHash>
-#include <QList>
 #include "moduleBase/ModuleType.h"
 
-class TopoDS_Shape;
-class TopoDS_Edge;
 class vtkActor;
+class vtkPolyData;
 
 namespace GUI
 {
@@ -27,6 +25,7 @@ namespace Geometry
 namespace MainWidget
 {
 	class PreWindow;
+	class GeometryViewData;
 
 	class GeometryViewProvider: public QObject
 	{
@@ -35,67 +34,52 @@ namespace MainWidget
 		GeometryViewProvider(GUI::MainWindow* mainwindow, PreWindow* preWin);
 		~GeometryViewProvider();
 
-		void showShape(TopoDS_Shape& shape,Geometry::GeometrySet* set);
 		void updateGeoActors();
 		void updateGraphOption();
 		void updateDiaplayStates(Geometry::GeometrySet* s, bool visibility);
 		QMultiHash<Geometry::GeometrySet*, int> getGeoSelectItems();
 
 	public slots:
-		void showGeoSet(Geometry::GeometrySet* set);
+		void showGeoSet(Geometry::GeometrySet* set, bool render = true);
 		void showDatum(Geometry::GeometryDatum* datm);
 		void removeActors(Geometry::GeometrySet* set);
-		void removeDatumActors(Geometry::GeometryDatum* plane);
+		void setGeometryDisplay(bool v, bool c, bool f);
 		void setGeoSelectMode(int);
-		void selectGeometry(vtkActor*,bool);
-		void highLightGeoset(Geometry::GeometrySet* s, bool on);
-		void highLightGeoPoint(Geometry::GeometrySet* s, int, QList<vtkActor*>*);
-		void highLightGeoEdge(Geometry::GeometrySet* s, int, QList<vtkActor*>*);
-		void highLightGeoFace(Geometry::GeometrySet* s, int, QList<vtkActor*>*);
-		void setGeometryDisplay( bool v, bool c, bool f);
-		//ªπ‘≠º∏∫Œ—’…´°£
-		void RestoreGeoColor();
-// 		//º§ªÓº∏∫Œ—°»°ƒ£ Ω
-// 		void activeSelectGeo(bool on);
-// 		//πÿ±’º∏∫Œ—°»°ƒ£ Ω
-// 		void closeSelectGeo(int geomodel);
+
+
+	signals:
+		void geoShapeSelected(Geometry::GeometrySet*shape, int index);
+
+	private slots:
+	    //È´ò‰∫ÆÊòæÁ§∫ÂáΩÊï∞
+		void highLightGeometrySet(Geometry::GeometrySet* s, bool on);
+		void highLightGeometryFace(Geometry::GeometrySet* s, int id, bool on);//È´ò‰∫ÆÊòæÁ§∫Èù¢
+		void highLightGeometryEdge(Geometry::GeometrySet* s, int id, bool on);//È´ò‰∫ÆÊòæÁ§∫Ëæπ
+		void highLightGeometryPoint(Geometry::GeometrySet* s, int id, bool on);//È´ò‰∫ÆÊòæÁ§∫ÁÇπ
+		void highLightGeometrySolid(Geometry::GeometrySet* s, int id, bool on);
+		void selectGeometry(bool ctrlpress);
+		void preSelectGeometry(vtkActor* ac, int index);
+		void clearAllHighLight();
+
 	private:
 		void init();
-		void showVertex(Geometry::GeometrySet* set); 
-		void showEdge(Geometry::GeometrySet* set);
-		void showFace(Geometry::GeometrySet* set);
-		void showDatumPlane(Geometry::GeometryDatum* datum);
-		
-		void setPickable(QList<vtkActor*> acs, bool visibility);
-
 
 	private:
+		struct GeoViewObj
+		{
+			QPair<vtkActor*, vtkPolyData*> _faceObj{ nullptr,nullptr };
+			QPair<vtkActor*, vtkPolyData*> _edgeObj{ nullptr,nullptr };
+			QPair<vtkActor*, vtkPolyData*> _pointObj{ nullptr,nullptr };
+		};
+
 		PreWindow* _preWindow{};
 		GUI::MainWindow* _mainWindow{};
 		Geometry::GeometryData* _geoData{};
-		//∏˘æ›ctrlpress◊¥Ã¨¥Ê∑≈actor
-		QList<vtkActor*> _addActors{};
-		QList<vtkActor*> _vertexActors{};
-		QList<vtkActor*> _edgeActors{};
-		QList<vtkActor*> _faceActors{};
-		bool _showvertex{ false };
-		bool _showedge{ false };
-		bool _showface{ true };
-//		bool _activeSeletGeo{ false };
+		GeometryViewData* _viewData{};
 
-		QMultiHash<Geometry::GeometrySet*, vtkActor*> _setActors{};
-		QMultiHash<Geometry::GeometryDatum*, vtkActor*> _datumActors{};
-
-		QHash<vtkActor*, int> _actotShapeHash{};
-
-		ModuleBase::SelectModel _selectType{ ModuleBase::None };
-
-		QMultiHash<Geometry::GeometrySet*, int> _selectItems{};
-
+		QHash<Geometry::GeometrySet*, GeoViewObj> _geoViewHash{};
 	};
 
 }
-
-
 
 #endif

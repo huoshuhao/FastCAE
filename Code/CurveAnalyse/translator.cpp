@@ -1,4 +1,4 @@
-#include "translator.h"
+﻿#include "translator.h"
 #include <QApplication>
 #include <QTranslator>
 #include <QStringList>

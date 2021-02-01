@@ -42,7 +42,8 @@ win32{
   -L../../output/bin -lMainWindow \
   -L../../output/bin -lPluginManager \
   -L../../output/bin -lBCBase \
- 
+  -L../../output/bin -lSARibbonBar
+
   Debug:CONFIG	    	+=  console
   Debug:DESTDIR         = ../../output/bin_d/plugins
   Debug:MOC_DIR         = ./debug/moc 
@@ -71,7 +72,8 @@ win32{
   -L../../output/bin_d -lMainWindow \
   -L../../output/bin_d -lPluginManager \
   -L../../output/bin_d -lBCBase \
-   
+  -L../../output/bin_d -lSARibbonBar \
+
   message("Windows pluginCustomizer build")
   
 }
@@ -109,7 +111,8 @@ unix{
   -L../../output/bin -lMainWindow \
   -L../../output/bin -lPluginManager \
   -L../../output/bin -lBCBase \
-	
+  -L../../output/bin -lSARibbonBar
+
   message("Linux Customizer build")
   
 }

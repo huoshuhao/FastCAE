@@ -1,4 +1,4 @@
-#ifndef CONSOLECMDDOCKWIDGET_H
+﻿#ifndef CONSOLECMDDOCKWIDGET_H
 #define CONSOLECMDDOCKWIDGET_H
 
 #include <QDockWidget>

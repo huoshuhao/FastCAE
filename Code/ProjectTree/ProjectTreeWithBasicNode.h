@@ -1,4 +1,4 @@
-#ifndef _PROJECTTREEWITHBASICNODE_H_
+﻿#ifndef _PROJECTTREEWITHBASICNODE_H_
 #define _PROJECTTREEWITHBASICNODE_H_
 
 #include "projectTreeBase.h"
@@ -25,6 +25,10 @@ namespace Post
 	class Post3DWindowInterface;
 	class PostWindowBase;
 }
+namespace Geometry
+{
+	class GeoComponent;
+}
 
 namespace ProjectTree
 {
@@ -35,24 +39,34 @@ namespace ProjectTree
 	public:
 		ProjectTreeWithBasicNode(GUI::MainWindow* mainwindow);
 		~ProjectTreeWithBasicNode();
-		//�鿴��ͼ
+		//查看云图
 		void viewCounterPost(QString variable);
-		//�鿴����
+		//查看向量
 		void viewVectorPost(QString variable);
 		virtual void reTranslate() override;
 		virtual void updateTree() override;
-		//���������ڵ�
+		//更新子树节点
 		virtual void updateGeometrySubTree();
-		virtual void updateMeshSubTree();
+		virtual void updateComponentSubTree();
+//		virtual void updateMeshSetSubTree();
+//		virtual void updateGeoComponentTree();
 		virtual void updateBCSubTree();
 		virtual void updateReportTree();
 		virtual void updateMonitorTree();
 		virtual void updatePostTree();
-
+		//获取关联的组件ID(包括网格组件和几何组件)
+		const QList<int>& getComponentIDList();
+		//通过组件ID删除算例中的项，并更新树
+		void removeCaseComponentByID(int);
+		//通过组件ID重命名算例中的项，并更新树
+		void renameCaseComponentByID(int);
 
 	signals:
 		void highLightSet(MeshData::MeshSet* set);
 		void openRealTimeWin(Post::RealTimeWindowBase* w, int id);
+		void highLightGeoComponent(Geometry::GeoComponent*);
+		void clearAllHighLightSig();
+		void addComponentRootItemSig();
 
 	protected:
 		virtual void initBasicNode(QTreeWidgetItem* root) override;
@@ -65,9 +79,11 @@ namespace ProjectTree
 		virtual void vectorContextMenu(QMenu* menu);
 		virtual DataProperty::DataBase* getCurrentItemData();
 
+		//bool readInForm();
+
 	protected slots:
 	    virtual void importGeometry();
-		virtual void importMesh();
+		virtual void importComponents();
 		virtual void removeItem();
 		virtual void addBC();
 		virtual void createReport();
@@ -77,10 +93,11 @@ namespace ProjectTree
 		virtual void viewCounter(QString variable);
 		virtual void viewVector(QString variable);
 		virtual void closePostWindow(Post::PostWindowBase* w);
+		void addComponentRootItemSlot();
 
 	protected:
 		QTreeWidgetItem* _geometryRootItem{};
-		QTreeWidgetItem* _meshRootItem{};
+		QTreeWidgetItem* _ComponentRootItem{};
 		QTreeWidgetItem* _simulationSettingItem{};
 		QTreeWidgetItem* _boundaryConditionItem{};
 		QTreeWidgetItem* _solverSettingItem{};
@@ -103,7 +120,7 @@ namespace ProjectTree
 
 		ModelData::ModelDataBaseExtend* _modelDataExtend{};
 
-
+		QList<QTreeWidgetItem*> _ComponentItems;
 	};
 
 

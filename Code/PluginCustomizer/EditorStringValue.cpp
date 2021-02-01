@@ -1,4 +1,4 @@
-#include "EditorStringValue.h"
+﻿#include "EditorStringValue.h"
 #include "ui_EditorStringValue.h"
 #include "DataProperty/ParameterString.h"
 #include "InputValidator.h"

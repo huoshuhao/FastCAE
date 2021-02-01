@@ -1,4 +1,4 @@
-#include "actorMoveInteractorStyle.h"
+﻿#include "actorMoveInteractorStyle.h"
 #include "vtkRenderWindow.h"
 #include "qdebug.h"
 #include "vtkMatrix4x4.h"

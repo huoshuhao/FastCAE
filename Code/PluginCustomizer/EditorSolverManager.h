@@ -1,4 +1,4 @@
-#ifndef _EDITORSOLVERMANAGER_H_
+﻿#ifndef _EDITORSOLVERMANAGER_H_
 #define _EDITORSOLVERMANAGER_H_
 
 #include <QDialog>

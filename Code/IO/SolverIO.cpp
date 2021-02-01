@@ -1,15 +1,16 @@
-#include "SolverIO.h"
+﻿#include "SolverIO.h"
 #include "IOConfig.h"
 #include "ModelData/modelDataBase.h"
 #include "SolverInfoWriter.h"
 #include "TemplateReplacer.h"
+#include "settings/busAPI.h"
+#include "GenerateMesh.h"
 #include <QFile>
 #include <QDir>
 #include <QDebug>
 
 namespace IO
 {
-
 	bool SolverIO::writeInpFile(QString suffix, ModelData::ModelDataBase* data)
 	{
 		if (suffix.toLower() == "xml")
@@ -27,13 +28,13 @@ namespace IO
 	{
 		QFileInfo temFile(templa);
 		if (!temFile.exists()) return false;
-		QString filename = temFile.fileName();
+		QString fileName = temFile.fileName();
 
 		QDir desDir(path);
 		if (!desDir.exists())
 			desDir.mkpath(path);
 
-		QString desFilePath = path + "/" + filename;
+		QString desFilePath = path + "/" + fileName;
 		qDebug() << desFilePath;
 
 		if (QFile::exists(desFilePath))
@@ -70,11 +71,13 @@ namespace IO
 		writer.appendModel(m);
 		bool ok = writer.write();
 
+		if (m->getGeoComponentIDList().size() != 0)
+		{
+			GUI::MainWindow* mw = Setting::BusAPI::instance()->getMainWindow();
+			GenerateMesh *gm = new GenerateMesh;
+			gm->iniGenerateMesh(mw, m->getPath());
+			gm->startGenerateMesh();
+		}
 		return ok;
 	}
-
-
-
-
-
 }

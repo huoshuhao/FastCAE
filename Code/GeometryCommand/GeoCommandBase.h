@@ -1,4 +1,4 @@
-#ifndef GEOCOMMANDBASE_H_
+﻿#ifndef GEOCOMMANDBASE_H_
 #define GEOCOMMANDBASE_H_
 
 #ifndef PI
@@ -8,6 +8,11 @@
 #include<QObject>
 #include "geometryCommandAPI.h"
 #include <QList>
+
+namespace DataProperty
+{
+	class DataBase;
+}
 
 namespace GUI
 {
@@ -56,13 +61,12 @@ namespace Command
 
 	signals:
 		void updateGeoTree();
-		void showSet(Geometry::GeometrySet* s);
+		void showSet(Geometry::GeometrySet* s, bool r = true);
 		void showDatum(Geometry::GeometryDatum*);
 		void removeDisplayActor(Geometry::GeometrySet* s);
 		void removeDisplayDatumActor(Geometry::GeometryDatum*);
 		void updateActions();
-
-		
+		void updatePropertySig(DataProperty::DataBase* data);
 
 	protected:
 		GUI::MainWindow* _mainWindow{};

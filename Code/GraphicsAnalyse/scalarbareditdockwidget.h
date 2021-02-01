@@ -1,4 +1,4 @@
-#ifndef SCALARBAREDITDOCKWIDGET_H
+﻿#ifndef SCALARBAREDITDOCKWIDGET_H
 #define SCALARBAREDITDOCKWIDGET_H
 #include <QDockWidget>
 #include "global.h"

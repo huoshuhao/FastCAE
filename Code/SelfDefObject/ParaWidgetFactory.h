@@ -1,4 +1,4 @@
-#ifndef _PARAWIDGETFACTORY_H_
+﻿#ifndef _PARAWIDGETFACTORY_H_
 #define _PARAWIDGETFACTORY_H_
 
 #include "SelfDefObjectAPI.h"

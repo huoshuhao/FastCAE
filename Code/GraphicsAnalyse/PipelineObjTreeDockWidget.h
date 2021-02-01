@@ -1,4 +1,4 @@
-#ifndef PIPELINEOBJTREEDOCKWIDGET_H
+ï»¿#ifndef PIPELINEOBJTREEDOCKWIDGET_H
 #define PIPELINEOBJTREEDOCKWIDGET_H
 #include <QDockWidget>
 #include <QWidget>
@@ -59,27 +59,27 @@ public:
 
 	//script
 	void editScript(QString tep_filename);
-	void editScript_start(QString filename);
-	void editScript_dataSource(QTreeWidgetItem* data_item, QString filename);
-	void editScript_Properties_Zone(PipelineObject* piplnObj, QString filename);
-	void editScript_filter(QTreeWidgetItem* data_item, QString filename);
-	void editScript_scalarBarPosition(QTreeWidgetItem* data_item, QString filename);
-	void editScript_Properties_Plane(PipelineObject* piplnObj, QString filename);
-	void editScript_Properties_Vector(PipelineObject* piplnObj, QString filename);
-	void editScript_Properties_Contour(PipelineObject* piplnObj, QString filename);
-	void editScript_Properties_Reflection(PipelineObject* piplnObj, QString filename);
-	void editScript_Properties_Smooth(PipelineObject* piplnObj, QString filename);
-	void editScript_Properties_Calculator(PipelineObject* piplnObj, QString filename);
-	void editScript_Properties_StreamLine(PipelineObject* piplnObj, QString filename);
-	void editScript_Properties_MooringLine(PipelineObject* piplnObj, QString filename);
-	void editScript_Properties_AniDisplace(PipelineObject* piplnObj, QString filename);
-	void editScript_Properties(PipelineObject* piplnObj, QString filename);
-	void editScript_Properties_RenderView(QString filename);
-	void editScript_camera(QString filename);
-	void editScript_end(QString filename);
+	void editScript_start(QString fileName);
+	void editScript_dataSource(QTreeWidgetItem* data_item, QString fileName);
+	void editScript_Properties_Zone(PipelineObject* piplnObj, QString fileName);
+	void editScript_filter(QTreeWidgetItem* data_item, QString fileName);
+	void editScript_scalarBarPosition(QTreeWidgetItem* data_item, QString fileName);
+	void editScript_Properties_Plane(PipelineObject* piplnObj, QString fileName);
+	void editScript_Properties_Vector(PipelineObject* piplnObj, QString fileName);
+	void editScript_Properties_Contour(PipelineObject* piplnObj, QString fileName);
+	void editScript_Properties_Reflection(PipelineObject* piplnObj, QString fileName);
+	void editScript_Properties_Smooth(PipelineObject* piplnObj, QString fileName);
+	void editScript_Properties_Calculator(PipelineObject* piplnObj, QString fileName);
+	void editScript_Properties_StreamLine(PipelineObject* piplnObj, QString fileName);
+	void editScript_Properties_MooringLine(PipelineObject* piplnObj, QString fileName);
+	void editScript_Properties_AniDisplace(PipelineObject* piplnObj, QString fileName);
+	void editScript_Properties(PipelineObject* piplnObj, QString fileName);
+	void editScript_Properties_RenderView(QString fileName);
+	void editScript_camera(QString fileName);
+	void editScript_end(QString fileName);
 	void script_set_renderViewPara(renderview_global_prop tep_para);
 	void script_set_cameraPara(Camera_Para tep_para);
-	void editScript_Pick(QString filename);
+	void editScript_Pick(QString fileName);
 	QString editScript_Properties_LookupTable(PipelineObject* piplnObj);
 	QString editScript_Properties_LookupOpacity(PipelineObject* piplnObj);
 	//QString script_imageName;
@@ -90,10 +90,10 @@ public:
 	//script
 	virtual void reTranslate();
 
-	///<MG »ñÈ¡ÈýÎ¬ºó´¦ÀíÊ÷ÉÏÎÄ¼þ/ÎÄ¼þ×éµã¸öÊý
+	///<MG èŽ·å–ä¸‰ç»´åŽå¤„ç†æ ‘ä¸Šæ–‡ä»¶/æ–‡ä»¶ç»„ç‚¹ä¸ªæ•°
 	int getNodeNum() const;
 
-	///<MG ¸ù¾Ýindex »ñÈ¡½Úµã
+	///<MG æ ¹æ®index èŽ·å–èŠ‚ç‚¹
 	PipelineObject * getNodeByIndex(int index);
 
 signals:
@@ -124,7 +124,7 @@ public slots :
     
     void slot_addFile();
 	void OnDeletePipelineItem();
-    void slot_add_dropItem(QString filename);
+    void slot_add_dropItem(QString fileName);
 	void slot_treeItem_disable(PipelineObject*);
 	void slot_script_refresh_pickData(struct pick_pipelineObj_propData pick_Data);
 
@@ -144,7 +144,7 @@ private:
 	QTreeWidgetItem* cur_Item;
 	bool flag_pipelineObj_selected;
 	QTreeWidget *pipelineObjTree;
-	void SetPipelineIconByPipelineType(PipelineObject* pipeObj, QTreeWidgetItem* pitem);//¸ù¾ÝpipelineÀàÐÍÉèÖÃÍ¼±ê
+	void SetPipelineIconByPipelineType(PipelineObject* pipeObj, QTreeWidgetItem* pitem);//æ ¹æ®pipelineç±»åž‹è®¾ç½®å›¾æ ‡
 	//script
 	bool flag_script_ani;
 	renderview_global_prop script_renderViewPara;

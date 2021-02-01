@@ -1,4 +1,4 @@
-#include "Frameless/WidgetData.h"
+﻿#include "Frameless/WidgetData.h"
 #include "Frameless/FramelessHelperPrivate.h"
 /***** WidgetData *****/
 

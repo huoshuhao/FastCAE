@@ -1,4 +1,4 @@
-#include "dialogCreateCone.h"
+﻿#include "dialogCreateCone.h"
 #include "ui_dialogCreateCone.h"
 #include "geometry/geometrySet.h"
 #include "geoPointWidget.h"
@@ -7,6 +7,7 @@
 #include "geometry/geometryParaCone.h"
 #include <QMessageBox>
 #include "python/PyAgent.h"
+#include <math.h>
 
 
 namespace GeometryWidget
@@ -37,11 +38,11 @@ namespace GeometryWidget
 		if (_ui != nullptr) delete _ui;
 	}
 
-	void CreateConeDialog::closeEvent(QCloseEvent *e)
-	{
-		QDialog::closeEvent(e);
-		delete this;
-	}
+// 	void CreateConeDialog::closeEvent(QCloseEvent *e)
+// 	{
+// 		QDialog::closeEvent(e);
+// 		delete this;
+// 	}
 
 	void CreateConeDialog::init()
 	{

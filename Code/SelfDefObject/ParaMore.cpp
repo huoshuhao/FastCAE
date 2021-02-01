@@ -1,4 +1,4 @@
-#include "ParaMore.h"
+﻿#include "ParaMore.h"
 #include "mainWindow/mainWindow.h"
 #include "ui_ParaMore.h"
 #include <QLineEdit>

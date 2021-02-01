@@ -1,4 +1,4 @@
-#ifndef SIMULATIONMODEL_H
+﻿#ifndef SIMULATIONMODEL_H
 #define SIMULATIONMODEL_H
 
 #include "ModelBase.h"

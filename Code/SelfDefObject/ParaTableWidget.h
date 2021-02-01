@@ -1,4 +1,4 @@
-#ifndef _PARATABLEWIDGET_H_
+﻿#ifndef _PARATABLEWIDGET_H_
 #define _PARATABLEWIDGET_H_
 
 #include <QTableWidget>

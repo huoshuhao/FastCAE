@@ -1,4 +1,4 @@
-#ifndef _PARALINEEDIT_H_
+﻿#ifndef _PARALINEEDIT_H_
 #define _PARALINEEDIT_H_
 
 #include "SelfDefObjectAPI.h"

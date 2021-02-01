@@ -1,7 +1,9 @@
-#ifndef DIALOG_MIRROR_FEATURE_H_
+﻿#ifndef DIALOG_MIRROR_FEATURE_H_
 #define DIALOG_MIRROR_FEATURE_H_
 
 #include "geoDialogBase.h"
+#include <QMultiHash>
+#include <QPair>
 
 namespace Geometry
 {
@@ -12,8 +14,6 @@ namespace Ui
 {
 	class MirrorFeatureDialog;
 }
-
-class vtkActor;
 
 namespace GeometryWidget
 {
@@ -29,7 +29,7 @@ namespace GeometryWidget
 
 	private:
 		void init();
-		void closeEvent(QCloseEvent *) override;
+//		void closeEvent(QCloseEvent *) override;
 		void reject() override;
 		void accept() override;
 		bool getDirection(double* basePt, double* dir);
@@ -38,7 +38,7 @@ namespace GeometryWidget
 	    void on_TypeChanged(int index);
 		void on_geoSelectSurface_clicked();
 		void on_geoSelectSurface_1_clicked();
-		void selectActorShape(vtkActor* actor, int index, Geometry::GeometrySet* set) override;
+		void shapeSlected(Geometry::GeometrySet* set, int index) override;
 		void pointWidgetClicked(GeoPointWidget* g);
 		void on_radioButtonUser();
 
@@ -48,11 +48,8 @@ namespace GeometryWidget
 
 		bool _selectBody{ false };
 		bool _selectPlane{ false };
-
-		QList<Geometry::GeometrySet*> _geobodyList{};
-		Geometry::GeometrySet* _faceBody{};
-		int _faceIndex{ -1 };
-		QList<vtkActor*> _faceActor{};
+		QMultiHash<Geometry::GeometrySet*, int> _bodysHash{};
+		QPair <Geometry::GeometrySet*, int> _faceBodyPair{};
 		int _typeindex{0};
 		int _planeindex{0};
 

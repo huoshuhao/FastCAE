@@ -1,4 +1,4 @@
-#include <ui_PluginManageDialog.h>
+﻿#include <ui_PluginManageDialog.h>
 #include "PluginManageDialog.h"
 #include "mainWindow/mainWindow.h"
 #include "PluginManager.h"

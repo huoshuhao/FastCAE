@@ -1,4 +1,4 @@
-#ifndef DIALOGCREATEPOINT_H_
+﻿#ifndef DIALOGCREATEPOINT_H_
 #define DIALOGCREATEPOINT_H_
 
 #include "geoDialogBase.h"
@@ -23,7 +23,7 @@ namespace GeometryWidget
 	private:
 		void init();
 
-		void closeEvent(QCloseEvent *);
+//		void closeEvent(QCloseEvent *);
 		void reject() override;
 		void accept() override;
 

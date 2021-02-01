@@ -1,8 +1,9 @@
-#ifndef _GMESHMANAGER_H_
+﻿#ifndef _GMESHMANAGER_H_
 #define _GMESHMANAGER_H_
 
 #include <QObject>
 #include <QHash>
+#include "GmshModuleAPI.h"
 
 class QWidget;
 
@@ -16,7 +17,7 @@ namespace Gmsh
 {
 	class GmshThread;
 
-	class GmshThreadManager : public QObject
+	class GMSHAPI GmshThreadManager : public QObject
 	{
 		Q_OBJECT
 	public:

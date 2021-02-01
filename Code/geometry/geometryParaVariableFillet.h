@@ -1,4 +1,4 @@
-#ifndef _GEOMETRYPARAVARIABLEFILLET_H_
+ï»¿#ifndef _GEOMETRYPARAVARIABLEFILLET_H_
 #define _GEOMETRYPARAVARIABLEFILLET_H_
 
 #include "geometryModelParaBase.h"
@@ -22,11 +22,13 @@ namespace Geometry
 		void setInputSet(GeometrySet* s);
 		GeometrySet* getGeometrySet();
 
-		void setEdgeSet(GeometrySet* s);
+	/*	void setEdgeSet(GeometrySet* s);
 		GeometrySet* getEdgeSet();
 
 		void setEdgeIndex(int e);
-		int getEdgeIndex();
+		int getEdgeIndex();*/
+		void setEdgePair(QPair<Geometry::GeometrySet*, int> edgepair);
+		QPair<Geometry::GeometrySet*, int> getEdgePair();
 
 		void setBasicRadius(double b);
 		double getBasicRadius();
@@ -35,16 +37,16 @@ namespace Geometry
 		QMap<double, double> getRadiuMap();
 
 
-		///Êı¾İĞ´Èë¹¤³ÌÎÄ¼ş
+		///æ•°æ®å†™å…¥å·¥ç¨‹æ–‡ä»¶
 		QDomElement& writeToProjectFile(QDomDocument* doc, QDomElement* parent) override;
-		///´Ó¹¤³ÌÎÄ¼ş¶ÁÈëÊı¾İ
+		///ä»å·¥ç¨‹æ–‡ä»¶è¯»å…¥æ•°æ®
 		virtual void readDataFromProjectFile(QDomElement* e) override;
 
 	private:
-		int _edgeindex{};
-		GeometrySet* _edgeset{};
+		/*int _edgeindex{};
+		GeometrySet* _edgeset{};*/
 		GeometrySet* _inputSet{};
-
+		QPair<Geometry::GeometrySet*, int> _edgpair{};
 		double _basicradius;
 		QMap<double, double> _radiusmap{};
 

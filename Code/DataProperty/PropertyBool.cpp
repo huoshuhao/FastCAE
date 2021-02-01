@@ -1,4 +1,4 @@
-#include "PropertyBool.h"
+﻿#include "PropertyBool.h"
 
 namespace DataProperty
 {

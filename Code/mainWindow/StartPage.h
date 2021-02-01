@@ -1,4 +1,4 @@
-#ifndef STARTPAGE_H
+﻿#ifndef STARTPAGE_H
 #define STARTPAGE_H
 
 #include <QWidget>

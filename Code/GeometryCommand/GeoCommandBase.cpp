@@ -1,4 +1,4 @@
-#include "GeoCommandBase.h"
+﻿#include "GeoCommandBase.h"
 #include "geometry/geometryData.h"
 #include "mainWindow/mainWindow.h"
 #include "MainWidgets/preWindow.h"
@@ -17,10 +17,11 @@ namespace Command
 		{
 			connect(this, SIGNAL(updateGeoTree()), _mainWindow, SIGNAL(updateGeometryTreeSig()));
 			connect(this, SIGNAL(updateActions()), _mainWindow, SIGNAL(updateActionStatesSig()));
+			connect(this, SIGNAL(updatePropertySig(DataProperty::DataBase*)), _mainWindow, SIGNAL(updateProperty(DataProperty::DataBase*)));
 		}
 		if (_preWindow != nullptr)
 		{
-			connect(this, SIGNAL(showSet(Geometry::GeometrySet*)), _preWindow, SIGNAL(showGeoSet(Geometry::GeometrySet*)));
+			connect(this, SIGNAL(showSet(Geometry::GeometrySet*,bool)), _preWindow, SIGNAL(showGeoSet(Geometry::GeometrySet*,bool)));
 			connect(this, SIGNAL(showDatum(Geometry::GeometryDatum*)), _preWindow, SIGNAL(showDatum(Geometry::GeometryDatum*)));
 			connect(this, SIGNAL(removeDisplayActor(Geometry::GeometrySet*)), _preWindow, SIGNAL(removeGemoActors(Geometry::GeometrySet*)));
 			connect(this, SIGNAL(removeDisplayDatumActor(Geometry::GeometryDatum*)), _preWindow, SIGNAL(removeGeoDatumActors(Geometry::GeometryDatum*)));
@@ -32,7 +33,7 @@ namespace Command
 
 	void GeoCommandBase::undo()
 	{
-
+		emit updatePropertySig(nullptr);
 	}
 
 	void GeoCommandBase::redo()

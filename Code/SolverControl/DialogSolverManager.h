@@ -1,4 +1,4 @@
-#ifndef _DIALOGSOLVERMANAGER_H_
+﻿#ifndef _DIALOGSOLVERMANAGER_H_
 #define _DIALOGSOLVERMANAGER_H_
 
 #include <QDialog>

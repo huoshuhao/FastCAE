@@ -1,4 +1,4 @@
-#include "streamlinefilterpropform.h"
+﻿#include "streamlinefilterpropform.h"
 #include "ui_streamlinefilterpropform.h"
 #include "pipelineobjpropwidget.h"
 #include "FilterStreamLine.h"

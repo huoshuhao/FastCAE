@@ -1,4 +1,4 @@
-#include "geometryParaLoft.h"
+ï»¿#include "geometryParaLoft.h"
 #include <QDomElement>
 #include <QDomDocument>
 #include <QDomAttr>
@@ -45,7 +45,7 @@ namespace Geometry
 
 	QDomElement& GeometryParaLoft::writeToProjectFile(QDomDocument* doc, QDomElement* parent)
 	{
-		QDomElement element = doc->createElement("Parameter");  //´´½¨×Ó½Úµã
+		QDomElement element = doc->createElement("Parameter");  //åˆ›å»ºå­èŠ‚ç‚¹
 		QDomAttr typeattr = doc->createAttribute("Type");
 		typeattr.setValue(this->typeToString());
 		element.setAttributeNode(typeattr);
@@ -140,8 +140,6 @@ namespace Geometry
 			QString solidsr = solidList.at(0).toElement().text();
 			if (solidsr == "1") _issolid = true;
 			else if (solidsr == "0") _issolid = false;
-
-		
 	}
 	
 

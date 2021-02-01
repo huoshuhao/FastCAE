@@ -1,4 +1,4 @@
-#include "GeoCommandCreateBox.h"
+﻿#include "GeoCommandCreateBox.h"
 #include <BRepPrimAPI_MakeBox.hxx>
 #include <TopoDS.hxx>
 #include "geometry/geometryData.h"
@@ -43,7 +43,7 @@ namespace Command
 			return false;
 		}
 
-
+		
 		Geometry::GeometrySet* set = new Geometry::GeometrySet(Geometry::STEP);
 		
 		set->setShape(shape);
@@ -86,7 +86,7 @@ namespace Command
 		{
 			_geoData->removeTopGeometrySet(_res);
 		}
-		
+		GeoCommandBase::undo();
 		emit updateGeoTree();
 	}
 
@@ -99,7 +99,7 @@ namespace Command
 		}
 		else
 			_geoData->appendGeometrySet(_res);
-
+		
 		emit updateGeoTree();
 		emit showSet(_res);
 	}

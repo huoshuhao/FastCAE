@@ -1,4 +1,4 @@
-#include "saveimagedialog.h"
+﻿#include "saveimagedialog.h"
 #include "ui_saveimagedialog.h"
 
 saveImageDialog::saveImageDialog(QWidget *parent) :

@@ -1,4 +1,4 @@
-#ifndef _SETTINGAPI_H_
+﻿#ifndef _SETTINGAPI_H_
 #define _SETTINGAPI_H_
 
 #include <QtCore/QtGlobal>

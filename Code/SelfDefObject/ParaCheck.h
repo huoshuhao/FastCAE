@@ -1,4 +1,4 @@
-#ifndef _PARACHECK_H_
+﻿#ifndef _PARACHECK_H_
 #define _PARACHECK_H_
 
 #include "SelfDefObjectAPI.h"

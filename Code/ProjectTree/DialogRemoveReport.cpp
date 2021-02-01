@@ -1,4 +1,4 @@
-#include "DialogRemoveReport.h"
+﻿#include "DialogRemoveReport.h"
 #include "ui_DialogRemoveReport.h"
 
 namespace ProjectTree

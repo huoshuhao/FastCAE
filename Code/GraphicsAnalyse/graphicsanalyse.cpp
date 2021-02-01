@@ -1,4 +1,4 @@
-#include "graphicsanalyse.h"
+﻿#include "graphicsanalyse.h"
 
 
 GraphicsAnalyse::GraphicsAnalyse()

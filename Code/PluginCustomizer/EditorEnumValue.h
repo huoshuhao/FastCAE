@@ -1,4 +1,4 @@
-#ifndef EDITORENUMVALUE_H
+﻿#ifndef EDITORENUMVALUE_H
 #define EDITORENUMVALUE_H
 
 #include <QDialog>

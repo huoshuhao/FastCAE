@@ -1,4 +1,4 @@
-#include "DialogMeshChecking.h"
+﻿#include "DialogMeshChecking.h"
 #include "ui_DialogMeshChecking.h"
 #include "meshData/meshChecker.h"
 #include "PostWidgets/PostCustomPlot.h"

@@ -1,4 +1,4 @@
-#ifndef EDITORBOOLVALUE_H
+﻿#ifndef EDITORBOOLVALUE_H
 #define EDITORBOOLVALUE_H
 
 #include <QDialog>

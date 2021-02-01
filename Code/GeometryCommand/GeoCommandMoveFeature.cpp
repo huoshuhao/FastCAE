@@ -1,11 +1,15 @@
-#include "GeoCommandMoveFeature.h"
+﻿#include "GeoCommandMoveFeature.h"
 #include "geometry/geometryData.h"
 #include "geometry/geometrySet.h"
 #include <TopoDS_Shape.hxx>
 #include <gp_Ax2.hxx>
 #include <BRepBuilderAPI_Transform.hxx>
 #include "geometry/geometryParaMakeMove.h"
-
+#include <TopoDS_Compound.hxx>
+#include <BRep_Builder.hxx>
+#include <TopoDS_Iterator.hxx>
+#include "GeoCommandCommon.h"
+#include <BRepBuilderAPI_Copy.hxx>
 namespace Command
 {
 	CommandMoveFeature::CommandMoveFeature(GUI::MainWindow* m, MainWidget::PreWindow* p)
@@ -18,7 +22,7 @@ namespace Command
 		this->getVec();
 		gp_Vec vec(_vector[0], _vector[1], _vector[2]);
 		
-		if (_isEdit) //�༭ģʽ�½�ԭ����ģ��ѹ���б�
+		if (_isEdit) //编辑模式下将原来的模型压进列表
 		{
 			Geometry::GeometryModelParaBase* pm = _editSet->getParameter();
 			Geometry::GeometryParaMakeMove* p = dynamic_cast<Geometry::GeometryParaMakeMove*>(pm);
@@ -35,10 +39,94 @@ namespace Command
 
 		bool success = false;
 		const int count = _bodys.size();
-		for (int i = 0; i < count; ++i)
+		QList<Geometry::GeometrySet*> setlist = _solidhash.uniqueKeys();
+		for (Geometry::GeometrySet* set : setlist)
 		{
-			Geometry::GeometrySet* set = _bodys.at(i);
-			TopoDS_Shape* shape = set->getShape();
+			
+			//保存下某个set下所选中的所有solid.
+			//aRes=new shape+无关shape.
+			TopoDS_Compound aRes;
+			BRep_Builder aBuilder;
+			aBuilder.MakeCompound(aRes);
+			QList<int> indexList = _solidhash.values(set);
+			for (int i = 0; i < indexList.size(); i++)
+			{
+				TopoDS_Shape shape = *set->getShape(4, indexList[i]);
+				if (shape.IsNull()) return false;
+				gp_Trsf aTrsf;
+				aTrsf.SetTranslation(vec);
+				BRepBuilderAPI_Transform aBRespTrsf(shape, aTrsf, true);
+				aBRespTrsf.Build();
+				if (!aBRespTrsf.IsDone()) continue;
+				const TopoDS_Shape& resShape = aBRespTrsf.Shape();
+				if (resShape.IsNull()) continue;
+
+				aBuilder.Add(aRes, aBRespTrsf.Shape());
+				if (_saveOrigin)
+				{
+					aBuilder.Add(aRes, shape);
+				}
+			}
+			//将无关的solid存在compound中。
+			TopoDS_Shape* setShape = set->getShape();
+			TopoDS_Shape* setCopyShape = new TopoDS_Shape;
+			TopoDS_Shape* setOriShape = new TopoDS_Shape;
+			*setOriShape = BRepBuilderAPI_Copy(*setShape);
+			for (int i = 0; i < indexList.size(); i++)
+			{
+				TopoDS_Shape tempShape = *set->getShape(4, indexList[i]);
+				*setCopyShape = GeoCommandCommon::removeShape(setShape, &tempShape);
+
+			}
+			if (!GeoCommandCommon::isEmpty(*setShape))
+			{
+				aBuilder.Add(aRes, *setShape);
+
+			}
+			success = true;
+			TopoDS_Shape* mshape = new TopoDS_Shape;
+			*mshape = aRes;
+			QString name = QString("Mirror-%1").arg(set->getName());
+			Geometry::GeometrySet* newset = new Geometry::GeometrySet;
+			newset->setName(name);
+			newset->setShape(mshape);
+
+			_geoData->appendGeometrySet(newset);
+			_geoData->removeTopGeometrySet(set);
+			newset->appendSubSet(set);
+			_resultOriginHash.insert(newset, set);
+			emit showSet(newset);
+			emit removeDisplayActor(set);
+
+			Geometry::GeometryParaMakeMove* para = new Geometry::GeometryParaMakeMove;
+			set->setShape(setOriShape);
+			para->setOriSet(set);
+			for (int k = 0; k < indexList.size(); k++)
+			{
+				para->appendBody(set, indexList[k]);
+			}
+			para->setOptionIndex(_optionindex);
+			para->setSaveOrigion(_saveOrigin);
+			para->setBasePoint(_startpt);
+			para->setEndPoint(_endpt);
+			para->setReverse(_reverse);
+			para->setLength(_length);
+			para->setDirection(_dir);
+			newset->setParameter(para);
+			if (_isEdit)
+			{
+				_geoData->removeTopGeometrySet(_editSet);
+				_releaseEdit = true;     //标记释放状态
+				_releasenew = false;
+			}
+
+		}
+		emit updateGeoTree();
+		GeoCommandBase::execute();
+		return success;
+			
+			/*Geometry::GeometrySet* set = iter.key();
+			TopoDS_Shape* shape = set->getShape(4, iter.value());
 			gp_Trsf aTrsf;
 			aTrsf.SetTranslation(vec);
 			BRepBuilderAPI_Transform aBRespTrsf(*shape, aTrsf, true);
@@ -79,14 +167,14 @@ namespace Command
 			if (_isEdit)
 			{
 				_geoData->removeTopGeometrySet(_editSet);
-				_releaseEdit = true;     //����ͷ�״̬
+				_releaseEdit = true;     //标记释放状态
 				_releasenew = false;
 			}
 			
 		}
 		emit updateGeoTree();
 		GeoCommandBase::execute();
-		return success;
+		return success;*/
 	}
 
 	void CommandMoveFeature::undo()
@@ -101,7 +189,7 @@ namespace Command
 			auto newset = _resultOriginHash.key(ori);
 			if (newset == nullptr) return;
 			_geoData->replaceSet(_editSet, newset);
-			if (p->getSaveOrigion())
+			/*if (p->getSaveOrigion())
 			{
 				newset->removeSubSet(ori);
 				_editSet->removeSubSet(ori);
@@ -112,7 +200,7 @@ namespace Command
 				emit removeDisplayActor(newset);
 			}
 			else
-			{
+			{*/
 				newset->removeSubSet(ori);
 				_editSet->appendSubSet(ori);
 				_geoData->removeTopGeometrySet(ori);
@@ -120,7 +208,7 @@ namespace Command
 				emit removeDisplayActor(ori);
 				emit showSet(_editSet);
 				emit removeDisplayActor(newset);
-			}
+			/*}*/
 			emit updateGeoTree();
 			_releasenew = true;
 			_releaseEdit = false;
@@ -131,13 +219,13 @@ namespace Command
 		for (int i = 0; i < geoList.size(); ++i)
 		{
 			Geometry::GeometrySet* set = geoList.at(i);
-			if (!_saveOrigin)
-			{
+			/*if (!_saveOrigin)
+			{*/
 				auto ori = _resultOriginHash.value(set);
 				set->removeSubSet(ori);
 				_geoData->appendGeometrySet(ori);
 				emit showSet(ori);
-			}
+		/*	}*/
 			_geoData->removeTopGeometrySet(set);
 			emit removeDisplayActor(set);
 		}
@@ -156,7 +244,7 @@ namespace Command
 			auto newset = _resultOriginHash.key(ori);
 			if (newset == nullptr) return;
 			_geoData->replaceSet(newset, _editSet);
-			if (_saveOrigin)
+			/*if (_saveOrigin)
 			{
 				newset->removeSubSet(ori);
 				_editSet->removeSubSet(ori);
@@ -167,7 +255,7 @@ namespace Command
 				emit removeDisplayActor(_editSet);
 			}
 			else
-			{
+			{*/
 				_editSet->removeSubSet(ori);
 				newset->appendSubSet(ori);
 				_geoData->removeTopGeometrySet(ori);
@@ -175,7 +263,7 @@ namespace Command
 				emit removeDisplayActor(ori);
 				emit showSet(newset);
 				emit removeDisplayActor(_editSet);
-			}
+			/*}*/
 			emit updateGeoTree();
 			_releasenew = false;
 			_releaseEdit = true;
@@ -185,13 +273,13 @@ namespace Command
 		for (int i = 0; i < geoList.size(); ++i)
 		{
 			Geometry::GeometrySet* set = geoList.at(i);
-			if (!_saveOrigin)
-			{
+		/*	if (!_saveOrigin)
+			{*/
 				auto ori = _resultOriginHash.value(set);
 				set->appendSubSet(ori);
 				_geoData->removeTopGeometrySet(ori);
 				emit removeDisplayActor(ori);
-			}
+			/*}*/
 			_geoData->appendGeometrySet(set);
 			emit showSet(set);
 		}
@@ -229,9 +317,9 @@ namespace Command
 		}
 	}
 
-	void CommandMoveFeature::setBodys(QList<Geometry::GeometrySet*> b)
+	void CommandMoveFeature::setBodys(QMultiHash<Geometry::GeometrySet*, int> b)
 	{
-		_bodys = b;
+		_solidhash = b;
 	}
 
 	void CommandMoveFeature::setVector(double* vec)

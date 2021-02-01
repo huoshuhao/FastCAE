@@ -1,4 +1,4 @@
-#ifndef GEOCOMMANDCOMMON_H_
+﻿#ifndef GEOCOMMANDCOMMON_H_
 #define GEOCOMMANDCOMMON_H_
 
 #include <list>
@@ -9,10 +9,15 @@
 #include <TopoDS_Face.hxx>
 #include <Bnd_Box.hxx>
 #include <BRepBndLib.hxx>
+#include "geometryCommandAPI.h"
 
+namespace Geometry
+{
+	class GeometrySet;
+}
 namespace Command
 {
-	class GeoCommandCommon
+	class GEOMETRYCOMMANDAPI GeoCommandCommon
 	{
 	public:
 		GeoCommandCommon() = default;
@@ -24,6 +29,10 @@ namespace Command
 		static TopoDS_Face validateFace(const TopoDS_Face&);
 		static TopoDS_Shape removeSplitter(const TopoDS_Shape& shape);
 		static bool isEmpty(const TopoDS_Shape &shape);
+		//从inputShape中移除component，返回移除之前的副本
+		static TopoDS_Shape removeShape(TopoDS_Shape* inputShape, TopoDS_Shape* component);
+		static gp_Ax2 getEdgeAxis(Geometry::GeometrySet* set ,int edgeindex);
+		static gp_Ax2 getFaceAxis(Geometry::GeometrySet* set, int index);
 
 	private:
 		static TopoDS_Shape makeFace(std::list<TopoDS_Wire>&);

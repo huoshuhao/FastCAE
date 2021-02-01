@@ -1,4 +1,4 @@
-#include "ParaCheck.h"
+﻿#include "ParaCheck.h"
 #include "DataProperty/ParameterBool.h"
 #include "mainWindow/mainWindow.h"
 #include "MainWidgets/PropertyTable.h"

@@ -1,4 +1,4 @@
-#include "CursorPosCalculator.h"
+﻿#include "CursorPosCalculator.h"
 
 int CursorPosCalculator::m_nBorderWidth = 5;
 int CursorPosCalculator::m_nTitleHeight = 30;

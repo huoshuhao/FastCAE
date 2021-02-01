@@ -1,4 +1,4 @@
-#include "refelctionfilterpropform.h"
+﻿#include "refelctionfilterpropform.h"
 #include "ui_refelctionfilterpropform.h"
 
 refelctionFilterPropForm::refelctionFilterPropForm(PipelineObjPropWidget *parent) :

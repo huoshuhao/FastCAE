@@ -1,4 +1,4 @@
-#include "ScriptReader.h"
+﻿#include "ScriptReader.h"
 #include "PyAgent.h"
 #include "moduleBase/messageWindowBase.h"
 #include <QFile>
@@ -10,11 +10,17 @@ namespace Py
 {
 
 
-	ScriptReader::ScriptReader(QString filename, PythonAagent* agent)
+	ScriptReader::ScriptReader(QString fileName, PythonAagent* agent)
 	{
-		_fileName = filename;
+		_fileName = fileName;
 		_agent = agent;
 	}
+
+	ScriptReader::~ScriptReader()
+	{
+
+	}
+
 	void ScriptReader::run()
 	{
 		QFile file(_fileName);
@@ -26,7 +32,8 @@ namespace Py
 		QTextStream stream(&file);
 		while (!stream.atEnd())
 		{
-			while (_locker);
+			if (_stop) return;
+			if (_lockCount > 0) continue;
 			QString line = stream.readLine().simplified();
 			
 			qDebug() << "read: " << line;
@@ -39,22 +46,36 @@ namespace Py
 
 		}
 		file.close();
-		//		_interpreter->execFile(filename);
+		if (_stop) return;
+
+		while (_lockCount > 0)
+			this->sleep(1);
+
+		if (_stop) return;
 		emit _agent->printInfo(ModuleBase::Normal_Message, tr("Script Executed %1").arg(_fileName));
+		
 	}
 
 	void ScriptReader::pause()
 	{
 	//	_mutex.lock();
-		_locker = true;
+		_lockCount++;
 		qDebug() << "lock";
 	}
 	void ScriptReader::restart()
 	{
 // 		_mutex.tryLock();
 // 		_mutex.unlock();
-		_locker = false;
+		_lockCount--;
+		if (_lockCount < 0) _lockCount = 0;
 		qDebug() << "unlock";
+	}
+
+	void ScriptReader::stop()
+	{
+		_stop = true;
+		this->quit();
+//		this->wait();
 	}
 
 	bool ScriptReader::isPythonObj(QString line)

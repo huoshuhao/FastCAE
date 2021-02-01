@@ -1,4 +1,4 @@
-#include "Editor3DFileValue.h"
+﻿#include "Editor3DFileValue.h"
 #include "ui_Editor3DFileValue.h"
 #include "InputValidator.h"
 #include <QTimer>

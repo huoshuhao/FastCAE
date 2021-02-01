@@ -51,10 +51,18 @@ namespace SelfDefObj
 			for (int j = 0; j < c; ++j)
 			{
 				double d = _data->getValue(i, j);
-				_tableWidget->setItem(i, j, new QTableWidgetItem(QString::number(d)));
+                QString text = QString::number(d, 'f', 10);
+                while (text.endsWith("0"))
+                {
+                    int size = text.size();
+                    text = text.left(size - 1);
+                }
+                if (text.endsWith("."))
+                    text = text.remove(".");
+
+                _tableWidget->setItem(i, j, new QTableWidgetItem(text));
 				
 			}
-
 		}
 
 	}
@@ -78,9 +86,9 @@ namespace SelfDefObj
 		this->accept();
 	}
 
-	DataProperty::ParameterTable* ParaTabViewer::readCSV(QString filename)
+	DataProperty::ParameterTable* ParaTabViewer::readCSV(QString fileName)
 	{
-		QFile file(filename);
+		QFile file(fileName);
 		QString line;
 
 		
@@ -154,6 +162,7 @@ namespace SelfDefObj
 	{
 		//---获取文件名
 		QString fileName = QFileDialog::getOpenFileName(this, NULL, NULL, "*.csv ");
+        if (!QFile::exists(fileName)) return;
 
 		//---打开文件并读取文件内容
 		fillTab(readCSV(fileName));

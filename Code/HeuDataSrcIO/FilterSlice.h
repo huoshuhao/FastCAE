@@ -1,4 +1,4 @@
-#ifndef FILTERSLICE_H
+﻿#ifndef FILTERSLICE_H
 #define FILTERSLICE_H
 
 #include <QObject>

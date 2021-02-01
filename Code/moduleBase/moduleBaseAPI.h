@@ -1,4 +1,4 @@
-#ifndef _MODULEBASEAPI_H_
+﻿#ifndef _MODULEBASEAPI_H_
 #define _MODULEBASEAPI_H_
 
 #include <QtCore/QtGlobal>

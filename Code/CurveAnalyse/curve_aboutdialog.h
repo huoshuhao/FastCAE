@@ -1,4 +1,4 @@
-#ifndef CURVEABOUTDIALOG_H
+﻿#ifndef CURVEABOUTDIALOG_H
 #define CURVEABOUTDIALOG_H
 
 #include <QDialog>

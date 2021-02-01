@@ -1,4 +1,4 @@
-#include "ParaWidgetBase.h"
+﻿#include "ParaWidgetBase.h"
 #include "mainWindow/mainWindow.h"
 
 namespace SelfDefObj

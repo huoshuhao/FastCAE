@@ -1,4 +1,4 @@
-#include "columnDataDockWidget.h"
+﻿#include "columnDataDockWidget.h"
 
 ColumnDataDockWidget::ColumnDataDockWidget(QWidget *parent) : QDockWidget(parent)
 {

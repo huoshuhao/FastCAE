@@ -2,7 +2,7 @@ TEMPLATE	=   lib
 CONFIG		+=  debug  c++11 
 CONFIG		+=  qt
 TARGET		=   MainWindow
-QT          +=  core gui widgets network webkitwidgets
+QT          +=  core gui widgets network webenginewidgets webview
 DEFINES     +=  MAINWINDOW_API
 
 include(./mainWindow.pri)
@@ -39,7 +39,9 @@ win32{
 	-L../../output/bin -lGeometryCommand \
 	-L../../output/bin -lGmshModule \
 	-L../../output/bin -lPluginManager \
-  
+	-L../../output/bin -lUserGuidence \
+	-L../../output/bin -lSARibbonBar \
+	
   Debug:CONFIG	    	+=  console
   Debug:DESTDIR         = ../../output/bin_d 
   Debug:MOC_DIR         = ./debug/moc 
@@ -67,7 +69,9 @@ win32{
 	-L../../output/bin_d -lGeometryCommand \
 	-L../../output/bin_d -lGmshModule \
 	-L../../output/bin_d -lPluginManager \
-
+	-L../../output/bin_d -lUserGuidence \
+	-L../../output/bin_d -lSARibbonBar \
+	
   message("Windows mainwindow build")
                                                
 }
@@ -102,6 +106,8 @@ unix{
 	-L../../output/bin -lGeometryCommand \
 	-L../../output/bin -lGmshModule \
 	-L../../output/bin -lPluginManager \
+	-L../../output/bin -lUserGuidence \
+	-L../../output/bin -lSARibbonBar \
 	
   message("Linux mainwindow build")
 }

@@ -1,4 +1,4 @@
-#include "GeoCommandSketchLine.h"
+﻿#include "GeoCommandSketchLine.h"
 #include <gp_Pnt.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <TopoDS_Edge.hxx>

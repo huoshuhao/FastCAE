@@ -1,4 +1,4 @@
-#ifndef XRANDOMWIDGET_H
+﻿#ifndef XRANDOMWIDGET_H
 #define XRANDOMWIDGET_H
 #include "ui_RandomWidget.h"
 #include <QDialog>

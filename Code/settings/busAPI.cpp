@@ -1,4 +1,4 @@
-#include "busAPI.h"
+﻿#include "busAPI.h"
 #include "mainSetting.h"
 #include "DialogWorkingDir.h"
 // #include "DialogSolver.h"
@@ -105,6 +105,18 @@ namespace Setting
 		GraphOptionDialog dlg(_mainWindow, _graphOption);
 		dlg.exec();
 	}
+
+	void BusAPI::isUseRibbon(bool on)
+	{
+		_mainSetting->isUseRibbon(on);
+	}
+
+
+	bool BusAPI::isUseRibbon()
+	{
+		return _mainSetting->isUseRibbon();
+	}
+
 	QString BusAPI::getLicensePath() const
 	{
 		return _mainSetting->getLicensePath();
@@ -114,6 +126,12 @@ namespace Setting
 	{
 		_mainSetting->setLicensePath(licensePath);
 	}
+
+	GUI::MainWindow* BusAPI::getMainWindow()
+	{
+		return _mainWindow;
+	}
+
 	GraphOption* BusAPI::getGraphOption()
 	{
 		return _graphOption;
@@ -181,6 +199,16 @@ namespace Setting
 	QStringList BusAPI::getPlugins()
 	{
 		return _mainSetting->getPlugins();
+	}
+
+	void BusAPI::isEnableUserGuidence(bool s)
+	{
+		_mainSetting->isShowUserGuidance(s);
+	}
+
+	bool BusAPI::isEnableUserGuidence()
+	{
+		return _mainSetting->isShowUserGuidance();
 	}
 
 }

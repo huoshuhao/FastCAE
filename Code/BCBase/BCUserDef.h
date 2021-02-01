@@ -1,4 +1,4 @@
-#ifndef _BCUSERDEF_H_
+﻿#ifndef _BCUSERDEF_H_
 #define _BCUSERDEF_H_
 
 #include "BCBase.h"

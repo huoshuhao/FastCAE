@@ -1,4 +1,4 @@
-#ifndef _GEOMETRYCONFIGDATA_H_
+ï»¿#ifndef _GEOMETRYCONFIGDATA_H_
 #define _GEOMETRYCONFIGDATA_H_
 
 #include "ConfigOptionsAPI.h"
@@ -9,7 +9,7 @@ namespace ConfigOption
 	class CONFIGOPTIONSAPI GeometryConfig
 	{
 	public:
-		GeometryConfig() = default;
+		GeometryConfig();
 		~GeometryConfig() = default;
 
 		void clearData();
@@ -18,16 +18,23 @@ namespace ConfigOption
 		bool isImportGeometryEnabled();
 		bool isExportGeometryEnabled();
 		//Geometry modeling operations sketch
-		void enableGeometryModeling(bool on);	//ÉèÖÃGeometry modelingÊÇ·ñ¿ÉÓÃ
-		bool isGeometryModelingEnabled();		//»ñÈ¡Geometry modelingÊÇ·ñ¿ÉÓÃ
-		void enableGeometryOperations(bool on);	//ÉèÖÃGeometry operationsÊÇ·ñ¿ÉÓÃ
-		bool isGeometryOperationsEnabled();		//»ñÈ¡Geometry operationsÊÇ·ñ¿ÉÓÃ
-		void enableCreateSketch(bool on);		//ÉèÖÃGeometry sketchÊÇ·ñ¿ÉÓÃ
-		bool isCreateSketchEnabled();			//»ñÈ¡Geometry sketchÊÇ·ñ¿ÉÓÃ
-		void setImportSuffix(QString s);		//ÉèÖÃµ¼Èë¼¸ºÎ¸ñÊ½
-		QString getImportSuffix();				//»ñÈ¡µ¼Èë¼¸ºÎ¸ñÊ½
-		void setExportSuffix(QString s);		//ÉèÖÃµ¼³ö¼¸ºÎ¸ñÊ½
-		QString getExportSuffix();				//»ñÈ¡µ¼³ö¼¸ºÎ¸ñÊ½
+		void enableGeometryModeling(bool on);	//è®¾ç½®Geometry modelingæ˜¯å¦å¯ç”¨
+		bool isGeometryModelingEnabled();		//è·å–Geometry modelingæ˜¯å¦å¯ç”¨
+		void enableGeometryOperations(bool on);	//è®¾ç½®Geometry operationsæ˜¯å¦å¯ç”¨
+		bool isGeometryOperationsEnabled();		//è·å–Geometry operationsæ˜¯å¦å¯ç”¨
+		void enableCreateSketch(bool on);		//è®¾ç½®Geometry sketchæ˜¯å¦å¯ç”¨
+		bool isCreateSketchEnabled();			//è·å–Geometry sketchæ˜¯å¦å¯ç”¨
+		void setImportSuffix(QString s);		//è®¾ç½®å¯¼å…¥å‡ ä½•æ ¼å¼
+		QString getImportSuffix();				//è·å–å¯¼å…¥å‡ ä½•æ ¼å¼
+		void setExportSuffix(QString s);		//è®¾ç½®å¯¼å‡ºå‡ ä½•æ ¼å¼
+		QString getExportSuffix();				//è·å–å¯¼å‡ºå‡ ä½•æ ¼å¼
+
+		void enableGeometryEdit(bool on);		//è®¾ç½®geometry editæ˜¯å¦å¯ç”¨
+		bool isGeometryEditEnabled();			//è·å–geometry editæ˜¯å¦å¯ç”¨
+		void enableGeometryCreateSet(bool on);	//è®¾ç½®geometry create setæ˜¯å¦å¯ç”¨
+		bool isGeometryCreateSetEnabled();		//è·å–geometry create setæ˜¯å¦å¯ç”¨
+		void enableMeasureDsitance(bool on);	//è®¾ç½®measure distanceæ˜¯å¦å¯ç”¨
+		bool isMeasureDistanceEnabled();		//è·å–measure distanceæ˜¯å¦å¯ç”¨
 
 	protected:
 	private:
@@ -39,6 +46,9 @@ namespace ConfigOption
 		bool _isGeoModeling{ false };	//Geometry modeling
 		bool _isGeoOperations{ false };	//Geometry operations
 		bool _isCreateSketch{ false };	//Create Sketch
+		bool _isGeometryEdit{ false };	//geometry edit
+		bool _isGeoCreateSet{ false };	//geometry create set
+		bool _isMeasureDistance{ false };	//measure distance
 
 		QString _importSuffix{};		//importSuffix
 		QString _exportSuffix{};		//exportSuffix

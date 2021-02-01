@@ -1,4 +1,4 @@
-#ifndef CREATEEDGEDIALLOG_H_
+﻿#ifndef CREATEEDGEDIALLOG_H_
 #define CREATEEDGEDIALLOG_H_
 
 #include "geoDialogBase.h"
@@ -24,7 +24,7 @@ namespace GeometryWidget
 
 	private:
 		void init();
-		void closeEvent(QCloseEvent *);
+//		void closeEvent(QCloseEvent *);
 		void reject() override;
 		void accept() override;
 

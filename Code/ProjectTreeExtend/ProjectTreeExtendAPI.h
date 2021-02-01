@@ -1,4 +1,4 @@
-#ifndef _PROJECTTREEEXTENDAPI_H_
+﻿#ifndef _PROJECTTREEEXTENDAPI_H_
 #define _PROJECTTREEEXTENDAPI_H_
 
 #include <QtCore/QtGlobal>

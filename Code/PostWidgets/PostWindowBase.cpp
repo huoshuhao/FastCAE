@@ -1,4 +1,4 @@
-#include "PostWindowBase.h"
+﻿#include "PostWindowBase.h"
 #include "moduleBase/ModuleType.h"
 #include "mainWindow/mainWindow.h"
 #include <QCloseEvent>

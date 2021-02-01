@@ -1,4 +1,4 @@
-#ifndef _PARAMETERTABLE_H_
+ï»¿#ifndef _PARAMETERTABLE_H_
 #define _PARAMETERTABLE_H_
 
 #include "ParameterBase.h"
@@ -15,30 +15,30 @@ namespace DataProperty
 		ParameterTable();
 		~ParameterTable() = default;
 
-		void copy(ParameterBase* ori) override;
-		//ÉèÖÃĞĞÊı
+		void copy(ParameterBase* ori, bool valueOnly = false) override;
+		//è®¾ç½®è¡Œæ•°
 		void setRowCount(const int n);
-		//ÉèÖÃÁĞÊı
+		//è®¾ç½®åˆ—æ•°
 		void setColumnCount(const int n);
-		//»ñÈ¡ĞĞÊı
+		//è·å–è¡Œæ•°
 		int getRowCount();
-		//»ñÈ¡ÁĞÊı
+		//è·å–åˆ—æ•°
 		int getColumnCount();
-		//»ñÈ¡µÚindexĞĞµÄÊı¾İ
+		//è·å–ç¬¬indexè¡Œçš„æ•°æ®
 		QList<double> getRow(int index);
-		//»ñÈ¡µÚindexÁĞÊı¾İ
+		//è·å–ç¬¬indexåˆ—æ•°æ®
 		QList<double> getColumn(int index);
-		//»ñÈ¡µÚrowĞĞ µÚcolÁĞÊı¾İ
+		//è·å–ç¬¬rowè¡Œ ç¬¬colåˆ—æ•°æ®
 		double getValue(int row, int col);
-		//½«µÚrowĞĞ µÚcolÁĞÊı¾İÉèÖÃÎªv
+		//å°†ç¬¬rowè¡Œ ç¬¬colåˆ—æ•°æ®è®¾ç½®ä¸ºv
 		void setValue(int row, int col, double v);
-		//ÉèÖÃ±íÍ·
+		//è®¾ç½®è¡¨å¤´
 		void setTitle(QStringList t);
-		//»ñÈ¡±íÍ·
+		//è·å–è¡¨å¤´
 		QStringList getTitle();
-		//»ñÈ¡È«²¿Êı¾İ
+		//è·å–å…¨éƒ¨æ•°æ®
 		std::vector<std::vector<double>> getData();
-		//ÉèÖÃÈ«²¿Êı¾İ
+		//è®¾ç½®å…¨éƒ¨æ•°æ®
 		void setData(std::vector<std::vector<double>> data);
 
 		void writeParameter(QDomDocument* doc, QDomElement* parent) override;

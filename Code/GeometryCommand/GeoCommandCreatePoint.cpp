@@ -1,4 +1,4 @@
-#include "GeoCommandCreatePoint.h"
+﻿#include "GeoCommandCreatePoint.h"
 #include <BRepBuilderAPI_MakeVertex.hxx>
 #include <TopoDS_Vertex.hxx>
 #include <TopoDS.hxx>

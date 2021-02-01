@@ -1,4 +1,4 @@
-#ifndef _PARACLASSFACTORY_H_
+﻿#ifndef _PARACLASSFACTORY_H_
 #define _PARACLASSFACTORY_H_
 
 #include <QtCore/QtGlobal>

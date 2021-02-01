@@ -1,4 +1,4 @@
-#ifndef READDATAPARTICLE_H
+﻿#ifndef READDATAPARTICLE_H
 #define READDATAPARTICLE_H
 #include "global_define.h"
 #include "qstring.h"

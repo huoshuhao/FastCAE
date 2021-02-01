@@ -1,4 +1,4 @@
-#include "myInteractorStyle.h"
+﻿#include "myInteractorStyle.h"
 #include "vtkCamera.h"
 
 void MyInteractorStyle::StopState()

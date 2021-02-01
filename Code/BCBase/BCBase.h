@@ -1,14 +1,20 @@
-#ifndef _BCBASE_H_
+ï»¿#ifndef _BCBASE_H_
 #define _BCBASE_H_
 
 #include "BCBaseAPI.h"
 #include "DataProperty/DataBase.h"
+#include "DataProperty/ComponentBase.h"
 #include "BCType.h"
 
 namespace MeshData
 {
 	class MeshData;
 	class MeshSet;
+}
+
+namespace Geometry
+{
+	class GeoComponent;
 }
 
 namespace BCBase
@@ -20,31 +26,32 @@ namespace BCBase
 	public:
 		BCBase();
 		~BCBase() = default;
-		//¿½±´Êı¾İ
+		//æ‹·è´æ•°æ®
 		virtual void copy(DataBase* data) override;
-		//ÉèÖÃÍø¸ñ×é¼şID
-		void setMeshSetID(int id);
-		//»ñÈ¡Íø¸ñ×é¼şID
-		int getMeshSetID();
-		//»ñÈ¡Íø¸ñ×é¼şÃû³Æ
-		QString getMeshSetName();
-		//»ñÈ¡Íø¸ñ×é¼ş
-		MeshData::MeshSet* getMeshSet();
-		//ÉèÖÃ±ß½çÌõ¼şÀàĞÍ
-		void setType(BCType t);
-		//»ñÈ¡±ß½çÌõ¼ş
-		BCType getType();
+		//ç»‘å®šç»„ä»¶ID
+		void bingdingComponentID(int id);
+		//è·å–ç»‘å®šç»„ä»¶ID
+		int getComponentID();
+		//è·å–ç»‘å®šç»„ä»¶åç§°
+		QString getComponentName();
+		//è·å–ç»‘å®šç»„ä»¶(å¯èƒ½æ˜¯ç½‘æ ¼ç»„ä»¶ï¼Œä¹Ÿå¯èƒ½æ˜¯å‡ ä½•ç»„ä»¶ï¼Œå¯ä»¥å‡½æ•°æ¥è·å–ç±»å‹)
+		DataProperty::ComponentBase* getComponent();
+		//è®¾ç½®ç»‘å®šç»„ä»¶
+		void setComponent(DataProperty::ComponentBase*);
+		//è®¾ç½®è¾¹ç•Œæ¡ä»¶ç±»å‹
+		void setBCType(BCType t);
+		//è·å–è¾¹ç•Œæ¡ä»¶
+		BCType getBCType();
 
 		virtual QDomElement& writeToProjectFile(QDomDocument* doc, QDomElement* parent) override;
 		virtual void readDataFromProjectFile(QDomElement* ele) override;
 
 	protected:
-		BCType _type{ None };
-		int _meshSetID{ -1 };
-		 
-		MeshData::MeshSet* _set{};
-		MeshData::MeshData* _mesh{};
+		BCType _BCtype{ None };
+		int _ComponentID{ -1 };
 
+		DataProperty::ComponentBase* _component{};
+		MeshData::MeshData* _mesh{};
 	};
 }
 

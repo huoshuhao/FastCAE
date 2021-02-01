@@ -1,4 +1,4 @@
-#ifndef _DATACONFIG_H_
+﻿#ifndef _DATACONFIG_H_
 #define _DATACONFIG_H_
 
 #include "ConfigOptionsAPI.h"

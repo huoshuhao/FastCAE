@@ -1,4 +1,4 @@
-#ifndef GEOMETRYEXPORTER_H_
+﻿#ifndef GEOMETRYEXPORTER_H_
 #define GEOMETRYEXPORTER_H_
 
 #include "geometryAPI.h"
@@ -11,7 +11,7 @@ namespace Geometry
 	class GEOMETRYAPI GeometryExporter
 	{
 	public:
-		GeometryExporter(QString filename);
+		GeometryExporter(QString fileName);
 		~GeometryExporter() = default;
 
 		bool write();

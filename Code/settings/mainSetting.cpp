@@ -1,4 +1,4 @@
-#include "mainSetting.h"
+﻿#include "mainSetting.h"
 #include <QSettings>
 #include <QDir>
 #include <QCoreApplication>
@@ -12,6 +12,8 @@ namespace Setting
 		setting->setValue("/Recent/RecentFile", _recentFiles);
 		setting->setValue("/License/Path", _licensePath);
 		setting->setValue("/Plugins/Name", _plugins);
+		setting->setValue("/User/GUidance", _showUserGuidance);
+		setting->setValue("/Style/Ribbon", _useRibbon);
 	}
 	void MainSetting::readINI(QSettings* setting)
 	{
@@ -20,6 +22,8 @@ namespace Setting
 		_recentFiles = setting->value("/Recent/RecentFile").toStringList();
 		_licensePath = setting->value("/License/Path").toString();
 		_plugins = setting->value("/Plugins/Name").toStringList();
+		_showUserGuidance = setting->value("/User/GUidance").toBool();
+		_useRibbon = setting->value("/Style/Ribbon").toBool();
 
 		QDir dir(_workingDir);
 
@@ -84,6 +88,27 @@ namespace Setting
 	{
 		return _recentFiles;
 	}
+
+	void MainSetting::isShowUserGuidance(bool s)
+	{
+		_showUserGuidance = s;
+	}
+
+	bool MainSetting::isShowUserGuidance()
+	{
+		return _showUserGuidance;
+	}
+
+	void MainSetting::isUseRibbon(bool on)
+	{
+		_useRibbon = on;
+	}
+
+	bool MainSetting::isUseRibbon()
+	{
+		return _useRibbon;
+	}
+
 	void MainSetting::setLicensePath(const QString & path)
 	{
 		_licensePath = path;

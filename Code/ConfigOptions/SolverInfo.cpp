@@ -1,9 +1,11 @@
-#include "SolverInfo.h"
+﻿#include "SolverInfo.h"
 #include <QDomDocument>
 #include <QDomElement>
 #include <QDomAttr>
 #include <QFile>
+#include <QFileInfo>
 #include <QCoreApplication>
+#include <QDebug>
 
 namespace ConfigOption
 {
@@ -95,7 +97,7 @@ namespace ConfigOption
 		if (patheles.size() > 1) return;
 		QDomElement pathele = patheles.at(0).toElement();
 		QString path = pathele.text();
-		QFile exefile(path);
+		QFileInfo exefile(path);
 		if (exefile.exists())
 			_exePath = path;
 		else
@@ -103,6 +105,7 @@ namespace ConfigOption
 			QString fielname = exefile.fileName();
 			QString appDir = qApp->applicationDirPath();
 			QString solvedirFile = appDir + "/../Solver/" + fielname;
+			qDebug() << solvedirFile;
 			if (QFile::exists(solvedirFile))
 				_exePath = solvedirFile;
 			else

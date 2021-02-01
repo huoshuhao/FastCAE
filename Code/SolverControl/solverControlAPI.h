@@ -1,4 +1,4 @@
-#ifndef _SOLVERCONTROLAPI_H_
+﻿#ifndef _SOLVERCONTROLAPI_H_
 #define _SOLVERCONTROLAPI_H_
 
 #include <QtCore/QtGlobal>

@@ -1,4 +1,4 @@
-#ifndef NUMERICSRCOBJECT_H
+﻿#ifndef NUMERICSRCOBJECT_H
 #define NUMERICSRCOBJECT_H
 #include "global_define.h"
 #include "PipelineObject.h"

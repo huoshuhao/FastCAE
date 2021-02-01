@@ -1,4 +1,4 @@
-#include "scalarrangedialog.h"
+﻿#include "scalarrangedialog.h"
 #include "ui_scalarrangedialog.h"
 
 scalarRangeDialog::scalarRangeDialog(QWidget *parent) :

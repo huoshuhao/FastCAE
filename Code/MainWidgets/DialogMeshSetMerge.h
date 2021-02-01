@@ -1,4 +1,4 @@
-#ifndef _DIALOGMERGEMESHSET_H_
+﻿#ifndef _DIALOGMERGEMESHSET_H_
 #define _DIALOGMERGEMESHSET_H_
 
 #include "SelfDefObject/QFDialog.h"

@@ -1,4 +1,4 @@
-#include "solverSettingBase.h"
+﻿#include "solverSettingBase.h"
 #include "modelDataBase.h"
 #include <QDomElement>
 #include <QDomDocument>

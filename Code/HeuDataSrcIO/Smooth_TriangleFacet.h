@@ -1,4 +1,4 @@
-#ifndef SMOOTH_TRIANGLEFACET_H
+﻿#ifndef SMOOTH_TRIANGLEFACET_H
 #define SMOOTH_TRIANGLEFACET_H
 #include "Smooth_Point.h"
 
@@ -21,7 +21,7 @@ public:
             unsigned int v3;
         };
     };
-    Normal normal; // 面片的单位法矢
+	Normal normal;//unitized normal of face
     struct POINT_ARRAY
     {
         std::string name;

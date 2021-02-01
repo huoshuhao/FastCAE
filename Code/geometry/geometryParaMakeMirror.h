@@ -1,9 +1,9 @@
-#ifndef _GEOMETRYPARAMAKEFEATURE_H_
+ï»¿#ifndef _GEOMETRYPARAMAKEFEATURE_H_
 #define _GEOMETRYPARAMAKEFEATURE_H_
 
 #include "geometryModelParaBase.h"
 #include <QString>
-
+#include <QMultiHash>
 namespace Geometry
 {
 	class GeometrySet;
@@ -12,9 +12,9 @@ namespace Geometry
 	public:
 		GeometryParaMirrorFeature();
 		~GeometryParaMirrorFeature() = default;
-
-		void setCurrentIndex(int index);
-		int getCurrentIndex();
+ 
+ 		void setCurrentIndex(int index);
+ 		int getCurrentIndex();
 
 		void setFaceIndex(int i);
 		int getFaceIndex();
@@ -22,17 +22,15 @@ namespace Geometry
 		void setFaceBody(Geometry::GeometrySet* facebody);
 		Geometry::GeometrySet* getFaceBody();
 
-		void setBodyList(QList<Geometry::GeometrySet*> bodylist);
-		QList<Geometry::GeometrySet*> getBodyList();
+		void appendBody(Geometry::GeometrySet* set, int bodyindex);
+		QMultiHash<Geometry::GeometrySet*, int> getBodys();
+		
 
 		void setSaveOrigion(bool s);
 		bool getSaveOrigion();
 
 		void setPlaneIndex(int i);
 		int getPlaneIndex();
-		// 
-		// 		void setReverse(bool s);
-		// 		bool getReverse();
 
 		void setDirection(double* dir);
 		void getDirection(double* dir);
@@ -43,30 +41,23 @@ namespace Geometry
 		void setOriSet(Geometry::GeometrySet* s);
 		Geometry::GeometrySet* getOriSet();
 
-		///Êı¾İĞ´Èë¹¤³ÌÎÄ¼ş
+		///æ•°æ®å†™å…¥å·¥ç¨‹æ–‡ä»¶
 		QDomElement& writeToProjectFile(QDomDocument* doc, QDomElement* parent) override;
-		///´Ó¹¤³ÌÎÄ¼ş¶ÁÈëÊı¾İ
+		///ä»å·¥ç¨‹æ–‡ä»¶è¯»å…¥æ•°æ®
 		virtual void readDataFromProjectFile(QDomElement* e) override;
 
 
 	private:
-		QList<Geometry::GeometrySet*> _bodylist{};
 		int _typeindex{};
-
-
+		QMultiHash<Geometry::GeometrySet*, int>_solidHash{};
 		Geometry::GeometrySet* _oriset{};
 
 		int _faceindex{};
 		Geometry::GeometrySet* _facebody{};
-
 		int _palneindex{};
-
 		bool _saveorigion{};
-
-
 		double _basepoint[3]{};
 		double _randomdir[3]{};
-		//bool _reverse{};
 	};
 }
 

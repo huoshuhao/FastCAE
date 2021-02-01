@@ -1,20 +1,14 @@
-#include <QApplication>
-#include <QtCore>
-#include <QtGui>
-#include <QDesktopWidget>
-#include <QString>
-#include <QSplashScreen>
+ï»¿#include <QApplication>
+#include <QDebug>
 #include <QFile>
-#include <QObject>
+#include <QProcess>
 #include "mainWindow/mainWindow.h"
 #include "XBeautyUI.h"
-#include <QMessageBox>
-#include <QCoreApplication>
-#include "ConfigOptions/ConfigOptions.h"
+#include "CommandLine.h"
 #include "ConfigOptions/ConfigDataReader.h"
+#include "ConfigOptions/ConfigOptions.h"
 #include "ConfigOptions/GlobalConfig.h"
 #include "settings/busAPI.h"
-#include "python/PyAgent.h"
 
 #ifdef Q_OS_WIN
 #include "License/confirmation.h"
@@ -25,135 +19,78 @@
 
 #define CHECKINGMEMORY 0
 
-
+#define FASTCAE_VERSION "2.5.0"
 
 int main(int argc, char* argv[])
 {
-	QString releaseVersion = "2.0.2018";
+	CommandPara para(argc, argv);
+	if (para.isHelp()) return 1;
 
+	QApplication app(argc, argv);
+
+// 	QString path = qApp->applicationDirPath();
+// 	ConfigOption::ConfigDataReader reader(path + "/../ConfigFiles/", ConfigOption::ConfigOption::getInstance());
+// 	reader.read();
+// 	QString qUseRibbon = ConfigOption::ConfigOption::getInstance()->getGlobalConfig()->getUseRibbon();
+// 	bool bUseRibbon = qUseRibbon == "yes" ? true : false;
+
+	bool isRibbon = Setting::BusAPI::instance()->isUseRibbon();
+
+	GUI::MainWindow mainwindow(isRibbon);
+
+	/******************************************************************************/
+	XBeautyUI::instance()->setQssFilePath(":/Beauty/QUI/beauty/qianfan.qss");
+	XBeautyUI::instance()->autoSetStyle();
+	QString qssFileName = XBeautyUI::instance()->qssFilePath();
+
+	//**************åŠ è½½qss****************** 
+	QFile qssFile(qssFileName);
+	if (qssFile.exists())
 	{
-		bool nogui = false;
-		bool design = false;
-		bool script = false;
-		QString scriptFile;
-		for (int i = 1; i < argc; ++i)
-		{
-			QString arguement = QString(argv[i]).toLower();
-			if (arguement.contains("-nogui")) nogui = true;
-//			if (arguement.contains("-design")) design = true;
-			if (arguement.contains("-i"))
-			{
-				script = true;
-				char* c = argv[++i];
-				std::string sf = c;
-				scriptFile = QString::fromLocal8Bit(sf.c_str());
-			}
-
-			qDebug() << "arguements  " << arguement;
-		}
-
-		QApplication app(argc, argv);
-
-//		Setting::BusAPI::instance()->setDesignModel(design);
-
-		GUI::MainWindow mainwindow;
-
-		/******************************Æô¶¯µ¥Ò»ÊµÀý************************************/
-		if (design)
-		{
-#ifdef Q_OS_WIN
-			HANDLE hMutex = ::CreateMutexA(0, true, "FastCAE");
-			if (hMutex)
-			{
-				if (GetLastError() == ERROR_ALREADY_EXISTS)
-				{
-					QMessageBox::warning(NULL, "Warning", "Already have an instance !");
-					return 0;
-				}
-			}
-#endif
-		}
-
-		/******************************************************************************/
-		QString hello = ConfigOption::ConfigOption::getInstance()->getGlobalConfig()->getWelcome();
-		XBeautyUI::instance()->setWelcomePictureRemainTime(1500);
-		XBeautyUI::instance()->setQssFilePath(":/Beauty/QUI/beauty/qianfan.qss");
-		XBeautyUI::instance()->autoSetStyle();
-
-		QString helloPicName = qApp->applicationDirPath() + "/../ConfigFiles/Icon/" + hello;
-		int remineTime = XBeautyUI::instance()->welcomePictureRemainTime();
-		QString qssFileName = XBeautyUI::instance()->qssFilePath();
-
-		//**************¼ÓÔØqss****************** 
-		QFile qssFile(qssFileName);
-		if (qssFile.exists())
-		{
-			qssFile.open(QIODevice::ReadOnly);
-			QString style = qssFile.readAll();
-			qApp->setStyleSheet(style);
-			qssFile.close();
-		}
-		//*****************************************
-
-		//***************Õý°æÑéÖ¤******************
-#ifdef Q_OS_WIN
-		// 	Confirmation confirm;
-		// 	confirm.setParent(&mainwindow);
-		// 	if (!confirm.licenseCheck())
-		// 	{
-		// 		return 0;
-		// 	}
-#endif
-		//*****************************************
-
-		if (!nogui)
-		{
-			//**************»¶Ó­½çÃæ********************
-#ifndef _DEBUG
-			QSplashScreen* splash = new QSplashScreen;
-			QFile helloPic(helloPicName);
-			if (helloPic.exists())
-			{
-				splash->setPixmap(helloPicName);
-				splash->setDisabled(true);
-				splash->show();
-				QElapsedTimer t;
-				t.start();
-				while (t.elapsed() < remineTime) QCoreApplication::processEvents();
-				splash->finish(&mainwindow);
-				delete splash;
-		}
-#endif
-			//*****************************************
-			mainwindow.show();
-			mainwindow.showMaximized();
-			emit mainwindow.sendInfoToStatesBar(QString("Version: %1").arg(releaseVersion));
+		qssFile.open(QIODevice::ReadOnly);
+		QString style = qssFile.readAll();
+		qApp->setStyleSheet(style);
+		qssFile.close();
 	}
-// 		if (design)
-// 			mainwindow.changeToDesignModel();
-		if (script)
-			Py::PythonAagent::getInstance()->execScript(scriptFile);
+	//*****************************************
 
-		if (nogui) return 0;
+	//***************æ­£ç‰ˆéªŒè¯******************
+#ifdef Q_OS_WIN
+	// 	Confirmation confirm;
+	// 	confirm.setParent(&mainwindow);
+	// 	if (!confirm.licenseCheck())
+	// 	{
+	// 		return 0;
+	// 	}
+#endif
+	//*****************************************
 
-		app.exec();
-	}
+	if (para.exec(&mainwindow))
+		emit mainwindow.sendInfoToStatesBar(QString("Version: %1").arg(FASTCAE_VERSION));
+	else return 1;
 
+	int e = app.exec();
 
 #ifdef Q_OS_WIN
 #ifdef _DEBUG
 
-	if (CHECKINGMEMORY)
+	// 	if (CHECKINGMEMORY)
+	// 	{
+	// 		printf("check memory leak ...\n");
+	// 		_CrtDumpMemoryLeaks();
+	// 		printf("check over.\n");
+	// 	}
+	// 	
+#endif
+#endif
+
+	if (e == -1000)
 	{
-		printf("check memory leak ...\n");
-		_CrtDumpMemoryLeaks();
-		printf("check over.\n");
+		QProcess::startDetached(qApp->applicationFilePath(), QStringList());
+		return 0;
 	}
-	
-#endif
-#endif
 
-	return 0;
+	return e;
 
-	
+
 }

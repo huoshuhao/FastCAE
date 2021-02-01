@@ -1,12 +1,10 @@
-#ifndef _CONFIGOPTIONS_H_
+﻿#ifndef _CONFIGOPTIONS_H_
 #define _CONFIGOPTIONS_H_
 
 #include "ConfigDataBase.h"
 
 namespace ConfigOption
 {
-
-
 	class CONFIGOPTIONSAPI ConfigOption : public ConfigDataBase
 	{
 	public:
@@ -26,6 +24,7 @@ namespace ConfigOption
 		ObserverConfig* getObseverConfig()override;
 		MaterialConfig* getMaterialConfig()override;
 		ProjectTreeConfig* getProjectTreeConfig()override;
+//		NodeFormConfig* getNodeFormConfig()override;
 
 		void clearAllConfig()override;
 //		QString readConfig();
@@ -47,6 +46,7 @@ namespace ConfigOption
 		ObserverConfig* _observerConfig{};
 		MaterialConfig* _materialConfig{};
 		ProjectTreeConfig* _projectTreeConfig{};
+//		NodeFormConfig* _nodeFormConfig{};
 	};
 
 }

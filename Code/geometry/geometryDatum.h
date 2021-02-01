@@ -1,4 +1,4 @@
-#ifndef GEOMETRYDATUMPLANE_H_
+﻿#ifndef GEOMETRYDATUMPLANE_H_
 #define GEOMETRYDATUMPLANE_H_
 
 #include "geometryAPI.h"

@@ -1,9 +1,9 @@
-/**********************************************************************************
+ï»¿/**********************************************************************************
 
-¹¦ÄÜ£º»ù±¾ĞÅÏ¢±£´æ
-½¨Á¢£ºxvdongming
-ÈÕÆÚ£º2019-11
-ĞŞ¸ÄºÍÎ¬»¤£ºxvdongming
+åŠŸèƒ½ï¼šåŸºæœ¬ä¿¡æ¯ä¿å­˜
+å»ºç«‹ï¼šxvdongming
+æ—¥æœŸï¼š2019-11
+ä¿®æ”¹å’Œç»´æŠ¤ï¼šxvdongming
 
 **********************************************************************************/
 #ifndef WRITERGLOBALCONFIG_H
@@ -11,6 +11,11 @@
 
 #include "WriterBase.h"
 #include <QDomDocument>
+
+namespace GUI
+{
+	class MainWindow;
+}
 
 namespace ConfigOption
 {
@@ -24,27 +29,28 @@ namespace FastCAEDesigner
 	class WriterGlobalConfig : public WriterBase
 	{
 	public:
-		WriterGlobalConfig();
+		WriterGlobalConfig(GUI::MainWindow* mainWindow = nullptr);
 		~WriterGlobalConfig();
 
 	public:
 
-		//±£´æGlobalConfigÄ£¿éµÄËùÓĞĞÅÏ¢
+		//ä¿å­˜GlobalConfigæ¨¡å—çš„æ‰€æœ‰ä¿¡æ¯
 		bool Write(ConfigOption::GlobalConfig* globalInfo, ConfigOption::GeometryConfig* geometryInfo, ConfigOption::MeshConfig* meshInfo);
 
 	private:
-		//±£´æ»ù±¾ĞÅÏ¢
+		//ä¿å­˜åŸºæœ¬ä¿¡æ¯
 		bool WriteBasicPara(QDomDocument &doc, QDomElement &root, ConfigOption::GlobalConfig* globalConfig);
 
-		//±£´æ¼¸ºÎĞÅÏ¢
+		//ä¿å­˜å‡ ä½•ä¿¡æ¯
 		bool WriteGeometryPara(QDomDocument &doc, QDomElement &root, ConfigOption::GeometryConfig* geometryConfig);
-		//±£´æÍø¸ñĞÅÏ¢
+		//ä¿å­˜ç½‘æ ¼ä¿¡æ¯
 		bool WriteMeshPara(QDomDocument &doc, QDomElement &root, ConfigOption::MeshConfig* meshConfig);
-		//±£´æºó´¦ÀíĞÅÏ¢
+		//ä¿å­˜åå¤„ç†ä¿¡æ¯
 		bool WritePostPara(QDomDocument &doc, QDomElement &root);
 
-		//¸ü¸ÄÓÃ»§ÊÖ²áÃû xuxinwei 20200306 
+		//æ›´æ”¹ç”¨æˆ·æ‰‹å†Œå xuxinwei 20200306 
 		QString getUserManual(QString surName);
+		GUI::MainWindow* _mainWindow{};
 	};
 
 }

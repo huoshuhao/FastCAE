@@ -1,4 +1,4 @@
-#include "ParaBasicSetup.h"
+ï»¿#include "ParaBasicSetup.h"
 #include "ui_ParaBasicSetup.h"
 #include "ConfigOptions/ConfigOptions.h"
 #include "ConfigOptions/GlobalConfig.h"
@@ -19,6 +19,8 @@
 #include <QTimer>
 #include "mainWindow/SubWindowManager.h"
 #include "InputValidator.h"
+#include "DataManager.h"
+#include <QFileInfo>
 
 
 
@@ -127,6 +129,11 @@ namespace FastCAEDesigner
 		setTabOrder(ui->txtCorporation, ui->txtEmail);
 		setTabOrder(ui->txtEmail, ui->txtWedSite);
 		//setTabOrder(ui->txtWedSite, ui->txtNameCn);
+
+		QFileInfo fi1(_logoFileName);
+		QFileInfo fi2(_welcomeFileName);
+		DataManager::getInstance()->removeIconNameFromList(fi1.fileName());
+		DataManager::getInstance()->removeIconNameFromList(fi2.fileName());
 		
 		connect(ui->btnOk, SIGNAL(clicked()), this, SLOT(OnBtnOkClicked()));
 		connect(ui->btnCancel, SIGNAL(clicked()), this, SLOT(OnBtnCancelClicked()));
@@ -135,10 +142,10 @@ namespace FastCAEDesigner
 		connect(ui->txtEmail, SIGNAL(textChanged(QString)), this, SLOT(OnTxtEmailTextChanged(QString)));
 		connect(ui->txtWedSite, SIGNAL(textChanged(QString)), this, SLOT(OnTxtWebSiteTextChanged(QString)));
 
-		//_styleOk = QString("QLineEdit {border-width: 1px;padding: 1px; border-style: solid;border-color: #e1e1e1;border-radius:1px; background-color:white; selection-color: #0a214c;selection-background-color: #C19A6B;min-height:24px; color:rgb(126,126,126);}QLineEdit:!enabled {border-width: 1px;padding: 1px; border-style: solid;border-color: #e1e1e1;border-radius:1px;  background-color: rgb(216,216,216); selection-color: #0a214c;selection-background-color: #C19A6B;min-height:24px; color:rgb(126,126,126);}");//±³¾°É«
-		//_styleError = QString("QLineEdit {border-width: 1px;padding: 1px; border-style: solid;border-color: #e1e1e1;border-radius:1px; background-color:red; selection-color: #0a214c;selection-background-color: #C19A6B;min-height:24px; color:rgb(225,225,225);}QLineEdit:!enabled {border-width: 1px;padding: 1px; border-style: solid;border-color: #e1e1e1;border-radius:1px;  background-color: rgb(216,216,216); selection-color: #0a214c;selection-background-color: #C19A6B;min-height:24px; color:rgb(126,126,126);}");//±³¾°É«
-		_styleOk = QString("QLineEdit {border-width: 1px;padding: 1px; border-style: solid;border-color: #e1e1e1;border-radius:1px; background-color:white; selection-color: #0a214c;selection-background-color: #C19A6B;min-height:24px; color:rgb(126,126,126);}QLineEdit:!enabled {border-width: 1px;padding: 1px; border-style: solid;border-color: #e1e1e1;border-radius:1px;  background-color: rgb(216,216,216); selection-color: #0a214c;selection-background-color: #C19A6B;min-height:24px; color:rgb(126,126,126);}");//±³¾°É«
-		_styleError = QString("QLineEdit {border-width: 1px;padding: 1px; border-style: solid;border-color: #e1e1e1;border-radius:1px; background-color:red; selection-color: #0a214c;selection-background-color: #C19A6B;min-height:24px; color:rgb(225,225,225);}QLineEdit:!enabled {border-width: 1px;padding: 1px; border-style: solid;border-color: #e1e1e1;border-radius:1px;  background-color: rgb(216,216,216); selection-color: #0a214c;selection-background-color: #C19A6B;min-height:24px; color:rgb(126,126,126);}");//±³¾°É«
+		//_styleOk = QString("QLineEdit {border-width: 1px;padding: 1px; border-style: solid;border-color: #e1e1e1;border-radius:1px; background-color:white; selection-color: #0a214c;selection-background-color: #C19A6B;min-height:24px; color:rgb(126,126,126);}QLineEdit:!enabled {border-width: 1px;padding: 1px; border-style: solid;border-color: #e1e1e1;border-radius:1px;  background-color: rgb(216,216,216); selection-color: #0a214c;selection-background-color: #C19A6B;min-height:24px; color:rgb(126,126,126);}");//èƒŒæ™¯è‰²
+		//_styleError = QString("QLineEdit {border-width: 1px;padding: 1px; border-style: solid;border-color: #e1e1e1;border-radius:1px; background-color:red; selection-color: #0a214c;selection-background-color: #C19A6B;min-height:24px; color:rgb(225,225,225);}QLineEdit:!enabled {border-width: 1px;padding: 1px; border-style: solid;border-color: #e1e1e1;border-radius:1px;  background-color: rgb(216,216,216); selection-color: #0a214c;selection-background-color: #C19A6B;min-height:24px; color:rgb(126,126,126);}");//èƒŒæ™¯è‰²
+		_styleOk = QString("QLineEdit {border-width: 1px;padding: 1px; border-style: solid;border-color: #e1e1e1;border-radius:1px; background-color:white; selection-color: #0a214c;selection-background-color: #C19A6B;min-height:24px; color:rgb(126,126,126);}QLineEdit:!enabled {border-width: 1px;padding: 1px; border-style: solid;border-color: #e1e1e1;border-radius:1px;  background-color: rgb(216,216,216); selection-color: #0a214c;selection-background-color: #C19A6B;min-height:24px; color:rgb(126,126,126);}");//èƒŒæ™¯è‰²
+		_styleError = QString("QLineEdit {border-width: 1px;padding: 1px; border-style: solid;border-color: #e1e1e1;border-radius:1px; background-color:red; selection-color: #0a214c;selection-background-color: #C19A6B;min-height:24px; color:rgb(225,225,225);}QLineEdit:!enabled {border-width: 1px;padding: 1px; border-style: solid;border-color: #e1e1e1;border-radius:1px;  background-color: rgb(216,216,216); selection-color: #0a214c;selection-background-color: #C19A6B;min-height:24px; color:rgb(126,126,126);}");//èƒŒæ™¯è‰²
 	}
 
 	void ParaBasicSetup::SetControlValidStyle(QLineEdit *edit, bool b)
@@ -181,7 +188,7 @@ namespace FastCAEDesigner
 		QString strUrlExp = "((http|https|ftp)://|(www)\\.)(\\w+)(\\.?[\\.a-z0-9/:?%&=\\-_+#;]*)";
 		QRegExp regExp(strUrlExp);
 		
-		if (regExp.exactMatch(text))
+		if (regExp.exactMatch(text) || text.isEmpty())
 		{
 			//ui->txtWedSite->setStyleSheet(_styleOk);
 			SetControlValidStyle(ui->txtWedSite, true);
@@ -258,9 +265,33 @@ namespace FastCAEDesigner
 			QTimer::singleShot(3000, this, SLOT(OnTimeout()));
 			return;
 		}
-
 		UpdateUiToData();
-		this->accept();
+
+		//xuxinwei 20200324
+		QFileInfo logoIcon(_logoFileName);
+		QFileInfo welcomeIcon(_welcomeFileName);
+		//qDebug() << logoIcon.fileName() << welcomeIcon.fileName();
+		if (!DataManager::getInstance()->getIconNameIsAvailable(logoIcon.fileName()))
+		{
+			ui->lbl_info->setText(tr("Logo icon file is already existed."));
+			ui->lbl_info->show();
+			QTimer::singleShot(3000, this, SLOT(OnTimeout()));
+			return;
+		}
+
+		DataManager::getInstance()->setIconNameList(logoIcon.fileName());
+
+		if (!DataManager::getInstance()->getIconNameIsAvailable(welcomeIcon.fileName()))
+		{
+			ui->lbl_info->setText(tr("Welcome page icon file is already existed."));
+			ui->lbl_info->show();
+			QTimer::singleShot(3000, this, SLOT(OnTimeout()));
+			return;
+		}
+	
+		DataManager::getInstance()->setIconNameList(welcomeIcon.fileName());
+		//xuxinwei 20200324
+		
 		// added by libaojun @ 2019/11/26
 		QString title = ui->txtNameEn->text();
 		const QString lang = Setting::BusAPI::instance()->getLanguage();
@@ -280,10 +311,12 @@ namespace FastCAEDesigner
 		//qDebug() << web;
 		_subWindow->openUrl(web);
 
+
+		this->accept();
 		close();
 	}
 
-	//¶¨Ê±Æ÷²Ûº¯Êý
+	//å®šæ—¶å™¨æ§½å‡½æ•°
 	void ParaBasicSetup::OnTimeout()
 	{
 		ui->lbl_info->setText("");
@@ -327,8 +360,8 @@ namespace FastCAEDesigner
 		QPixmap pixmap = QPixmap::fromImage(Image);
 		int with = widget->width();
 		int height = widget->height();
-		QPixmap fitpixmap = pixmap.scaled(with, height, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);  // ±¥ÂúÌî³ä
-		//QPixmap fitpixmap = pixmap.scaled(with, height, Qt::KeepAspectRatio, Qt::SmoothTransformation);  // °´±ÈÀýËõ·Å
+		QPixmap fitpixmap = pixmap.scaled(with, height, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);  // é¥±æ»¡å¡«å……
+		//QPixmap fitpixmap = pixmap.scaled(with, height, Qt::KeepAspectRatio, Qt::SmoothTransformation);  // æŒ‰æ¯”ä¾‹ç¼©æ”¾
 		widget->setPixmap(fitpixmap);
 	}
 

@@ -1,9 +1,9 @@
-/**********************************************************************************
+ï»¿/**********************************************************************************
 
-¹¦ÄÜ£º»ù±¾ĞÅÏ¢±£´æ
-½¨Á¢£ºxvdongming
-ÈÕÆÚ£º2019-11
-ĞŞ¸ÄºÍÎ¬»¤£ºxvdongming
+åŠŸèƒ½ï¼šåŸºæœ¬ä¿¡æ¯ä¿å­˜
+å»ºç«‹ï¼šxvdongming
+æ—¥æœŸï¼š2019-11
+ä¿®æ”¹å’Œç»´æŠ¤ï¼šxvdongming
 
 **********************************************************************************/
 #include "WriterGlobalConfig.h"
@@ -15,13 +15,14 @@
 #include "ConfigOptions/GlobalConfig.h"
 #include "ConfigOptions/GeometryConfig.h"
 #include "ConfigOptions/MeshConfig.h"
+#include "mainWindow/mainWindow.h"
 #include <QFileInfo>
 
 #pragma execution_character_set("utf-8")
 
 namespace FastCAEDesigner
 {
-	WriterGlobalConfig::WriterGlobalConfig()
+	WriterGlobalConfig::WriterGlobalConfig(GUI::MainWindow* mainWindow): _mainWindow(mainWindow)
 	{
 		_fileName = _CONFIG_GLOBAL;
 	}
@@ -33,12 +34,12 @@ namespace FastCAEDesigner
 
 	/*************************************************************************************
 
-	¹¦ÄÜ£º±£´æGlobalConfigÎÄ¼şµÄĞÅÏ¢
-	²ÎÊı£º1¡¢globalInfo£º»ù±¾ĞÅÏ¢        
-	·µ»ØÖµ£ºxml½Úµã
-	ÈÕÆÚ£º2019-11-15
-	±à¼­£ºxvdongming
-	±¸×¢£º                 
+	åŠŸèƒ½ï¼šä¿å­˜GlobalConfigæ–‡ä»¶çš„ä¿¡æ¯
+	å‚æ•°ï¼š1ã€globalInfoï¼šåŸºæœ¬ä¿¡æ¯        
+	è¿”å›å€¼ï¼šxmlèŠ‚ç‚¹
+	æ—¥æœŸï¼š2019-11-15
+	ç¼–è¾‘ï¼šxvdongming
+	å¤‡æ³¨ï¼š                 
 
 	**************************************************************************************/
 	bool WriterGlobalConfig::Write(ConfigOption::GlobalConfig* globalInfo, ConfigOption::GeometryConfig* geometryInfo, ConfigOption::MeshConfig* meshInfo)
@@ -59,14 +60,14 @@ namespace FastCAEDesigner
 
 	/*************************************************************************************
 
-	¹¦ÄÜ£º±£´æ»ù±¾ĞÅÏ¢
-	²ÎÊı£º1¡¢doc£ºxmlÎÄµµ
-	      2¡¢root£ºxmlÎÄ¼ş¸ù½Úµã
-		  3¡¢basic£º»ù±¾ĞÅÏ¢
-	·µ»ØÖµ£ºxml½Úµã
-	ÈÕÆÚ£º2019-11-15
-	±à¼­£ºxvdongming
-	±¸×¢£º                  
+	åŠŸèƒ½ï¼šä¿å­˜åŸºæœ¬ä¿¡æ¯
+	å‚æ•°ï¼š1ã€docï¼šxmlæ–‡æ¡£
+	      2ã€rootï¼šxmlæ–‡ä»¶æ ¹èŠ‚ç‚¹
+		  3ã€basicï¼šåŸºæœ¬ä¿¡æ¯
+	è¿”å›å€¼ï¼šxmlèŠ‚ç‚¹
+	æ—¥æœŸï¼š2019-11-15
+	ç¼–è¾‘ï¼šxvdongming
+	å¤‡æ³¨ï¼š                  
 
 	**************************************************************************************/
 	bool WriterGlobalConfig::WriteBasicPara(QDomDocument &doc, QDomElement &root, ConfigOption::GlobalConfig* globalConfig)
@@ -82,20 +83,24 @@ namespace FastCAEDesigner
 		QDomElement describe = IoXml::getInstance()->CreateElement(doc, "Describe", "Memo");
 		//QDomElement helpDoc = IoXml::getInstance()->CreateElement(doc, "HelpFile", globalConfig->GetUserManual());
 		QDomElement helpDoc = IoXml::getInstance()->CreateElement(doc, "HelpFile", getUserManual(globalConfig->GetUserManual()));
-		
 		QString b = (globalConfig->isMaterialEnabled()) ? "true" : "false";
 		QDomElement Material = IoXml::getInstance()->CreateElementAttribute(doc, "Material", "Enable", b);
 
 		global.appendChild(softInfo);
-		global.appendChild(logo);
 		global.appendChild(welcom);
 		global.appendChild(version);
 		global.appendChild(mail);
 		global.appendChild(corporation);
+		global.appendChild(logo);
+		global.appendChild(website);
 		global.appendChild(describe);
 		global.appendChild(helpDoc);
-		global.appendChild(website);
-		
+// 		if (_mainWindow)
+// 		{
+// 			QString qUseRibbon = _mainWindow->isUseRibbon() ? "yes" : "no";			
+// 			QDomElement dUseRibbon = IoXml::getInstance()->CreateElement(doc, "UseRibbon", qUseRibbon);
+// 			global.appendChild(dUseRibbon);
+// 		}
 		root.appendChild(global);
 		root.appendChild(Material);
 
@@ -103,14 +108,14 @@ namespace FastCAEDesigner
 	}
 	/*************************************************************************************
 
-	¹¦ÄÜ£º±£´æ¼¸ºÎĞÅÏ¢
-	²ÎÊı£º1¡¢doc£ºxmlÎÄµµ
-	      2¡¢root£ºxmlÎÄ¼ş¸ù½Úµã
-	      3¡¢basic£º»ù±¾ĞÅÏ¢
-	·µ»ØÖµ£ºxml½Úµã
-	ÈÕÆÚ£º2019-11-15
-	±à¼­£ºxvdongming
-	±¸×¢£º
+	åŠŸèƒ½ï¼šä¿å­˜å‡ ä½•ä¿¡æ¯
+	å‚æ•°ï¼š1ã€docï¼šxmlæ–‡æ¡£
+	      2ã€rootï¼šxmlæ–‡ä»¶æ ¹èŠ‚ç‚¹
+	      3ã€basicï¼šåŸºæœ¬ä¿¡æ¯
+	è¿”å›å€¼ï¼šxmlèŠ‚ç‚¹
+	æ—¥æœŸï¼š2019-11-15
+	ç¼–è¾‘ï¼šxvdongming
+	å¤‡æ³¨ï¼š
 
 	**************************************************************************************/
 	bool WriterGlobalConfig::WriteGeometryPara(QDomDocument &doc, QDomElement &root, ConfigOption::GeometryConfig* geometryConfig)
@@ -125,6 +130,9 @@ namespace FastCAEDesigner
 		QDomElement createSketch = IoXml::getInstance()->CreateElementAttribute(doc, "CreateSketch", "Enable", geometryConfig->isCreateSketchEnabled());
 		QDomElement featureModeling = IoXml::getInstance()->CreateElementAttribute(doc, "FeatureModeling", "Enable", geometryConfig->isGeometryModelingEnabled());
 		QDomElement featureOperations = IoXml::getInstance()->CreateElementAttribute(doc, "FeatureOperations", "Enable", geometryConfig->isGeometryOperationsEnabled());
+		QDomElement geometryEdit = IoXml::getInstance()->CreateElementAttribute(doc, "GeometryEdit", "Enable", geometryConfig->isGeometryEditEnabled());
+		QDomElement createSet = IoXml::getInstance()->CreateElementAttribute(doc, "CreateSet", "Enable", geometryConfig->isGeometryCreateSetEnabled());
+		QDomElement measureDistance = IoXml::getInstance()->CreateElementAttribute(doc, "MeasureDistance", "Enable", geometryConfig->isMeasureDistanceEnabled());
 		geometry.appendChild(importSuffix);
 		geometry.appendChild(exportSuffix);
 		//importGeo.appendChild(suffix);
@@ -133,6 +141,9 @@ namespace FastCAEDesigner
 		geometry.appendChild(createSketch);
 		geometry.appendChild(featureModeling);
 		geometry.appendChild(featureOperations);
+		geometry.appendChild(geometryEdit);
+		geometry.appendChild(createSet);
+		geometry.appendChild(measureDistance);
 
 		root.appendChild(geometry);
 		return true;
@@ -140,14 +151,14 @@ namespace FastCAEDesigner
 
 	/*************************************************************************************
 
-	¹¦ÄÜ£º±£´æÍø¸ñĞÅÏ¢
-	²ÎÊı£º1¡¢doc£ºxmlÎÄµµ
-	      2¡¢root£ºxmlÎÄ¼ş¸ù½Úµã
-	      3¡¢basic£º»ù±¾ĞÅÏ¢
-	·µ»ØÖµ£ºxml½Úµã
-	ÈÕÆÚ£º2019-11-15
-	±à¼­£ºxvdongming
-	±¸×¢£º
+	åŠŸèƒ½ï¼šä¿å­˜ç½‘æ ¼ä¿¡æ¯
+	å‚æ•°ï¼š1ã€docï¼šxmlæ–‡æ¡£
+	      2ã€rootï¼šxmlæ–‡ä»¶æ ¹èŠ‚ç‚¹
+	      3ã€basicï¼šåŸºæœ¬ä¿¡æ¯
+	è¿”å›å€¼ï¼šxmlèŠ‚ç‚¹
+	æ—¥æœŸï¼š2019-11-15
+	ç¼–è¾‘ï¼šxvdongming
+	å¤‡æ³¨ï¼š
 
 	**************************************************************************************/
 	bool WriterGlobalConfig::WriteMeshPara(QDomDocument &doc, QDomElement &root, ConfigOption::MeshConfig* meshConfig)
@@ -164,6 +175,9 @@ namespace FastCAEDesigner
 		QDomElement SolidMesh = IoXml::getInstance()->CreateElementAttribute(doc, "SolidMesh", "Enable", meshConfig->isSolidMeshEnabled());
 		QDomElement Component = IoXml::getInstance()->CreateElementAttribute(doc, "Component", "Enable", meshConfig->isComponentEnabled());
 		QDomElement CheckMesh = IoXml::getInstance()->CreateElementAttribute(doc, "CheckMesh", "Enable", meshConfig->getCheckMeshEnabled());
+		QDomElement FluidMesh = IoXml::getInstance()->CreateElementAttribute(doc, "FluidMesh", "Enable", meshConfig->isFluidMeshEnabled());
+		QDomElement FilterMesh = IoXml::getInstance()->CreateElementAttribute(doc, "FilterMesh", "Enable", meshConfig->isFilterMeshEnabled());
+		QDomElement meshModeling = IoXml::getInstance()->CreateElementAttribute(doc, "MeshModeling", "Enable", meshConfig->isMeshModelingEnabled());
 
 		//Mesh.appendChild(ImportMesh);
 		//Mesh.appendChild(ExportMesh);
@@ -172,9 +186,13 @@ namespace FastCAEDesigner
 		Mesh.appendChild(MeshGeneration);
 		Mesh.appendChild(Component);
 		Mesh.appendChild(CheckMesh);
+		//Mesh.appendChild(FluidMesh);
+		Mesh.appendChild(FilterMesh);
+		Mesh.appendChild(meshModeling);
 		MeshGeneration.appendChild(SurfaceMesh);
 		//MeshGeneration.appendChild(FluentMesh);
 		MeshGeneration.appendChild(SolidMesh);
+		MeshGeneration.appendChild(FluidMesh);
 
 		root.appendChild(Mesh);
 		return true;
@@ -182,14 +200,14 @@ namespace FastCAEDesigner
 
 	/*************************************************************************************
 
-	¹¦ÄÜ£º±£´æºó´¦ÀíĞÅÏ¢
-	²ÎÊı£º1¡¢doc£ºxmlÎÄµµ
-	      2¡¢root£ºxmlÎÄ¼ş¸ù½Úµã
-	      3¡¢basic£º»ù±¾ĞÅÏ¢
-	·µ»ØÖµ£ºxml½Úµã
-	ÈÕÆÚ£º2019-11-15
-	±à¼­£ºxvdongming
-	±¸×¢£º
+	åŠŸèƒ½ï¼šä¿å­˜åå¤„ç†ä¿¡æ¯
+	å‚æ•°ï¼š1ã€docï¼šxmlæ–‡æ¡£
+	      2ã€rootï¼šxmlæ–‡ä»¶æ ¹èŠ‚ç‚¹
+	      3ã€basicï¼šåŸºæœ¬ä¿¡æ¯
+	è¿”å›å€¼ï¼šxmlèŠ‚ç‚¹
+	æ—¥æœŸï¼š2019-11-15
+	ç¼–è¾‘ï¼šxvdongming
+	å¤‡æ³¨ï¼š
 
 	**************************************************************************************/
 	bool WriterGlobalConfig::WritePostPara(QDomDocument &doc, QDomElement &root)

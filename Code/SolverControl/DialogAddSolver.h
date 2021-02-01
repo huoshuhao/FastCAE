@@ -1,4 +1,4 @@
-#ifndef ADDSOLVERDIALOG_H
+﻿#ifndef ADDSOLVERDIALOG_H
 #define ADDSOLVERDIALOG_H
 
 #include "SelfDefObject/QFDialog.h"

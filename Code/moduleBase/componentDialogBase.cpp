@@ -1,4 +1,4 @@
-#include "componentDialogBase.h"
+﻿#include "componentDialogBase.h"
 #include "ui_componentDialogBase.h"
 #include "mainWindow/mainWindow.h"
 #include <QListWidgetItem>

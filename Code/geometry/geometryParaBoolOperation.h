@@ -1,4 +1,4 @@
-#ifndef _GEOMETRYPARABOOLOPERATION_H_
+ï»¿#ifndef _GEOMETRYPARABOOLOPERATION_H_
 #define _GEOMETRYPARABOOLOPERATION_H_
 
 #include "geometryModelParaBase.h"
@@ -13,17 +13,17 @@ namespace Geometry
 		GeometryParaBoolOperation();
 		~GeometryParaBoolOperation() = default;
 
-		void setInputBody1(GeometrySet* body1);
-		GeometrySet* getBody1();
+		void setInputBody1(QPair <Geometry::GeometrySet*, int> body1);
+		QPair <Geometry::GeometrySet*, int> getBody1();
 
-		void setInputBody2(GeometrySet* body2);
-		GeometrySet* getBody2();
+		void setInputBody2(QPair <Geometry::GeometrySet*, int> body2);
+		QPair <Geometry::GeometrySet*, int> getBody2();
 
 		void setType(BoolType b);
 		BoolType getType();
-		///Êı¾İĞ´Èë¹¤³ÌÎÄ¼ş
+		///æ•°æ®å†™å…¥å·¥ç¨‹æ–‡ä»¶
 		QDomElement& writeToProjectFile(QDomDocument* doc, QDomElement* parent) override;
-		///´Ó¹¤³ÌÎÄ¼ş¶ÁÈëÊı¾İ
+		///ä»å·¥ç¨‹æ–‡ä»¶è¯»å…¥æ•°æ®
 		virtual void readDataFromProjectFile(QDomElement* e) override;
 		QString BoolTypeToString(BoolType b);
 		BoolType StringToBoolType(QString s);
@@ -31,8 +31,8 @@ namespace Geometry
 	private:
 		BoolType _booltype;
 
-		GeometrySet* _body1;
-		GeometrySet* _body2;
+		QPair <Geometry::GeometrySet*, int> _body1;
+		QPair <Geometry::GeometrySet*, int> _body2;
 	};
 }
 

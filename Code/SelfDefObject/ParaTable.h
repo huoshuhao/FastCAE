@@ -1,4 +1,4 @@
-#ifndef _PARATABLE_H_
+﻿#ifndef _PARATABLE_H_
 #define _PARATABLE_H_
 
 #include "ParaMore.h"

@@ -1,4 +1,4 @@
-#include "MesherPy.h"
+﻿#include "MesherPy.h"
 #include <QString>
 #include "ConfigOptions.h"
 #include "ConfigOptions/MeshConfig.h"

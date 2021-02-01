@@ -1,4 +1,4 @@
-#ifndef DIALOGMESHCHECKING_H
+﻿#ifndef DIALOGMESHCHECKING_H
 #define DIALOGMESHCHECKING_H
 
 #include "SelfDefObject/QFDialog.h"

@@ -1,4 +1,4 @@
-#include "GmshThreadManager.h"
+﻿#include "GmshThreadManager.h"
 #include "mainWindow/mainWindow.h"
 #include "moduleBase/processBar.h"
 #include "GmshThread.h"

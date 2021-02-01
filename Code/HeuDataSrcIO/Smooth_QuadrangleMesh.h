@@ -1,4 +1,4 @@
-#ifndef SMOOTH_QUADRANGLEMESH_H
+﻿#ifndef SMOOTH_QUADRANGLEMESH_H
 #define SMOOTH_QUADRANGLEMESH_H
 
 #include <queue>

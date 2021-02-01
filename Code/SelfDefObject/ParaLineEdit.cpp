@@ -1,4 +1,4 @@
-#include "ParaLineEdit.h"
+﻿#include "ParaLineEdit.h"
 #include "DataProperty/ParameterString.h"
 #include "mainWindow/mainWindow.h"
 

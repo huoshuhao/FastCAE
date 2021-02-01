@@ -22,12 +22,15 @@ HEADERS += \
 	$$PWD/dialogMakeLoft.h \
 	$$PWD/dialogCreateDatumplane.h \
 	$$PWD/SketchPointWidget.h \
-#	$$PWD/dialogDrawGraphicsLine.h \
 	$$PWD/dialogSketchPlane.h \
 	$$PWD/dialogMakeSweep.h \
 	$$PWD/dialogMakeMatrix.h \
-#	$$PWD/dialogCreateCylindricalComplex.h \
-#	$$PWD/dialogCreateBoxComplex.h \
+	$$PWD/dialogMeasureDistance.h \
+	$$PWD/dialogGeoSplitter.h \
+	$$PWD/dialogMakeFillHole.h \
+	$$PWD/dialogMakeRemoveSurface.h \
+	$$PWD/dialogMakeFillGap.h \
+
 	
 SOURCES += \
 	$$PWD/geometryDialogFactory.cpp \
@@ -52,12 +55,14 @@ SOURCES += \
 	$$PWD/dialogMakeLoft.cpp \
 	$$PWD/dialogCreateDatumplane.cpp \
 	$$PWD/SketchPointWidget.cpp \
-#	$$PWD/dialogDrawGraphicsLine.cpp \
     $$PWD/dialogSketchPlane.cpp \
 	$$PWD/dialogMakeSweep.cpp \
 	$$PWD/dialogMakeMatrix.cpp \
-#   $$PWD/dialogCreateCylindricalComplex.cpp \
-#	$$PWD/dialogCreateBoxComplex.cpp \
+	$$PWD/dialogMeasureDistance.cpp \
+	$$PWD/dialogGeoSplitter.cpp \
+	$$PWD/dialogMakeFillHole.cpp \
+	$$PWD/dialogMakeRemoveSurface.cpp \
+	$$PWD/dialogMakeFillGap.cpp \
 	
 FORMS +=  \
 	$$PWD/geoPointWidget.ui \
@@ -80,9 +85,11 @@ FORMS +=  \
 	$$PWD/dialogMakeLoft.ui \
     $$PWD/dialogCreateDatumplane.ui \
 	$$PWD/SketchPointWidget.ui \
-#	$$PWD/dialogDrawGraphicsLine.ui \
     $$PWD/dialogSketchPlane.ui \
 	$$PWD/dialogMakeSweep.ui \
 	$$PWD/dialogMakeMatrix.ui \
-#	$$PWD/dialogCreateCylindricalComplex.ui \
-#	$$PWD/dialogCreateBoxComplex.ui \
+	$$PWD/dialogMeasureDistance.ui \
+	$$PWD/dialogGeoSplitter.ui \
+	$$PWD/dialogMakeFillHole.ui \
+	$$PWD/dialogMakeRemoveSurface.ui \
+	$$PWD/dialogMakeFillGap.ui \

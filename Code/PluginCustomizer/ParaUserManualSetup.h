@@ -1,4 +1,4 @@
-#ifndef PARAUSERMANUALSETUP_H
+﻿#ifndef PARAUSERMANUALSETUP_H
 #define PARAUSERMANUALSETUP_H
 
 #include <QDialog>

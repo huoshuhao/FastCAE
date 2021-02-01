@@ -1,4 +1,4 @@
-#include "Post2DInterface.h"
+﻿#include "Post2DInterface.h"
 #include "ui_Post2DInterface.h"
 #include "Post2DWidget.h"
 #include <QFile>
@@ -100,9 +100,9 @@ namespace Post
 		_post2DWindow->delCurve(name,1);
 	}
 
-	void Post2DWindowInterface::saveImage(QString filename, int width, int heigh, bool showDlg)
+	void Post2DWindowInterface::saveImage(QString fileName, int width, int heigh, bool showDlg)
 	{
-		_post2DWindow->saveImage(filename, width, heigh, showDlg);
+		_post2DWindow->saveImage(fileName, width, heigh, showDlg);
 	}
 
 }

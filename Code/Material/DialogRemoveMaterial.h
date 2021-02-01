@@ -1,4 +1,4 @@
-#ifndef DIALOGREMOVEMATERIAL_H_
+﻿#ifndef DIALOGREMOVEMATERIAL_H_
 #define DIALOGREMOVEMATERIAL_H_
 
 #include "SelfDefObject/QFDialog.h"

@@ -1,4 +1,4 @@
-#ifndef SAVEIMAGEDIALOG_H
+﻿#ifndef SAVEIMAGEDIALOG_H
 #define SAVEIMAGEDIALOG_H
 
 #include <QDialog>

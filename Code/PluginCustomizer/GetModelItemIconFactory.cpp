@@ -1,4 +1,4 @@
-#include "GetModelItemIconFactory.h"
+﻿#include "GetModelItemIconFactory.h"
 #include "DataProperty/modelTreeItemType.h"
 #include "Common.h"
 

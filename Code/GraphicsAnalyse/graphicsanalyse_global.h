@@ -1,4 +1,4 @@
-#ifndef GRAPHICSANALYSE_GLOBAL_H
+﻿#ifndef GRAPHICSANALYSE_GLOBAL_H
 #define GRAPHICSANALYSE_GLOBAL_H
 
 #include <QtCore/qglobal.h>

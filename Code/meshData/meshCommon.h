@@ -1,4 +1,4 @@
-#ifndef _MESHCOMMON_H_
+﻿#ifndef _MESHCOMMON_H_
 #define _MESHCOMMON_H_
 
 #include "meshDataAPI.h"

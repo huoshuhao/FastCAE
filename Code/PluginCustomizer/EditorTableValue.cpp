@@ -1,4 +1,4 @@
-#include "ui_EditorTableValue.h"
+﻿#include "ui_EditorTableValue.h"
 #include "EditorTableValue.h"
 #include "EditorNameValue.h"
 #include "DataProperty/ParameterTable.h"

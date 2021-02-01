@@ -1,4 +1,4 @@
-#include "calfilterpropform.h"
+﻿#include "calfilterpropform.h"
 #include "ui_calfilterpropform.h"
 #include "qdebug.h"
 calFilterPropForm::calFilterPropForm(QWidget *parent) :

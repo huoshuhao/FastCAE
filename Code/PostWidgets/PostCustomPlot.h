@@ -1,9 +1,9 @@
-#ifndef _POSTCUSTOMPLOT_H_
+﻿#ifndef _POSTCUSTOMPLOT_H_
 
 #define _POSTCUSTOMPLOT_H_
 
 #include "PostWidgetsAPI.h"
-#include "qcustomplot.h"
+#include "CurveAnalyse/qcustomplot.h"
 
 namespace Post
 {

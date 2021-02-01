@@ -1,4 +1,4 @@
-#ifndef _PARAWIDGETBASE_H_
+﻿#ifndef _PARAWIDGETBASE_H_
 #define _PARAWIDGETBASE_H_
 
 #include <QWidget>

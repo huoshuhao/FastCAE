@@ -1,4 +1,4 @@
-#include "projectSolveDialog.h"
+﻿#include "projectSolveDialog.h"
 #include "ui_projectSolveDialog.h"
 #include "settings/busAPI.h"
 #include "moduleBase/processBar.h"

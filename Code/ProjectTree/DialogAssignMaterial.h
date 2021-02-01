@@ -1,4 +1,4 @@
-#ifndef _DIALOGASSIGNMATERIAL_H_
+﻿#ifndef _DIALOGASSIGNMATERIAL_H_
 #define _DIALOGASSIGNMATERIAL_H_
 
 #include "moduleBase/componentDialogBase.h"

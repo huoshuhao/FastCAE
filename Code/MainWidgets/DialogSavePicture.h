@@ -1,4 +1,4 @@
-#ifndef DIALOGSAVEPIC_H
+﻿#ifndef DIALOGSAVEPIC_H
 #define DIALOGSAVEPIC_H
 
 #include "mainWidgetsAPI.h"

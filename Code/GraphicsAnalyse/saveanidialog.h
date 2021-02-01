@@ -1,4 +1,4 @@
-#ifndef SAVEANIDIALOG_H
+﻿#ifndef SAVEANIDIALOG_H
 #define SAVEANIDIALOG_H
 #include <QDialog>
 #include "global.h"

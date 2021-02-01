@@ -1,4 +1,4 @@
-#ifndef PROGRESSBAR_H
+﻿#ifndef PROGRESSBAR_H
 #define PROGRESSBAR_H
 #include <QLabel>
 #include <QProgressBar>

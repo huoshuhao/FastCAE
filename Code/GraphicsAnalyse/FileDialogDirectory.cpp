@@ -1,4 +1,4 @@
-#include "FileDialogDirectory.h"
+﻿#include "FileDialogDirectory.h"
 #include "qdir.h"
 #include <QDebug>
 #include <QDesktopServices>
@@ -28,7 +28,7 @@ FileDialogDirectory::FileDialogDirectory(QWidget *parent)
 	mBuiltinItem = new QTreeWidgetItem(mPipeTree, names);
 	mPipeTree->setSelectionBehavior(QAbstractItemView::SelectRows);
 
-	//�����̷�
+	//
 	ui.splitter->setStretchFactor(0, 3);
 	ui.splitter->setStretchFactor(1, 7);
 
@@ -388,10 +388,10 @@ void FileDialogDirectory::on_OKChoice_clicked()
 {
 	QString tempFileHeader;
 	mCurrentFilePath = ui.FilePath->text().trimmed();
-#ifdef Q_OS_WIN
+//#ifdef Q_OS_WIN
 	if (mCurrentFilePath.right(1) != "/")
 		mCurrentFilePath += "/";
-#endif
+//#endif
 	openDir = mCurrentFilePath;
 	GetFileList(mCurrentFilePath);
 

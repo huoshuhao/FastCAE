@@ -1,4 +1,4 @@
-#include "contourfilterpropform.h"
+﻿#include "contourfilterpropform.h"
 #include "ui_contourfilterpropform.h"
 
 contourFilterPropForm::contourFilterPropForm(PipelineObjPropWidget *parent) :

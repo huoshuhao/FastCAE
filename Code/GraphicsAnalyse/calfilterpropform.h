@@ -1,4 +1,4 @@
-#ifndef CALFILTERPROPFORM_H
+﻿#ifndef CALFILTERPROPFORM_H
 #define CALFILTERPROPFORM_H
 
 #include <QWidget>

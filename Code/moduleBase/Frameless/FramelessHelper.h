@@ -1,4 +1,4 @@
-#ifndef FRAMELESS_HELPER_H
+﻿#ifndef FRAMELESS_HELPER_H
 #define FRAMELESS_HELPER_H
 
 #include <QObject>

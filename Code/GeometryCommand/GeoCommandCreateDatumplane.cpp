@@ -1,4 +1,4 @@
-#include "GeoCommandCreateDatumplane.h"
+﻿#include "GeoCommandCreateDatumplane.h"
 #include <gp_Ax2.hxx>
 #include <BRepPrimAPI_MakeCone.hxx>
 #include "geometry/geometryData.h"
@@ -83,7 +83,7 @@ namespace Command
 	void GeoCommandCreateDatumplane::undo()
 	{
 		_geoData->removeGeometryDatum(_result);
-		emit removeDisplayDatumActor(_result);
+		emit removeDisplayDatumActor(_result); 
 		updateGeoTree();
 	}
 

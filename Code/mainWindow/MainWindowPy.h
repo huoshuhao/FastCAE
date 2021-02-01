@@ -1,4 +1,4 @@
-#ifndef _PYMAINWINDOW_H_glyph_shaftRes
+ï»¿#ifndef _PYMAINWINDOW_H_glyph_shaftRes
 #define _PYMAINWINDOW_H_
 
 #include "mainWindowAPI.h"
@@ -14,16 +14,17 @@ namespace GUI
 	class SignalHandler;
 	class SubWindowManager;
 
-	//¾²Ì¬Àà£¬·â×°C++¹¦ÄÜ£¬¹©C½Ó¿Úµ÷ÓÃ
-	class MainWindowPy
+	//é™æ€ç±»ï¼Œå°è£…C++åŠŸèƒ½ï¼Œä¾›Cæ¥å£è°ƒç”¨
+	class MAINWINDOWAPI MainWindowPy
 	{
 	public :
 		//static void showFastCAE();
 		static void undo();
 		static void redo();
 		static void init(GUI::MainWindow* m,GUI::SignalHandler* sg);
-		static void importMesh(char* f);
-		static void exportMesh(char* f);
+		static void clearData();
+		static void importMesh(char* f, char* s, int modelId);
+		static void exportMesh(char* f,char* s, int modelId);
 		static void importGeometry(char* f);
 		static void exportGeometry(char* f);
 		static void openProjectFile(char* f);
@@ -36,7 +37,11 @@ namespace GUI
 		static void setViewRandValue(int id, char*win, int x1, int x2, int x3, int y1, int y2, int y3, int z1, int z2, int z3);
 		static void quit();
 		static void solveProject(int projectIndex, int solverIndex);
-		static void createSet(char* name, char* type, char*  idstring);
+		static void createSet(const char* name, const char* type, const char* idstring);
+		static void createGeoComponent(char* name, char* type, char* strgIDs, char* striIDs);
+		static void createVTKTransform(const char* componentIds, const char* rotate, const char* moveLocation, const char* scale);
+		static void findConplanarPorC(const char* seedType, int seedId, double minAngle, int kernalId, const char* setName);		
+		static void updateInterface();
 
 		static void script_openFile(int id, char* type, char* file);
 		static void script_applyClicked(int id, char* type);
@@ -75,7 +80,7 @@ namespace GUI
 		static void	script_FilterReflection(int id, char* type, int obj_id);
 		static void	script_FilterSmooth(int id, char* type, int obj_id);
 		static void	script_FilterStreamLine(int id, char* type, int obj_id);
-		//121211
+		
 		static void script_Properties_vector_GlyphVector(int id, char* type, int obj_id, char* val);
 		static void	script_Properties_vector_scalar(int id, char* type, int obj_id, char* val);
 		static void	script_Properties_vector_normal(int id, char* type, int obj_id, char* val);
@@ -139,6 +144,8 @@ namespace GUI
 		static void	script_Properties_streamline_surface_streamLines(int id, char* type, int obj_id, bool val);
 		static void	script_Properties_streamline_reflection(int id, char* type, int obj_id, bool val);
 		static void	script_Properties_streamline_reflectionAxes(int id, char* type, int obj_id, int val);
+		static void	deleteGeometry(int id);
+
 		
 
 	private: 		
@@ -150,28 +157,33 @@ namespace GUI
 }
 
 
-//ÉùÃ÷ÎªC½Ó¿Ú£¬¹©Python½Å±¾µ÷ÓÃ
+//å£°æ˜ä¸ºCæ¥å£ï¼Œä¾›Pythonè„šæœ¬è°ƒç”¨
 extern "C"
 {
 	//void MAINWINDOWAPI showFastCAE();
 	void MAINWINDOWAPI undo();
 	void MAINWINDOWAPI redo();
-	void MAINWINDOWAPI importMesh(char* f);
-	void MAINWINDOWAPI exportMesh(char* f);
+	void MAINWINDOWAPI clearData();
+	void MAINWINDOWAPI importMesh(char* f, char* s, int modelId);
+	void MAINWINDOWAPI exportMesh(char* f, char* s, int modelId);
 	void MAINWINDOWAPI importGeometry(char* f);
 	void MAINWINDOWAPI exportGeometry(char* f);
 	void MAINWINDOWAPI openProjectFile(char* f);
 	void MAINWINDOWAPI saveProjectFile(char* f);
+	void MAINWINDOWAPI updateInterface();
 	void MAINWINDOWAPI quit();
 	void MAINWINDOWAPI saveImage(int w, int h, int id, char*win, char* file);
-	void MAINWINDOWAPI setView( int id, char*win, char* view);//ÉèÖÃÌØ¶¨ÊÓ½Ç
-	void MAINWINDOWAPI setViewRandValue(int id, char*win, int x1, int x2, int x3, int y1, int y2, int y3, int z1, int z2, int z3);//ºó´¦Àí×ÔÓÉÉèÖÃÊÓ½Ç
-	//void MAINWINDOWAPI setViewPreValue(int id, char*win, int x1, int x2, int x3, int y1, int y2, int y3, int z1, int z2, int z3);//Ç°´¦Àí×ÔÓÉÉèÖÃÊÓ½Ç
-	void MAINWINDOWAPI openPost3D();//´ò¿ª3d´°¿Ú
-	void MAINWINDOWAPI openPost2D();//´ò¿ª2d´°¿Ú
-	void MAINWINDOWAPI openPreWindow();//´ò¿ªÇ°´¦Àí´°¿Ú
-	void MAINWINDOWAPI solveProject(int projectIndex, int solverIndex);//Çó½â
+	void MAINWINDOWAPI setView( int id, char*win, char* view);//è®¾ç½®ç‰¹å®šè§†è§’
+	void MAINWINDOWAPI setViewRandValue(int id, char*win, int x1, int x2, int x3, int y1, int y2, int y3, int z1, int z2, int z3);//åå¤„ç†è‡ªç”±è®¾ç½®è§†è§’
+	//void MAINWINDOWAPI setViewPreValue(int id, char*win, int x1, int x2, int x3, int y1, int y2, int y3, int z1, int z2, int z3);//å‰å¤„ç†è‡ªç”±è®¾ç½®è§†è§’
+	void MAINWINDOWAPI openPost3D();//æ‰“å¼€3dçª—å£
+	void MAINWINDOWAPI openPost2D();//æ‰“å¼€2dçª—å£
+	void MAINWINDOWAPI openPreWindow();//æ‰“å¼€å‰å¤„ç†çª—å£
+	void MAINWINDOWAPI solveProject(int projectIndex, int solverIndex);//æ±‚è§£
 	void MAINWINDOWAPI createSet(char* name, char* type, char* idstring);
+	void MAINWINDOWAPI createGeoComponent(char* name, char* type, char* strgIDs, char* striIDs);
+	void MAINWINDOWAPI createVTKTransform(char* componentIds, char* rotate, char* moveLocation, char* scale);	
+	void MAINWINDOWAPI findConplanarPorC(const char* seedType, int seedId, double minAngle, int kernalId, const char* setName);
 	void MAINWINDOWAPI script_openFile(int id, char* type, char* file);
 	void MAINWINDOWAPI script_applyClicked(int id, char* type);
 	void MAINWINDOWAPI script_Properties_Opacity(int id, char* type, int obj_id, double mOpacity);
@@ -273,7 +285,7 @@ extern "C"
 	void MAINWINDOWAPI	script_Properties_streamline_surface_streamLines(int id, char* type, int obj_id, bool val);
 	void MAINWINDOWAPI	script_Properties_streamline_reflection(int id, char* type, int obj_id, bool val);
 	void MAINWINDOWAPI	script_Properties_streamline_reflectionAxes(int id, char* type, int obj_id, int val);
-
+	void MAINWINDOWAPI  deleteGeometry(int id);
 
 	
 	

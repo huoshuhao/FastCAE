@@ -1,4 +1,4 @@
-#ifndef INPUTVALIDATOR_H
+﻿#ifndef INPUTVALIDATOR_H
 #define INPUTVALIDATOR_H
 
 #include <QHash>

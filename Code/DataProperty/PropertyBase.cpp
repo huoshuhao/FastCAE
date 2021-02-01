@@ -1,4 +1,4 @@
-#include "PropertyBase.h"
+﻿#include "PropertyBase.h"
 
 namespace DataProperty
 { 

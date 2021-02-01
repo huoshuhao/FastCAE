@@ -1,4 +1,4 @@
-#ifndef _PROJECTSOLVEDIALOG_H_
+﻿#ifndef _PROJECTSOLVEDIALOG_H_
 #define _PROJECTSOLVEDIALOG_H_
 
 #include "mainWidgetsAPI.h"

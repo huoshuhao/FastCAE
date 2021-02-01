@@ -1,4 +1,4 @@
-#ifndef _GEOMETRYAPI_H_
+﻿#ifndef _GEOMETRYAPI_H_
 #define _GEOMETRYAPI_H_
 
 #include <QtCore/QtGlobal>

@@ -1,9 +1,11 @@
-#include "ParameterTable.h"
+﻿#include "ParameterTable.h"
 #include <QDomText>
 #include <QDomElement>
 #include <QDomDocument>
 #include <QDomNodeList>
 #include <assert.h>
+#include <math.h>
+#include <QDebug>
 
 namespace DataProperty
 {
@@ -50,7 +52,7 @@ namespace DataProperty
 		if (index < _rowCount)
 		{
 			std::vector<double> r = _data.at(index);
-			for (int i = 0; i < r.size(); ++i)
+			for (int i = 0; i < (int)r.size(); ++i)
 				row.append(r.at(i));
 		}
 		return row;
@@ -69,11 +71,20 @@ namespace DataProperty
 		}
 		return column;
 	}
-	
+
 	void ParameterTable::setValue(int row, int col, double v)
 	{
 		if (row < _rowCount && col < _columnCount)
-			_data[row][col] = v;
+		{
+			double  c = _data[row][col];
+			if (fabs(c - v) > 0.0000001)
+			{
+				_data[row][col] = v;
+				emit dataChanged();
+			}
+		}
+
+
 	}
 
 	double ParameterTable::getValue(int row, int col)
@@ -134,6 +145,7 @@ namespace DataProperty
 	void ParameterTable::readParameter(QDomElement* e)
 	{
 		ParameterBase::readParameter(e);
+		//       qDebug() << _describe;
 		QDomNodeList titleList = e->elementsByTagName("Title");
 		if (titleList.size() == 1)
 		{
@@ -168,10 +180,10 @@ namespace DataProperty
 		return _data;
 	}
 
-	void ParameterTable::copy(ParameterBase* ori)
+	void ParameterTable::copy(ParameterBase* ori, bool valueOnly)
 	{
-		ParameterBase::copy(ori);
-		ParameterTable* p = (ParameterTable*)ori;
+		ParameterBase::copy(ori, valueOnly);
+		ParameterTable* p = dynamic_cast<ParameterTable*>(ori);
 
 		_rowCount = p->getRowCount();
 		_columnCount = p->getColumnCount();
@@ -185,10 +197,10 @@ namespace DataProperty
 	void ParameterTable::setData(std::vector<std::vector<double>> data)
 	{
 		_data = data;
-		_rowCount = data.size();
+		_rowCount = (int)data.size();
 		if (_rowCount > 0)
 		{
-			_columnCount = _data[0].size();
+			_columnCount = (int)_data[0].size();
 		}
 	}
 

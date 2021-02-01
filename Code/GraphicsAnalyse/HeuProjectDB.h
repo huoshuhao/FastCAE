@@ -1,4 +1,4 @@
-#ifndef HEUPROJECTDB_H
+﻿#ifndef HEUPROJECTDB_H
 #define HEUPROJECTDB_H
 
 #include <qlist.h>

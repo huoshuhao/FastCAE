@@ -1,4 +1,4 @@
-/****************************************************************************
+ï»¿/****************************************************************************
 **
 ** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
@@ -53,9 +53,9 @@ DownloadManager::DownloadManager(QObject *parent)
 {
 }
 
-void DownloadManager::download(QUrl &url, QString filename)
+void DownloadManager::download(QUrl &url, QString fileName)
 {
-	output.setFileName(filename);
+	output.setFileName(fileName);
 	append(url);
 	startNextDownload();
 }
@@ -109,11 +109,11 @@ void DownloadManager::startNextDownload()
 
     QUrl url = downloadQueue.dequeue();
 
-    QString filename = saveFileName(url);
- //   output.setFileName(filename);
+    QString fileName = saveFileName(url);
+ //   output.setFileName(fileName);
     if (!output.open(QIODevice::WriteOnly)) {
         fprintf(stderr, "Problem opening save file '%s' for download '%s': %s\n",
-                qPrintable(filename), url.toEncoded().constData(),
+                qPrintable(fileName), url.toEncoded().constData(),
                 qPrintable(output.errorString()));
 
         startNextDownload();
@@ -172,7 +172,7 @@ void DownloadManager::downloadFinished()
     currentDownload->deleteLater();
     startNextDownload();
 
-	///ºóÆÚĞŞ¸Ä
+	///åæœŸä¿®æ”¹
 	delete this;
 }
 

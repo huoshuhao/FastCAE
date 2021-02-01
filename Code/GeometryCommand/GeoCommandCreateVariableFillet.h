@@ -1,4 +1,4 @@
-#ifndef GEOCOMMAND_VARIABLEFILLET_H_
+﻿#ifndef GEOCOMMAND_VARIABLEFILLET_H_
 #define GEOCOMMAND_VARIABLEFILLET_H_
 
 #include "GeoCommandBase.h"

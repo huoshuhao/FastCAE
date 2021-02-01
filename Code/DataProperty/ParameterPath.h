@@ -1,4 +1,4 @@
-#ifndef _PARAMETERPATH_H_
+ï»¿#ifndef _PARAMETERPATH_H_
 #define _PARAMETERPATH_H_
 
 #include "ParameterBase.h"
@@ -23,26 +23,26 @@ namespace DataProperty
 		ParameterPath();
 		~ParameterPath() = default;
 
-		void copy(ParameterBase* ori) override;
-		//ÉèÖÃÀàĞÍ  Path, File, FileList
+		void copy(ParameterBase* ori, bool valueOnly = false) override;
+		//è®¾ç½®ç±»å‹  Path, File, FileList
 		void setType(PathType t);
-		//»ñÈ¡ÀàĞÍ
+		//è·å–ç±»å‹
 		PathType getType();
-		//ÉèÖÃºó×º,ÀàĞÍÎªFile, FileListÓĞĞ§
+		//è®¾ç½®åç¼€,ç±»å‹ä¸ºFile, FileListæœ‰æ•ˆ
 		void setSuffix(QString s);
-		//»ñÈ¡ÎÄ¼şºó×º
+		//è·å–æ–‡ä»¶åç¼€
 		QString getSuffix();
-		//ÉèÖÃÎÄ¼ş£¬ÀàĞÍÎªFileÊ±ÓĞĞ§
+		//è®¾ç½®æ–‡ä»¶ï¼Œç±»å‹ä¸ºFileæ—¶æœ‰æ•ˆ
 		void setFile(QString f);
-		//»ñÈ¡ÎÄ¼ş
+		//è·å–æ–‡ä»¶
 		QString getFile();
-		//ÉèÖÃÎÄ¼şÁĞ±í£¬ÀàĞÍÎªFileListÊ±ÓĞĞ§
+		//è®¾ç½®æ–‡ä»¶åˆ—è¡¨ï¼Œç±»å‹ä¸ºFileListæ—¶æœ‰æ•ˆ
 		void setFileList(QStringList sl);
-		//»ñÈ¡ÎÄ¼şÁĞ±í
+		//è·å–æ–‡ä»¶åˆ—è¡¨
 		QStringList getFileList();
-		//ÉèÖÃÂ·¾¶£¬ÀàĞÍÎªPathÊ±ÓĞĞ§
+		//è®¾ç½®è·¯å¾„ï¼Œç±»å‹ä¸ºPathæ—¶æœ‰æ•ˆ
 		void setPath(QString s);
-		//»ñÈ¡Â·¾¶
+		//è·å–è·¯å¾„
 		QString getPath();
 
 		void writeParameter(QDomDocument* doc, QDomElement* parent) override;

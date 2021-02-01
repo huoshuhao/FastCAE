@@ -1,4 +1,4 @@
-#include "DialogSolverManager.h"
+﻿#include "DialogSolverManager.h"
 #include "ui_DialogSolverManager.h"
 #include "DialogAddSolver.h"
 #include "ConfigOptions/ConfigOptions.h"

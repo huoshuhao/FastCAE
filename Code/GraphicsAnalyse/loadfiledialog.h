@@ -1,4 +1,4 @@
-#ifndef LOADFILEDIALOG_H
+ï»¿#ifndef LOADFILEDIALOG_H
 #define LOADFILEDIALOG_H
 
 #include <QDialog>
@@ -16,7 +16,7 @@ class LoadFileDialog : public QDialog
 public:
     explicit LoadFileDialog(QWidget *parent = 0);
     ~LoadFileDialog();
-	QString mMovieMsg;//¶Ô»°¿òÖĞ¼äÏÔÊ¾ĞÅÏ¢
+	QString mMovieMsg;//å¯¹è¯æ¡†ä¸­é—´æ˜¾ç¤ºä¿¡æ¯
 	void DisplayMovie(QString MovieMsg);
 private:
     Ui::LoadFileDialog *ui;

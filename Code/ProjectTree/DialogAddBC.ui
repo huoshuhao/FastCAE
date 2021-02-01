@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>AddBCDialog</class>
  <widget class="QDialog" name="AddBCDialog">
@@ -17,7 +17,7 @@
    <item row="0" column="0">
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>Mesh Set</string>
+      <string>Set</string>
      </property>
     </widget>
    </item>

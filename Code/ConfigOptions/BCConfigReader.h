@@ -1,4 +1,4 @@
-#ifndef _BCCONFIGREADER_H_
+﻿#ifndef _BCCONFIGREADER_H_
 #define _BCCONFIGREADER_H_
 
 #include <QFile>
@@ -17,7 +17,7 @@ namespace ConfigOption
 	class BCConfigReader //: public ModuleBase::IOBase
 	{
 	public:
-		BCConfigReader(const QString filename, BCConfig* bcconfig);
+		BCConfigReader(const QString fileName, BCConfig* bcconfig);
 		~BCConfigReader();
 		
 		bool read()/* override*/;

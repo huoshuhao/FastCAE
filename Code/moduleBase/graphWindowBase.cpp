@@ -1,4 +1,4 @@
-#include "graphWindowBase.h"
+﻿#include "graphWindowBase.h"
 #include "mainWindow/mainWindow.h"
 #include <QMdiSubWindow>
 #include <QDebug>

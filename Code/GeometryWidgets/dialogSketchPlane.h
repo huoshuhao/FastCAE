@@ -1,4 +1,4 @@
-#ifndef SKETCH_PLANE_DIALOG
+﻿#ifndef SKETCH_PLANE_DIALOG
 #define SKETCH_PLANE_DIALOG
 
 #include "geoDialogBase.h"
@@ -12,8 +12,6 @@ namespace Geometry
 {
 	class GeometrySet;
 }
-
-class vtkActor;
 
 namespace GeometryWidget
 {
@@ -30,10 +28,10 @@ namespace GeometryWidget
 	private slots:
 	     void selecPlaneClicked();
 		 void on_geoSelectSurface_clicked();
-		 void selectActorShape(vtkActor* actor, int index, Geometry::GeometrySet* set) override;
+		 void shapeSlected(Geometry::GeometrySet* set, int index) override;
 
 	private:
-		void closeEvent(QCloseEvent *) override;
+//		void closeEvent(QCloseEvent *) override;
 		void reject() override;
 		void accept() override;
 		bool getDirection(double* loc, double* dir);
@@ -43,7 +41,6 @@ namespace GeometryWidget
 
 		Geometry::GeometrySet* _faceBody{};
 		int _faceIndex{ 0 };
-		vtkActor* _faceActor{};
 		
 	};
 }

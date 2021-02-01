@@ -1,4 +1,4 @@
-#include "modelDataFactory.h"
+﻿#include "modelDataFactory.h"
 #include "ConfigOptions/ConfigOptions.h"
 #include "ConfigOptions/ProjectTreeConfig.h"
 #include "ModelData/modelDataSingleton.h"

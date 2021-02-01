@@ -1,4 +1,4 @@
-#ifndef _LINEWDITDIALOG_H_
+﻿#ifndef _LINEWDITDIALOG_H_
 #define _LINEWDITDIALOG_H_
 
 #include "QFDialog.h"

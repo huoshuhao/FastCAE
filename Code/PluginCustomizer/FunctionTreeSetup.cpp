@@ -67,6 +67,8 @@
 #include "BCBase/BCUserDef.h"
 #include "Material/Material.h"
 #include "FileHelper.h"
+#include "DataProperty/ParameterGroup.h"
+#include "ParaLinkageManager.h"
 
 
 
@@ -197,11 +199,16 @@ namespace FastCAEDesigner
 			if (nullptr == treeModel)
 				continue;
 
+			_parameterList.clear();
+			_parameterGroupList.clear();
+
 			QString nameEng = treeModel->getName();
 			QString nameChn = treeModel->getChinese();
 			QStringList disableItemList = treeModel->getDisableItems();
 
 			ModelBase* caseRoot = CreatePhysics(nameEng, nameChn);
+			caseRoot->setTreeType(type);
+
 			InitPhysicsTreeNodeVisable(disableItemList,caseRoot);
 			FillSimulationAndSolverChildModel(caseRoot, treeModel, type);
 
@@ -223,6 +230,12 @@ namespace FastCAEDesigner
 			FillPostData(postModel, type);
 
 			_physicsList.append(caseRoot);
+
+			//20200325 xuxinwei  添加仿真以及求解参数列表 
+			DataManager::getInstance()->setTreeList(nameChn);
+			DataManager::getInstance()->setAllParameterListDict(type, _parameterList);
+			DataManager::getInstance()->setAllParameterGroupListDict(type, _parameterGroupList);
+			//20200325 xuxinwei
 		}
 
 		projectTreeTypeList.clear();
@@ -263,7 +276,7 @@ namespace FastCAEDesigner
 	{
 		QMap<QString, TreeItemType> disableItem;
 		
-		disableItem.insert("Mesh Set", TreeItemType::ProjectMesh);
+		disableItem.insert("Mesh Set", TreeItemType::ProjectComponent);
 		disableItem.insert("Boundary Condition", TreeItemType::ProjectBoundaryCondation);
 		disableItem.insert("Simulation Setting", TreeItemType::ProjectSimulationSetting);
 		disableItem.insert("Solver Setting", TreeItemType::ProjectSolver);
@@ -286,8 +299,10 @@ namespace FastCAEDesigner
 
 		int count = bcConfig->getBCCount(type);
 
-		if (0 == count)
-			return;
+		//Modified xvdongming 2020-04-02 解决当边界根节点下面没有子节点时，边界条件无法填充的问题
+		//if (0 == count)
+		//	return;
+
 
 		QStringList conditionList = bcConfig->getEnabledType(type);
 		BoundaryModel* bcModel = (BoundaryModel*)model;
@@ -310,6 +325,12 @@ namespace FastCAEDesigner
 			ModelBase* childModel = CreateModelFactory(TreeItemType::ProjectBoundaryCondationChild);
 			childModel->SetEngName(nameEng);
 			childModel->SetChnName(nameChh);
+
+			//xuxinwei
+			if (!icon.isEmpty())
+			{
+				DataManager::getInstance()->setIconNameList(icon);
+			}
 
 			//Added xvdongming 将文件名称加上系统icon目录名
 			QString destPath = FileHelper::GetSystemConfigPath() + "icon/";
@@ -342,6 +363,14 @@ namespace FastCAEDesigner
 		DataProperty::DataBase* modelDataBase = new DataProperty::DataBase();
 		modelDataBase->copy(dataBase);
 		model->SetDataBase(modelDataBase);
+
+		//20200325   xuxinwei
+// 		for (int i = 0; i < modelDataBase->getParameterCount(); i++)
+// 		{
+// 			DataProperty::ParameterBase* base = modelDataBase->getParameterAt(i);
+// 			_parameterList.append(base);
+// 		}
+		insertParameterToList(modelDataBase);
 	}
 
 	void FunctionTreeSetup::FillSimulationAndSolverChildModel(ModelBase* caseRoot, ConfigOption::ProjectTreeInfo* treeModel, int projectTreeType)
@@ -361,6 +390,11 @@ namespace FastCAEDesigner
 				parentModel = GetSpecialTypeModel(caseTree, ProjectSimulationSetting);
 			else if (parentString == "Solver Setting")
 				parentModel = GetSpecialTypeModel(caseTree, ProjectSolver);
+			else if (type == TreeItemType::ProjectSimulationSettingGrandSon)
+				parentModel = getSimulationSolverChildNameModel(caseTree,parentString);
+			else if (type == TreeItemType::ProjectSolverGrandSon)
+				parentModel = getSimulationSolverChildNameModel(caseTree, parentString);
+			
 
 			if (nullptr == parentModel)
 				continue;
@@ -377,8 +411,15 @@ namespace FastCAEDesigner
 			QString iconPath = "";
 			QString iconName = treeItem->getIcon();
 
+// 			if (!iconName.isEmpty())
+// 				iconPath = destPath + treeItem->getIcon();
+			//xuxinwei 20200324
 			if (!iconName.isEmpty())
+			{
 				iconPath = destPath + treeItem->getIcon();
+				DataManager::getInstance()->setIconNameList(iconName);
+			}
+			//xuxinwei 20200324
 
 			//childModel->SetIconName(treeItem->getIcon());
 			childModel->SetIconName(iconPath);
@@ -396,6 +437,15 @@ namespace FastCAEDesigner
 
 			modelDataBase->copy(dataBase);
 			childModel->SetDataBase(modelDataBase);
+
+			//20200325 xuxinwei
+// 			for (int i = 0; i < modelDataBase->getParameterCount(); i++)
+// 			{
+// 				DataProperty::ParameterBase* base = modelDataBase->getParameterAt(i);
+// 				_parameterList.append(base);
+// 			}
+			insertParameterToList(modelDataBase);
+			
 		}
 
 		caseTree.clear();
@@ -531,6 +581,12 @@ namespace FastCAEDesigner
 			return new Post3DFileModel("", _type, this);
 
 		if (_type == TreeItemType::MaterialChild)
+			return new CustomParameterModel("", "", "", _type, this);
+
+		if (_type == TreeItemType::ProjectSimulationSettingGrandSon)
+			return new CustomParameterModel("", "", "", _type, this);
+
+		if (_type == TreeItemType::ProjectSolverGrandSon)
 			return new CustomParameterModel("", "", "", _type, this);
 
 		return new ModelBase("", "", "", TreeItemType::ProjectRoot, this);
@@ -795,10 +851,11 @@ namespace FastCAEDesigner
 		{
 			intParent = 1;
 		}
-		else if ((model->GetType() == TreeItemType::ProjectMesh) || (model->GetType() == TreeItemType::ProjectMonitor) 
-			|| (model->GetType() == TreeItemType::ProjectBoundaryCondation) || (model->GetType() == TreeItemType::ProjectSolver) 
-			|| (model->GetType() == TreeItemType::ProjectSimulationSetting) || (model->GetType() == TreeItemType::ProJectPost2DGraph)			  
-			|| (model->GetType() == TreeItemType::ProjectPost3DGraph))
+		else if ((model->GetType() == TreeItemType::ProjectComponent) || (model->GetType() == TreeItemType::ProjectMonitor)
+			|| (model->GetType() == TreeItemType::ProjectBoundaryCondation) /*|| (model->GetType() == TreeItemType::ProjectSolver) */
+			/*|| (model->GetType() == TreeItemType::ProjectSimulationSetting)*/ || (model->GetType() == TreeItemType::ProJectPost2DGraph)			  
+			|| (model->GetType() == TreeItemType::ProjectPost3DGraph) || (model->GetType() == TreeItemType::ProjectSimulationSettingChild)
+			|| (model->GetType() == TreeItemType::ProjectSolverChild))
 		{
 			intParent = 3;
 		}
@@ -999,6 +1056,14 @@ namespace FastCAEDesigner
 		//QMenu* menu = new QMenu(ui->treeWidget);
 		int flag = 0;
 		QSignalMapper *signalMapper = new QSignalMapper(this);
+		QSignalMapper *nameMapper = new QSignalMapper(this);
+
+		ModelBase* model = DataManager::getInstance()->GetModelFromDict(treeNode);
+		if (model == nullptr)
+			return menu;
+
+		int type = model->getTreeType();
+
 		QMenu *childmenu = new QMenu(tr("Show Child"), ui->treeWidget);
 		int childCount = treeNode->childCount();
 		for (int i = 0; i < childCount; i++)
@@ -1027,8 +1092,15 @@ namespace FastCAEDesigner
 			connect(signalMapper, SIGNAL(mapped(int)), this, SLOT(OnShowThis(int)));
 		}
 		QAction* deletetree = new QAction(tr("Delete"), this);
+		QAction* paraLinkage = new QAction(tr("ParameterLinkage"), this);
+
 		menu->addAction(deletetree);
+		menu->addAction(paraLinkage);
 		connect(deletetree, SIGNAL(triggered()), this, SLOT(OnDeleteItem()));
+
+		connect(paraLinkage, SIGNAL(triggered()), nameMapper, SLOT(map()));
+		nameMapper->setMapping(paraLinkage, type);
+		connect(nameMapper, SIGNAL(mapped(int)), this, SLOT(onShowParameterLinkage(int)));
 
 		return menu;
 	}
@@ -1037,14 +1109,26 @@ namespace FastCAEDesigner
 		ModelBase* childModel = DataManager::getInstance()->GetModelFromDict(childNode);
 		if (childModel == nullptr)
 			return menu;
+		if (childModel->GetType() == TreeItemType::ProjectSolverChild || childModel->GetType() == TreeItemType::ProjectSimulationSettingChild)
+		{
+			QAction* insertchild = new QAction(tr("Add Child"), this);
+			QAction* deletechild = new QAction(tr("Delete"), this);
 
-		if (childModel->GetType() == TreeItemType::ProjectBoundaryCondation)
+			menu->addAction(insertchild);
+			menu->addAction(deletechild);
+
+			connect(insertchild, SIGNAL(triggered()), this, SLOT(OnInsertChild()));
+			connect(deletechild, SIGNAL(triggered()), this, SLOT(OnDeleteItem()));
+
+			return menu;
+		}
+		else if (childModel->GetType() == TreeItemType::ProjectBoundaryCondation)
 		{
 			QAction* insertchild = new QAction(tr("Add Boundary Condition"), this);
 			menu->addAction(insertchild);
 			connect(insertchild, SIGNAL(triggered()), this, SLOT(OnInsertChild()));
 		}
-		else if ((childModel->GetType() == TreeItemType::ProjectMesh) || 
+		else if ((childModel->GetType() == TreeItemType::ProjectComponent) ||
 			(((childModel->GetType() == TreeItemType::ProjectPost3DGraph) && (childModel->GetChildList().count() >= 1))))
 		{
 			// 					QAction* insertchild = new QAction(tr("insert child"), this);
@@ -1171,6 +1255,8 @@ namespace FastCAEDesigner
 		}
 		else//其他节点
 		{
+			SetParentModel(treeItem);
+
 			model->SetParentModelBase(parentModel);
 			int r = model->ShowEditor(treeItem, this);
 
@@ -1263,4 +1349,125 @@ namespace FastCAEDesigner
 		list.clear();
 	}
 
+	void FunctionTreeSetup::insertParameterToList(DataProperty::DataBase* model)
+	{
+		for (int i = 0; i < model->getParameterCount(); i++)
+		{
+			if (model->getParameterAt(i) == nullptr)
+				continue;
+
+			_parameterList.append(model->getParameterAt(i));
+			DataManager::getInstance()->appendParameterNameList(model->getParameterAt(i)->getDescribe());
+		}
+
+		for (int i = 0; i < model->getParameterGroupCount(); i++)
+		{
+			DataProperty::ParameterGroup* paraGroup = model->getParameterGroupAt(i);
+			if (paraGroup == nullptr)
+				continue;
+
+			_parameterGroupList.append(paraGroup);
+			DataManager::getInstance()->appendParaGroupNameList(paraGroup->getDescribe());
+		//	paraGroup->getParameterCount();
+			for (int j = 0; j < paraGroup->getParameterCount(); j++)
+			{
+				if (paraGroup->getParameterAt(j) == nullptr)
+					continue;
+
+				_parameterList.append(paraGroup->getParameterAt(j));
+				DataManager::getInstance()->appendParameterNameList(paraGroup->getParameterAt(j)->getDescribe());
+			}
+			//qDebug() << i;
+		}
+	}
+
+	void FunctionTreeSetup::SetParentModel(QTreeWidgetItem* item)
+	{
+		while (item->parent() != nullptr)
+		{
+			ModelBase* model = DataManager::getInstance()->GetModelFromDict(item);
+			ModelBase* parenModel = DataManager::getInstance()->GetModelFromDict(item->parent());
+
+			model->SetParentModelBase(parenModel);
+
+			item = item->parent();
+		}
+	}
+
+	ModelBase* FunctionTreeSetup::getSimulationSolverChildNameModel(QList<ModelBase*> modelList, QString name)
+	{
+		for (int i = 0; i < modelList.count(); i++)
+		{
+			ModelBase* item = modelList.at(i);
+			if (item == nullptr)
+				continue;
+
+			if (item->GetType() == TreeItemType::ProjectSolver || item->GetType() == TreeItemType::ProjectSimulationSetting)
+			{
+				ModelBase* model = getChildModelFromName(item, name);
+				if (model != nullptr)
+					return model;
+			}
+
+// 			if (item->GetType() == TreeItemType::ProjectSimulationSetting)
+// 			{
+// 				QList<ModelBase*> list = item->GetChildList();
+// 				for (int j = 0; j < list.count(); j++)
+// 				{
+// 					ModelBase* model = list.at(j);
+// 					if (model == nullptr)
+// 						continue;
+// 
+// 					if (model->GetEngName() == name)
+// 						return model;
+// 					
+// 				}
+// 			}
+// 			else if (item->GetType() == TreeItemType::ProjectSolver)
+// 			{
+// 				QList<ModelBase*> list = item->GetChildList();
+// 				for (int j = 0; j < list.count(); j++)
+// 				{
+// 					ModelBase* model = list.at(j);
+// 					if (model == nullptr)
+// 						continue;
+// 
+// 					if (model->GetEngName() == name)
+// 						return model;
+// 
+// 				}
+// 			}
+		}
+
+		return nullptr;
+	}
+
+	ModelBase* FunctionTreeSetup::getChildModelFromName(ModelBase* base, QString name)
+	{
+		QList<ModelBase*> list = base->GetChildList();
+
+		for (int i = 0; i < list.count(); i++)
+		{
+			ModelBase* model = list.at(i);
+			if (model == nullptr)
+				continue;
+
+			if (model->GetEngName() == name)
+				return model;
+
+			ModelBase* child = getChildModelFromName(model, name);
+
+			if (child != nullptr)
+				return child;
+
+		}
+
+		return nullptr;
+	}
+
+	void FunctionTreeSetup::onShowParameterLinkage(int type)
+	{
+		ParaLinkageManager dlg(type);
+		dlg.exec();
+	}
 }       

@@ -1,4 +1,4 @@
-#include "CgnsFamily.h"
+﻿#include "CgnsFamily.h"
 #include "meshKernal.h"
 #include "meshSingleton.h"
 #include <vtkSmartPointer.h>
@@ -7,6 +7,7 @@
 #include <vtkUnstructuredGrid.h>
 #include "meshSingleton.h"
 #include <QDomElement>
+#include <QDataStream>
 #include <QDomAttr>
 #include <QDomText>
 #include <QDebug>

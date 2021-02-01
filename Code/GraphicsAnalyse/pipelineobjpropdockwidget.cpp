@@ -1,4 +1,4 @@
-#include "PipelineObjPropDockWidget.h"
+﻿#include "PipelineObjPropDockWidget.h"
 
 PipelineObjPropDockWidget::PipelineObjPropDockWidget(QWidget *parent) :
     QDockWidget(parent)

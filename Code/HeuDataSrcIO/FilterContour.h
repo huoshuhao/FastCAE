@@ -1,4 +1,4 @@
-#ifndef FILTERCONTOUR_H
+﻿#ifndef FILTERCONTOUR_H
 #define FILTERCONTOUR_H
 
 #include "PipelineObject.h"

@@ -1,4 +1,4 @@
-#ifndef _GEOMETRYDUALOGFACTORY_H__
+﻿#ifndef _GEOMETRYDUALOGFACTORY_H__
 #define _GEOMETRYDUALOGFACTORY_H__
 
 #include "geometryWidgetsAPI.h"

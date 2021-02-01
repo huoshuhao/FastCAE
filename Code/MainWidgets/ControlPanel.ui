@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>436</width>
-    <height>682</height>
+    <height>749</height>
    </rect>
   </property>
   <property name="features">
@@ -22,7 +22,7 @@
   <widget class="QWidget" name="dockWidgetContents">
    <layout class="QGridLayout" name="gridLayout">
     <property name="leftMargin">
-     <number>0</number>
+     <number>5</number>
     </property>
     <property name="topMargin">
      <number>0</number>
@@ -215,8 +215,49 @@
             <property name="bottomMargin">
              <number>0</number>
             </property>
+            <property name="horizontalSpacing">
+             <number>2</number>
+            </property>
             <item row="0" column="0">
-             <layout class="QVBoxLayout" name="propLayout"/>
+             <layout class="QVBoxLayout" name="verticalLayout_5">
+              <item>
+               <widget class="QLabel" name="label">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>40</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>40</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">color: rgb(18,145,243);
+font: 10pt &quot;Arial&quot;;
+</string>
+                </property>
+                <property name="text">
+                 <string>Settings</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <layout class="QVBoxLayout" name="propLayout">
+                <property name="spacing">
+                 <number>0</number>
+                </property>
+               </layout>
+              </item>
+             </layout>
             </item>
            </layout>
           </widget>
@@ -269,8 +310,8 @@
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>426</width>
-                 <height>183</height>
+                 <width>421</width>
+                 <height>204</height>
                 </rect>
                </property>
                <layout class="QGridLayout" name="gridLayout_6">

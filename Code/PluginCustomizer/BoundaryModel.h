@@ -1,4 +1,4 @@
-#ifndef BOUNDARY_H
+ï»¿#ifndef BOUNDARY_H
 #define BOUNDARY_H
 
 #include "ModelBase.h"
@@ -14,8 +14,8 @@ namespace FastCAEDesigner
 		BoundaryModel(QString nameEng, QString nameChn, QString iconName, QObject *parent);
 		~BoundaryModel();
 		virtual int ShowEditor(QTreeWidgetItem* treeItem, QWidget* parent);
-		QString GetCommanCondition();               //»ñÈ¡³£ÓÃÌõ¼ş
-		void SetCommonCondition(QString condition); //ÉèÖÃ±ß½ç
+		QString GetCommanCondition();               //è·å–å¸¸ç”¨æ¡ä»¶
+		void SetCommonCondition(QString condition); //è®¾ç½®è¾¹ç•Œ
 
 	private:
 		QString _commonCondition;

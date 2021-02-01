@@ -1,4 +1,4 @@
-#ifndef CUSTOMPARAMETERMODEL_H
+﻿#ifndef CUSTOMPARAMETERMODEL_H
 #define CUSTOMPARAMETERMODEL_H
 
 #include "ModelBase.h"

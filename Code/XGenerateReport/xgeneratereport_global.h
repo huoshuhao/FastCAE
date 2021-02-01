@@ -1,4 +1,4 @@
-#ifndef XGENERATEREPORT_GLOBAL_H
+﻿#ifndef XGENERATEREPORT_GLOBAL_H
 #define XGENERATEREPORT_GLOBAL_H
 
 #include <QtCore/qglobal.h>

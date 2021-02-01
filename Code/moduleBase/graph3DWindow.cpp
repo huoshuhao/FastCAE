@@ -1,4 +1,4 @@
-#include "graph3DWindow.h"
+Ôªø#include "graph3DWindow.h"
 #include "ui_graph3DWindow.h"
 #include <vtkRenderWindow.h>
 #include <vtkRenderer.h>
@@ -41,6 +41,7 @@
 #include "meshData/meshKernal.h"
 #include "meshData/meshSingleton.h"
 #include "PreWindowInteractorStyle.h"
+#include <vtkVersionMacros.h>
 
 namespace ModuleBase
 {
@@ -48,12 +49,11 @@ namespace ModuleBase
 		:_ui(new Ui::Graph3DWindow), GraphWindowBase(mainwindow, id, type, connentToMainWindow)
 	{
 		_ui->setupUi(this);
-		
+
 		init();
 		_render->GlobalWarningDisplayOff();
 		this->setFocusPolicy(Qt::ClickFocus);
 		connect(_mainWindow, SIGNAL(enableGraphWindowKeyBoard(bool)), this, SLOT(enableKeyBoard(bool)));
-		connect(_mainWindow, SIGNAL(clearHighLightSig()), this, SLOT(clearHighLight()));
 		connect(this, SIGNAL(reRenderSig()), this, SLOT(reRender()));
 		vtkCamera* camera = _render->GetActiveCamera();
 		camera->SetParallelProjection(1);
@@ -78,30 +78,23 @@ namespace ModuleBase
 			this->releaseKeyboard();
 	}
 	void Graph3DWindow::init()
-	{ 
+	{
+#if VTK_MAJOR_VERSION < 9
 		_renderWindow = _ui->qvtkWidget->GetRenderWindow();
+#else
+		_renderWindow = _ui->qvtkWidget->renderWindow();
+#endif
+
 		_render = vtkSmartPointer<vtkRenderer>::New();
 		_render->SetGradientBackground(true);
-// 		_render->SetBackground2(0.0, 0.333, 1.0);
-// 		_render->SetBackground(1.0, 1.0, 1.0);
+		// 		_render->SetBackground2(0.0, 0.333, 1.0);
+		// 		_render->SetBackground(1.0, 1.0, 1.0);
 		_interactor = _renderWindow->GetInteractor();
 		_renderWindow->AddRenderer(_render);
-		// ∞»°œ‡πÿ
-		_highLightMapper = vtkSmartPointer<vtkDataSetMapper>::New();
-		_highLightActor = vtkSmartPointer<vtkActor>::New();
- 		_emptyDataset = vtkSmartPointer<vtkPolyData>::New();
-
-		_highLightActor->SetMapper(_highLightMapper);
-		_highLightMapper->ScalarVisibilityOff();
-		_highLightMapper->SetInputData(_emptyDataset);
-		_highLightActor->GetProperty()->SetOpacity(0.7);
-		_highLightMapper->Update();
-		_render->AddActor(_highLightActor);
-
 		if (_graphWindowType == PreWindows)
 		{
 			PropPickerInteractionStyle* style = PropPickerInteractionStyle::New();
-			style->connectToMainWindow(_mainWindow,this);
+			style->connectToMainWindow(_mainWindow, this);
 			style->SetDefaultRenderer(_render);
 			style->setRender(_render);
 			style->setRenderWindow(_renderWindow);
@@ -110,22 +103,24 @@ namespace ModuleBase
 			_interactor->SetPicker(areaPicker);
 			_interactionStyle = style;
 
-			//πÿ¡™–≈∫≈
-			connect(style, SIGNAL(selectGeometry(vtkActor*,bool)), this, SIGNAL(selectGeometry(vtkActor*,bool)));
-			connect(style, SIGNAL(highLight(QMultiHash<vtkDataSet*, int>*)), this, SLOT(highLighSet(QMultiHash<vtkDataSet*, int>*)));
+			//ÂÖ≥ËÅî‰ø°Âè∑
+			connect(style, SIGNAL(selectGeometry(bool)), this, SIGNAL(selectGeometry(bool)));
+			connect(style, SIGNAL(preSelectGeometry(vtkActor*, int)), this, SIGNAL(preSelectGeometry(vtkActor *, int)));
+
 			connect(this, SIGNAL(keyEvent(int, QKeyEvent*)), style, SLOT(keyEvent(int, QKeyEvent*)));
-			//connect(this, SIGNAL(RestoreGeoColor(), style, SIGNAL(RestoreGeoColorSig()));
+			connect(style, SIGNAL(highLight(QMultiHash<vtkDataSet*, int>*)), this, SIGNAL(highLighSet(QMultiHash<vtkDataSet*, int>*)));
+			connect(style, SIGNAL(higtLightActorDisplayPoint(bool)), this, SIGNAL(highLightActorDispalyPoint(bool)));
+			connect(style, SIGNAL(clearAllHighLight()), this, SIGNAL(clearAllHighLight()));
+
 			connect(_mainWindow, SIGNAL(selectModelChangedSig(int)), this, SLOT(setSelectType(int)));
-			connect(_mainWindow, SIGNAL(highLightSetSig(MeshData::MeshSet*)), this, SLOT(highLighSet(MeshData::MeshSet*)));
-			connect(_mainWindow, SIGNAL(highLightKernelSig(MeshData::MeshKernal*)), this, SLOT(highLighKernel(MeshData::MeshKernal*)));
-			connect(_mainWindow, SIGNAL(highLightDataSetSig(vtkDataSet*)), this, SLOT(highLighDataSet(vtkDataSet*)));
-			connect(style, SIGNAL(higtLightActorDisplayPoint(bool)), this, SLOT(highLightActorDispalyPoint(bool)));
+			//
 			connect(style, SIGNAL(grabKeyBoard(bool)), this, SLOT(enableKeyBoard(bool)));
 			connect(style, SIGNAL(mouseWhellMove()), this, SLOT(mouseWheelMove()));
+			connect(style, SIGNAL(rightDownMenu()), this, SIGNAL(rightDownMenuSig()));
 		}
 		initAxes();
 		updateGraphOption();
-		
+
 	}
 	void Graph3DWindow::initAxes()
 	{
@@ -136,7 +131,7 @@ namespace ModuleBase
 		_axesWidget->SetInteractor(_interactor);
 		_axesWidget->SetViewport(0.0, 0.0, 0.2, 0.2);
 		_axesWidget->SetEnabled(1);
-		///Ω˚÷πΩªª•≤Ÿ◊˜“∆∂ØŒª÷√2
+		///Á¶ÅÊ≠¢‰∫§‰∫íÊìç‰ΩúÁßªÂä®‰ΩçÁΩÆ2
 		_axesWidget->InteractiveOff();
 	}
 	void Graph3DWindow::initText()
@@ -178,7 +173,7 @@ namespace ModuleBase
 		_scalarBarWidget->GetScalarBarActor()->SetTitleTextProperty(propLable);
 		_scalarBarWidget->GetScalarBarActor()->SetLabelTextProperty(propLable);
 		_scalarBarWidget->GetScalarBarActor()->SetUnconstrainedFontSize(true);
-//		_scalarBarWidget->GetScalarBarActor()->SetLookupTable(_interactor);
+		//		_scalarBarWidget->GetScalarBarActor()->SetLookupTable(_interactor);
 		_scalarBarWidget->SetInteractor(_interactor);
 		_scalarBarWidget->Off();
 	}
@@ -202,7 +197,7 @@ namespace ModuleBase
 		_renderWindow->Render();
 	}
 
-	 
+
 	void Graph3DWindow::AppendActor(vtkProp* actor, ActorType type, bool reRender, bool reset)
 	{
 		if (type == ActorType::D3)
@@ -216,32 +211,32 @@ namespace ModuleBase
 		else assert(0);
 		if (reRender)
 		{
-			if(reset) 
+			if (reset)
 				_render->ResetCamera();
 			_renderWindow->Render();
 		}
-		
+
 	}
 	void Graph3DWindow::RemoveActor(vtkProp* actor)
 	{
-		if (nullptr != _render&& nullptr != actor)
+		if (nullptr != _render && nullptr != actor)
 		{
 			_render->RemoveActor(actor);
 		}
-//		_renderWindow->Render();
+		//		_renderWindow->Render();
 	}
 
 
-	void Graph3DWindow::saveImage(QString filePath, int w,int h,bool showdlg)
+	void Graph3DWindow::saveImage(QString filePath, int w, int h, bool showdlg)
 	{
 
-//		QString dir = Setting::BusAPI::instance()->getWorkingDir();
+		//		QString dir = Setting::BusAPI::instance()->getWorkingDir();
 
 		vtkSmartPointer<vtkWindowToImageFilter> report_windowToImageFilter = vtkSmartPointer<vtkWindowToImageFilter>::New();
 		vtkSmartPointer<vtkImageResize> report_resize = vtkSmartPointer<vtkImageResize>::New();
 		vtkSmartPointer<vtkPNGWriter> report_writer = vtkSmartPointer<vtkPNGWriter>::New();
 
- 		QString png_name =  filePath;
+		QString png_name = filePath;
 
 		report_windowToImageFilter->SetInput(_renderWindow);
 		report_resize->SetInputConnection(report_windowToImageFilter->GetOutputPort());
@@ -255,7 +250,7 @@ namespace ModuleBase
 	{
 		_lookupTable->SetNumberOfColors(n);
 		_scalarBarWidget->GetScalarBarActor()->SetLookupTable(_lookupTable);
-//		int na = _render->GetActors()->GetNumberOfItems();
+		//		int na = _render->GetActors()->GetNumberOfItems();
 		_renderWindow->Render();
 	}
 	int Graph3DWindow::getScalarBarLevel()
@@ -330,7 +325,7 @@ namespace ModuleBase
 		camera->SetFocalPoint(0, 0, 0);
 		resetCamera();
 	}
-	
+
 	void Graph3DWindow::keyPressEvent(QKeyEvent *e)
 	{
 		emit keyEvent(0, e);
@@ -339,160 +334,16 @@ namespace ModuleBase
 	{
 		emit keyEvent(1, e);
 	}
+
 	SelectModel Graph3DWindow::getSelectModel()
 	{
 		return _selectModel;
 	}
-// 	vtkDataSet* Graph3DWindow::getHighLightDataSet()
-// 	{
-// 		return nullptr;
-// 	}
-// 	vtkIdTypeArray* Graph3DWindow::getHighLightIDArray()
-// 	{
-// 		return nullptr;
-// 	}
 	void Graph3DWindow::setSelectType(int model)
 	{
-//		highLighSet(nullptr, nullptr);
 		_selectModel = (SelectModel)model;
-		switch (_selectModel)
-		{
-		case  ModuleBase::None:
-			clearHighLight();
-			break;
-		case ModuleBase::MeshNode:
-			_highLightActor->GetProperty()->SetRepresentationToPoints();
-			_highLightActor->GetProperty()->SetPointSize(5);
-			break;
-		case ModuleBase::MeshCell:
-			_highLightActor->GetProperty()->SetRepresentationToSurface();
-			break;
-		case ModuleBase::GeometryPoint:
-		case ModuleBase::GeometryCurve:
-		case ModuleBase::GeometrySurface:
-		case ModuleBase::GeometryBody:
-		case ModuleBase::GeometryWinPoint:
-		case ModuleBase::GeometryWinCurve:
-		case ModuleBase::GeometryWinSurface:
-		case ModuleBase::GeometryWinBody:
-			emit RestoreGeoColorSig();
-	/*	case  ModuleBase::GeometryPoint:
-		{
-			QColor color = Setting::BusAPI::instance()->getGraphOption()->getHighLightColor();
-			_highLightActor->GetProperty()->SetColor(color.redF(), color.greenF(), color.blueF());
-			break;
-		}*/
-		/*case  ModuleBase::GeometryCurve:
-		case ModuleBase::GeometrySurface:
-		case ModuleBase::GeometryBody:*/
-			
-		default:
-			break;
-		}
-
 	}
-	void Graph3DWindow::highLighSet(QMultiHash<vtkDataSet*, int>* items)
-	{
-// 		_highLightDataSet = dataset;
-// 		_highLightIDArray = idarray;
-		_selectItems = items;
 
-		if (items == nullptr || items->isEmpty())
-		{
-			clearHighLight();
-			return;
-		}
-
-		vtkSmartPointer<vtkAppendFilter> appendFilter = vtkSmartPointer<vtkAppendFilter>::New();
-		QList<vtkDataSet*> datasetList = items->uniqueKeys();
-		
-		for (vtkDataSet* dateset : datasetList)
-		{
-			QList<int> ids = items->values(dateset);
-			vtkSmartPointer<vtkIdTypeArray> idarray = vtkSmartPointer<vtkIdTypeArray>::New();
-			for (int id : ids) 
-				idarray->InsertNextValue(id);
-
-			vtkSmartPointer<vtkSelectionNode> selectionNode = vtkSmartPointer<vtkSelectionNode>::New();
-			if (_selectModel == MeshCell || _selectModel == BoxMeshCell)
-				selectionNode->SetFieldType(vtkSelectionNode::CELL);
-			else if (_selectModel == MeshNode || _selectModel == BoxMeshNode)
-				selectionNode->SetFieldType(vtkSelectionNode::POINT);
-			selectionNode->SetContentType(vtkSelectionNode::INDICES);
-			selectionNode->SetSelectionList(idarray);
-
-			vtkSmartPointer<vtkSelection> selection = vtkSmartPointer<vtkSelection>::New();
-			selection->AddNode(selectionNode);
-
-			vtkSmartPointer<vtkExtractSelection> extractionSelection = vtkSmartPointer<vtkExtractSelection>::New();
-			extractionSelection->SetInputData(0, dateset);
-			extractionSelection->SetInputData(1, selection);
-			extractionSelection->Update();
-			appendFilter->AddInputData(extractionSelection->GetOutput());
-		}
-		appendFilter->Update();
-
-//		vtkSmartPointer<vtkDataSetMapper> mapper = vtkSmartPointer<vtkDataSetMapper>::New();
-		_highLightMapper->SetInputData((vtkDataSet*)appendFilter->GetOutput());
-		_highLightMapper->Update();
-		_renderWindow->Render();
-	}
-	void Graph3DWindow::clearHighLight()
-	{
-		_highLightMapper->SetInputData(_emptyDataset);
-// 		_highLightDataSet = nullptr;
-// 		_highLightIDArray = nullptr;
-		_selectItems = nullptr;
-		_highLightMapper->Update();
-		_renderWindow->Render();
-	}
-	void Graph3DWindow::highLighSet(MeshData::MeshSet* set)
-	{
-		if (set == nullptr)
-		{
-			clearHighLight();
-			return;
-		}
-			
-		MeshData::SetType settype = set->getSetType();
-		_highLightActor->GetProperty()->SetRepresentationToSurface();
-		
-		if (settype == MeshData::Node)
-		{
-			_highLightActor->GetProperty()->SetRepresentationToPoints();
-			_highLightActor->GetProperty()->SetPointSize(5);
-		}
-
-		vtkDataSet* dataset = set->getDisplayDataSet();
-		_highLightMapper->SetInputData(dataset);
-		_highLightMapper->Update();
-		_renderWindow->Render();
-	}
-	void Graph3DWindow::highLighKernel(MeshData::MeshKernal* k)
-	{
-		if (k == nullptr)
-		{
-			clearHighLight();
-			return;
-		}
-		_highLightActor->GetProperty()->SetRepresentationToSurface();
-		vtkDataSet* dataset = k->getMeshData();
-		_highLightMapper->SetInputData(dataset);
-		_highLightMapper->Update();
-		_renderWindow->Render();
-	}
-	void Graph3DWindow::highLightActorDispalyPoint(bool on)
-	{
-		if (on)
-		{
-			_highLightActor->GetProperty()->SetRepresentationToPoints();
-			_highLightActor->GetProperty()->SetPointSize(5);
-		}
-		else
-		{
-			_highLightActor->GetProperty()->SetRepresentationToSurface();
-		}
-	}
 	void Graph3DWindow::updateGraphOption()
 	{
 		Setting::GraphOption* option = Setting::BusAPI::instance()->getGraphOption();
@@ -500,8 +351,6 @@ namespace ModuleBase
 		QColor bottomcolor = option->getBackgroundBottomColor();
 		_render->SetBackground2(topcolor.redF(), topcolor.greenF(), topcolor.blueF());
 		_render->SetBackground(bottomcolor.redF(), bottomcolor.greenF(), bottomcolor.blueF());
-		QColor hicolor = option->getHighLightColor();
-		_highLightActor->GetProperty()->SetDiffuseColor(hicolor.redF(), hicolor.greenF(), hicolor.blueF());
 		_renderWindow->Render();
 	}
 	void Graph3DWindow::reTranslate()
@@ -523,13 +372,6 @@ namespace ModuleBase
 		captionWidget->SetRepresentation(captionRepresentation);
 		captionWidget->On();
 		_captionList.append(captionWidget);
-	}
-
-	void Graph3DWindow::highLighDataSet(vtkDataSet* dataset)
-	{
-		_highLightMapper->SetInputData(dataset);
-		_highLightMapper->Update();
-		_renderWindow->Render();
 	}
 
 	void Graph3DWindow::reRender()
@@ -585,7 +427,7 @@ namespace ModuleBase
 		for (int i = 0; i < 3; ++i)
 			e[i] = c[i];
 
-		double m = 0; 
+		double m = 0;
 		for (int i = 0; i < 3; ++i)
 			m += pow(e[i] - s[i], 2);
 
@@ -600,16 +442,20 @@ namespace ModuleBase
 		emit showGraphRange(w, h);
 	}
 
+	void Graph3DWindow::leaveEvent(QEvent *event)
+	{
+		_renderWindow->Render();
+	}
+
+	void Graph3DWindow::enterEvent(QEvent *event)
+	{
+		_renderWindow->Render();
+	}
+
 	void Graph3DWindow::mouseWheelMove()
 	{
 		double w = this->getWorldWidth();
 		double h = this->getWorldHight();
 		emit showGraphRange(w, h);
 	}
-
-	QMultiHash<vtkDataSet*, int>* Graph3DWindow::getSelectItems()
-	{
-		return _selectItems;
-	}
-
 }

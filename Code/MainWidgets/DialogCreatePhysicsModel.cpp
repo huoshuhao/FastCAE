@@ -1,4 +1,4 @@
-#include "DialogCreatePhysicsModel.h"
+﻿#include "DialogCreatePhysicsModel.h"
 #include <ui_DialogCreatePhysicsModel.h>
 #include "PhysicsWidget.h"
 #include "ConfigOptions/ConfigOptions.h"

@@ -1,4 +1,4 @@
-#ifndef _MESHDATAAPI_H_
+﻿#ifndef _MESHDATAAPI_H_
 #define _MESHDATAAPI_H_
 
 #include <QtCore/QtGlobal>

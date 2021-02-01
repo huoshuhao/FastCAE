@@ -1,4 +1,4 @@
-#ifndef GEOCREATEBOXCOMMAND_H_
+﻿#ifndef GEOCREATEBOXCOMMAND_H_
 #define GEOCREATEBOXCOMMAND_H_
 
 #include "geometryCommandAPI.h"

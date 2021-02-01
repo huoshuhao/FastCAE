@@ -1,4 +1,4 @@
-#ifndef _COMMONFUNCTIONS_H_
+﻿#ifndef _COMMONFUNCTIONS_H_
 #define _COMMONFUNCTIONS_H_
 
 #include "moduleBase/moduleBaseAPI.h"
@@ -6,8 +6,10 @@
 
 extern "C"
 {
-	//��ղ��Ƴ��ļ���
+	//清空并移除文件夹
 	bool MODULEBASEAPI RemoveDir(QString fullpath);
+	//将浮点数转化为字符串，acc-小数点后位数
+	QString MODULEBASEAPI doubleToString(double v, int acc);
 }
 
 

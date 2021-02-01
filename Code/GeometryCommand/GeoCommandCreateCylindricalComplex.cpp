@@ -1,4 +1,4 @@
-#include "GeoCommandCreateCylindricalComplex.h"
+﻿#include "GeoCommandCreateCylindricalComplex.h"
 #include "geometry/geometrySet.h"
 #include "geometry/geometryData.h"
 #include <TopoDS_Shape.hxx>

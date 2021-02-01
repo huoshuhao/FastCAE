@@ -1,4 +1,4 @@
-#ifndef MESHCHECKER_H
+﻿#ifndef MESHCHECKER_H
 #define MESHCHECKER_H
 
 #include <QThread>

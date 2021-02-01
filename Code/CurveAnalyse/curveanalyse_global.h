@@ -1,4 +1,4 @@
-#ifndef CURVEANALYSE_GLOBAL_H
+﻿#ifndef CURVEANALYSE_GLOBAL_H
 #define CURVEANALYSE_GLOBAL_H
 
 #include <QtCore/qglobal.h>

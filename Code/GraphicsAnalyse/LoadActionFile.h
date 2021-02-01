@@ -1,4 +1,4 @@
-#ifndef LOADACTIONFILE_H
+﻿#ifndef LOADACTIONFILE_H
 #define LOADACTIONFILE_H
 #include <qstring.h>
 #include <qvector.h>

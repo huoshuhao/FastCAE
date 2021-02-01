@@ -1,4 +1,4 @@
-#ifndef _PYAGENT_H_
+Ôªø#ifndef _PYAGENT_H_
 #define _PYAGENT_H_
 
 #include "pythonAPI.h"
@@ -14,6 +14,7 @@ namespace Py
 {
 	class PyInterpreter;
 	class ScriptReader;
+	class RecordThread;
 
 	class PYTHONAPI PythonAagent : public QObject
 	{
@@ -23,11 +24,11 @@ namespace Py
 		void initialize(GUI::MainWindow* m);
 		void finalize(); 
 		void submit(QString code, bool save = true);
-		//∫ÛÃ®÷¥––£¨≤ª‘⁄ΩÁ√Êœ‘ æ£¨“≤≤ª±£¥Ê
+		//ÂêéÂè∞ÊâßË°åÔºå‰∏çÂú®ÁïåÈù¢ÊòæÁ§∫Ôºå‰πü‰∏ç‰øùÂ≠ò
 		void backstageExec(QString code);
 		void submit(QStringList codes, bool save = true);
-		void saveScript(QString filename);
-		void execScript(QString filename);
+		void saveScript(QString fileName);
+		bool execScript(QString fileName);
 		void appCodeList(QString code);
 		void lock();
 		void unLock();
@@ -36,16 +37,18 @@ namespace Py
 		void appendOff();
 		void execMessWinCode(QString code);
 		QStringList getcodelist();
+		void setNoGUI(bool nogui);
+
 
 
 	signals:
 		void printInfo(int type, QString m);
+		void closeMainWindow();
 
 	private:
 		PythonAagent();
 		~PythonAagent() = default; 
 		void connectSignals();
-	
 
 	private slots:
 		void readerFinished();
@@ -53,10 +56,13 @@ namespace Py
 	private:
 		static PythonAagent* _instance;
 		PyInterpreter* _interpreter{};
+		RecordThread* _recordScript{};
 		GUI::MainWindow* _mainWindow{};
 		ScriptReader* _reader{};
 		bool _islock{ false };
 		bool _append{ true };
+
+		bool _noGUI{ false };
 	
 	};
 }

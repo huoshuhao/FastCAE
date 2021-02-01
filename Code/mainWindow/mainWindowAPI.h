@@ -1,4 +1,4 @@
-#ifndef _MAINWINDOWAPI_H_
+﻿#ifndef _MAINWINDOWAPI_H_
 #define _MAINWINDOWAPI_H_
 
 #include <QtCore/QtGlobal>

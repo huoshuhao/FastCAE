@@ -1,4 +1,4 @@
-#ifndef _SOLVERSETTINGBASE_H_
+﻿#ifndef _SOLVERSETTINGBASE_H_
 #define _SOLVERSETTINGBASE_H_
 
 #include "modelDataAPI.h"

@@ -1,4 +1,4 @@
-#ifndef _CREATECYLINDER_H_
+﻿#ifndef _CREATECYLINDER_H_
 #define _CREATECYLINDER_H_
 
 #include "geometryWidgetsAPI.h"
@@ -26,7 +26,7 @@ namespace GeometryWidget
 
 	private:
 		void init();
-		void closeEvent(QCloseEvent *);
+//		void closeEvent(QCloseEvent *);
 		void reject() override;
 		void accept() override;
 

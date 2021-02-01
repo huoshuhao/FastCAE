@@ -1,4 +1,4 @@
-#include "ParaSpin.h"
+﻿#include "ParaSpin.h"
 #include "DataProperty/ParameterInt.h"
 #include "mainWindow/mainWindow.h"
 #include <QWheelEvent>

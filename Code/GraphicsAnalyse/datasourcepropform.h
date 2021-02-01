@@ -1,4 +1,4 @@
-#ifndef DATASOURCEPROPFORM_H
+﻿#ifndef DATASOURCEPROPFORM_H
 #define DATASOURCEPROPFORM_H
 
 #include <QWidget>

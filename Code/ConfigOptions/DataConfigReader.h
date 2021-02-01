@@ -1,4 +1,4 @@
-#ifndef _DATACONFIGREADER_H_
+﻿#ifndef _DATACONFIGREADER_H_
 #define _DATACONFIGREADER_H_
 
 #include <QString>
@@ -17,7 +17,7 @@ namespace ConfigOption
 	class DataConfigReader //: public ModuleBase::IOBase
 	{
 	public:
-		DataConfigReader(const QString filename, DataConfig* dataconfig, PostConfig* postconfig);
+		DataConfigReader(const QString fileName, DataConfig* dataconfig, PostConfig* postconfig);
 		~DataConfigReader();
 
 		bool read() /*override*/;

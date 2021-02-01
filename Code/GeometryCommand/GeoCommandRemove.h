@@ -1,4 +1,4 @@
-#ifndef GEOCPMMANDREMOVE_H_
+﻿#ifndef GEOCPMMANDREMOVE_H_
 #define GEOCPMMANDREMOVE_H_
 
 #include "GeoCommandBase.h"

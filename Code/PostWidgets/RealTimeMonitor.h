@@ -1,4 +1,4 @@
-#ifndef REALTIMEMONITOR_H
+﻿#ifndef REALTIMEMONITOR_H
 #define REALTIMEMONITOR_H
 
 #include <QThread>

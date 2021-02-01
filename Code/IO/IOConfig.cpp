@@ -1,4 +1,4 @@
-#include <IOConfig.h>
+﻿#include <IOConfig.h>
 
 namespace IO
 {
@@ -100,9 +100,6 @@ namespace IO
 			return _exportMeshFuns.value(suffix);
 		return nullptr;
 	}
-
-
-
 }
 
 

@@ -1,4 +1,4 @@
-#include "BoundaryModel.h"
+ï»¿#include "BoundaryModel.h"
 #include "EditorBoundaryModel.h"
 #include "DataProperty/modelTreeItemType.h"
 
@@ -25,7 +25,7 @@ namespace FastCAEDesigner
 		return dlg.exec();
 	}
 
-	//»ñÈ¡³£ÓÃÌõ¼ş
+	//è·å–å¸¸ç”¨æ¡ä»¶
 	QString BoundaryModel::GetCommanCondition()
 	{
 		return _commonCondition;

@@ -1,4 +1,4 @@
-#include "geometryParaChamfer.h"
+ï»¿#include "geometryParaChamfer.h"
 #include <QDomElement>
 #include <QDomDocument>
 #include <QDomAttr>
@@ -13,12 +13,10 @@ namespace Geometry
 		_type = GeometryParaMakeChamfer;
 	}
 
-
 	void GeometryParaChamfer::setInputSet(GeometrySet* s)
 	{
 		_inputSet = s;
 	}
-
 
 	Geometry::GeometrySet* GeometryParaChamfer::getGeometrySet()
 	{
@@ -67,7 +65,7 @@ namespace Geometry
 
 	QDomElement& GeometryParaChamfer::writeToProjectFile(QDomDocument* doc, QDomElement* parent)
 	{
-		QDomElement element = doc->createElement("Parameter");  //´´½¨×Ó½Úµã
+		QDomElement element = doc->createElement("Parameter");  //åˆ›å»ºå­èŠ‚ç‚¹
 		QDomAttr typeattr = doc->createAttribute("Type");
 		typeattr.setValue(this->typeToString());
 		element.setAttributeNode(typeattr);
@@ -79,13 +77,6 @@ namespace Geometry
 		QDomAttr rad2attr = doc->createAttribute("Distance2");
 		rad2attr.setValue(QString::number(_d2));
 		element.setAttributeNode(rad2attr);
-
-	/*	QDomAttr sectypeattr = doc->createAttribute("Distance2");
-		QString secstr;
-		if (_type == 0) secstr = QString("Symmetrical");
-		else secstr = QString("Asymmetrical");
-		sectypeattr.setValue(secstr);
-		element.setAttributeNode(sectypeattr);*/
 
 		if (_inputSet != nullptr)
 		{
@@ -120,7 +111,6 @@ namespace Geometry
 
 	void GeometryParaChamfer::readDataFromProjectFile(QDomElement* e)
 	{
-// 		_name = e->attribute("Name");
  		_d1 = e->attribute("Distance1").toDouble();
 		_d2 = e->attribute("Distance2").toDouble();
 	
@@ -145,8 +135,6 @@ namespace Geometry
 			int inedx = sindexs.at(i).toDouble();
 			_edgeindexlist.append(inedx);
 		}
-
-
 
 	}
 

@@ -1,4 +1,4 @@
-#include "dialogCreateBox.h"
+﻿#include "dialogCreateBox.h"
 #include "ui_dialogCreateBox.h"
 #include "geometry/geometrySet.h"
 #include "geometry/geometryData.h"
@@ -37,12 +37,12 @@ namespace GeometryWidget
 	{
 		if (_ui != nullptr) delete _ui;
 	}
-
-	void CreateBoxDialog::closeEvent(QCloseEvent *e)
-	{
-		QDialog::closeEvent(e);
-		delete this;
-	}
+// 
+// 	void CreateBoxDialog::closeEvent(QCloseEvent *e)
+// 	{
+// 		QDialog::closeEvent(e);
+// //		delete this;
+// 	}
 
 	void CreateBoxDialog::init()
 	{

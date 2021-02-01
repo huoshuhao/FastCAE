@@ -1,4 +1,4 @@
-#ifndef FILTERCLIP_H
+﻿#ifndef FILTERCLIP_H
 #define FILTERCLIP_H
 
 #include "PipelineObject.h"

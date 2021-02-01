@@ -1,4 +1,4 @@
-#ifndef _POSTCURVE_H_
+﻿#ifndef _POSTCURVE_H_
 #define _POSTCURVE_H_
 
 #include "DataProperty/DataBase.h"

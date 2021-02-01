@@ -1,29 +1,24 @@
 win32{
 
-X64{
+INCLUDEPATH	+=  ../../cgns/include  \
 
-Debug:INCLUDEPATH	+=  ../../cgns/cgns_x64_debug/inc/  \
-
-Debug:LIBS +=  -L../../cgns/cgns_x64_debug/lib/ \
+Debug:LIBS +=  -L../../cgns/libd/ \
 -lcgns   \    
--llibhdf5_D \
--llibszip \ 
--llibzlib \
+-lcgnsdll \
+-llibhdf5_D	\
+-llibhdf5_cpp_D	\
+-llibhdf5_hl_D	\
+-llibhdf5_hl_cpp_D	\
+-llibhdf5_tools_D	\
 
-
-Release:INCLUDEPATH	+=  ../../cgns/cgns_x64_release/inc/  \
-
-Release:LIBS +=  -L../../cgns/cgns_x64_release/lib/ \
+Release:LIBS +=  -L../../cgns/lib/ \
 -lcgns   \    
--llibhdf5 \
--llibszip \
--llibzlib \
-
-}
-
-X86{
-	
-}
+-lcgnsdll \
+-llibhdf5	\
+-llibhdf5_cpp	\
+-llibhdf5_hl	\
+-llibhdf5_hl_cpp	\
+-llibhdf5_tools	\
 
 }
 
@@ -33,5 +28,10 @@ INCLUDEPATH	+=  ../../cgns/cgns_linux/  \
 
 LIBS +=  -L../../cgns/cgns_linux/ \
 -lcgns   \  
+-lhdf5	\
+-lhdf5_cpp	\
+-lhdf5_hl	\
+-lhdf5_hl_cpp	\
+-lhdf5_tools	\
 
 }

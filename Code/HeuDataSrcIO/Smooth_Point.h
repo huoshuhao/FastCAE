@@ -1,4 +1,4 @@
-#ifndef SMOOTH_POINT_H
+﻿#ifndef SMOOTH_POINT_H
 #define SMOOTH_POINT_H
 #include <set>
 #include <vector>

@@ -1,4 +1,4 @@
-#ifndef PLUGINCUSTOMIZER_H_
+﻿#ifndef PLUGINCUSTOMIZER_H_
 #define PLUGINCUSTOMIZER_H_
 
 #include "PluginManager/pluginBase.h"

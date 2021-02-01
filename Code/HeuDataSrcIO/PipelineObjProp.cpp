@@ -1,4 +1,4 @@
-#include "PipelineObjProp.h"
+ï»¿#include "PipelineObjProp.h"
 
 
 PipelineObjProp::PipelineObjProp()
@@ -17,7 +17,7 @@ PipelineObjProp::PipelineObjProp()
 	pipelineObj_base_propData.count_streamLine = 0;
 
 	pipelineObj_base_propData.flag_rectilinear = false;
-	pipelineObj_base_propData.filename = "";
+	pipelineObj_base_propData.fileName = "";
 	pipelineObj_base_propData.file_xh = 0;
 	pipelineObj_base_propData.scalarColorRange[0] = 0.667;
 	pipelineObj_base_propData.scalarColorRange[1] = 0;	
@@ -26,12 +26,12 @@ PipelineObjProp::PipelineObjProp()
 	pipelineObj_base_propData.mSolidColor.b = 195;
 	pipelineObj_base_propData.mScalarBarVisible = false;
 	pipelineObj_base_propData.m_enum_representationtype = ERepresentationType::kkSurface;
-	pipelineObj_base_propData.mColorColumnStyle = "SolidColor";//´«µİ¹ıÀ´Ñ¡ÔñÁĞÃû
+	pipelineObj_base_propData.mColorColumnStyle = "SolidColor";//ä¼ é€’è¿‡æ¥é€‰æ‹©åˆ—å
 	pipelineObj_base_propData.mPointCount = 0;
 	pipelineObj_base_propData.mCellCount = 0;
 	pipelineObj_base_propData.mPointSize=2;
 	pipelineObj_base_propData.mLineWidth=1;	 
-	//ÑÕÉ«Ïà¹Ø
+	//é¢œè‰²ç›¸å…³
 	//edge color
 	pipelineObj_base_propData.mEdgeColor.r = 0;
 	pipelineObj_base_propData.mEdgeColor.g = 0;

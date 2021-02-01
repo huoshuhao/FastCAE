@@ -1,4 +1,4 @@
-#ifndef _GOLBALCONFIG_H_
+﻿#ifndef _GOLBALCONFIG_H_
 #define _GOLBALCONFIG_H_
 
 #include "ConfigOptionsAPI.h"
@@ -37,6 +37,9 @@ namespace ConfigOption
 		QString GetUserManual(); //Added xvdongming 2019-11-22
 		void SetUserManual(QString userManual);//Added xvdongming 2019-11-22
 
+//		void setUseRibbon(const QString& str);
+//		const QString getUseRibbon() const;
+
 	private:
 		QString _softName{};
 		QString _chineseName{};
@@ -47,7 +50,9 @@ namespace ConfigOption
 		QString _version{};
 		QString _email{};
 		QString _userManual{};//Added xvdongming 2019-11-22
-		bool _material{false};
+		bool _material{ false };
+
+		//		QString _useRibbon{};
 	};
 
 }

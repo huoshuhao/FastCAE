@@ -1,4 +1,4 @@
-#include "BCTemperature.h"
+﻿#include "BCTemperature.h"
 #include "DataProperty/ParameterDouble.h"
 #include <QObject>
 

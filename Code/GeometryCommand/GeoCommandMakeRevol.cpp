@@ -1,4 +1,4 @@
-#include "GeoCommandMakeRevol.h"
+﻿#include "GeoCommandMakeRevol.h"
 #include <gp_Ax2.hxx>
 #include <BRepPrimAPI_MakeCone.hxx>
 #include "geometry/geometryData.h"

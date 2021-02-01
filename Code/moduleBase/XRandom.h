@@ -1,26 +1,26 @@
-#pragma once
+ï»¿#pragma once
 class XRandom
 {
 public:
 	XRandom();
 	~XRandom();
 
-	///<MG ¸ßË¹·Ö²¼ mean ÆÚÍû  stdc ±ê×¼²î
+	///<MG é«˜æ–¯åˆ†å¸ƒ mean æœŸæœ›  stdc æ ‡å‡†å·®
 	double GaussRand(const double & mean , const double & stdc);
 
-	///<MG ²´ËÉ·Ö²¼
+	///<MG æ³Šæ¾åˆ†å¸ƒ
 	int Possion(const double & lambda);
 
-	///<MG Ö¸Êý·Ö²¼ 
+	///<MG æŒ‡æ•°åˆ†å¸ƒ 
 	double Exponential(const double & lambda);
 
-	///<MG Éú³ÉËæ»úÊý
+	///<MG ç”Ÿæˆéšæœºæ•°
 	double Rand();
 
-	///<MG Éú³É·¶Î§Ëæ»úÊý
+	///<MG ç”ŸæˆèŒƒå›´éšæœºæ•°
 	double Rand(const double & from , const double & to);
 
-	///<MG µ¥Àý
+	///<MG å•ä¾‹
 	static XRandom * instance();
 
 private:

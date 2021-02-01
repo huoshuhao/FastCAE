@@ -1,4 +1,4 @@
-#ifndef MYINTERACTORSTYLE_H
+﻿#ifndef MYINTERACTORSTYLE_H
 #define MYINTERACTORSTYLE_H
 
 #include <QObject>

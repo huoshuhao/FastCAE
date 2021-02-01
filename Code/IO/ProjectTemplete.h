@@ -1,4 +1,4 @@
-#ifndef PROJECTTEMPLETE_H
+﻿#ifndef PROJECTTEMPLETE_H
 #define PROJECTTEMPLETE_H
 #include "IOAPI.h"
 #include <QStringList>

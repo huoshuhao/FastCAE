@@ -1,4 +1,4 @@
-#ifndef VTKTIPW2CALLBACK_H
+﻿#ifndef VTKTIPW2CALLBACK_H
 #define VTKTIPW2CALLBACK_H
 
 #include <QObject>

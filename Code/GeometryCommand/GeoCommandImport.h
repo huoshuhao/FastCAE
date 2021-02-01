@@ -1,20 +1,17 @@
-#ifndef GEOCOMMANDIMPORT_H_
+﻿#ifndef GEOCOMMANDIMPORT_H_
 #define GEOCOMMANDIMPORT_H_
 
 #include "GeoCommandBase.h"
 #include "moduleBase/messageWindowBase.h"
-#include <QStringList>
-#include <QList>
+//#include "geometry/GeometrySet.h"
 
-namespace Geometry
+namespace GUI
 {
-	class GeometrySet;
+	class MainWindow;
 }
-
 
 namespace Command
 {
-
 	class GEOMETRYCOMMANDAPI GeoCommandImport : public GeoCommandBase
 	{
 		Q_OBJECT
@@ -23,20 +20,26 @@ namespace Command
 		~GeoCommandImport() = default;
 
 		void setFileName(QStringList name);
+		void setExportFile(QString name);
 
 		bool execute() override;
 		void undo() override;
 		void redo() override;
 		void releaseResult() override;
-
+		void IsRead(bool s);
+	private:
+		bool importGeometry();
+		bool exportGeometry();
 	signals:
 		void showMessage(ModuleBase::Message);
 
 	private:
-		QStringList _fileNames{};
 
+		QStringList _importfileNames{};
+		QString _exportfile{};
 		QList<Geometry::GeometrySet*> _resSet{};
-
+		GUI::MainWindow *_mw;
+		bool _isRead{};
 	};
 }
 

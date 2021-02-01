@@ -1,4 +1,4 @@
-#ifndef WRITEBCCONFIG_H
+﻿#ifndef WRITEBCCONFIG_H
 #define WRITEBCCONFIG_H
 
 #include "WriterBase.h"

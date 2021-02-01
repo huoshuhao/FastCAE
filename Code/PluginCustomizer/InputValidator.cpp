@@ -1,4 +1,4 @@
-#include "InputValidator.h"
+﻿#include "InputValidator.h"
 #include "ModelBase.h"
 #include <QObject>
 #include <QWidget>

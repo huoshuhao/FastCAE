@@ -1,4 +1,4 @@
-#ifndef CUSTOMIZERHELPER_H_
+ï»¿#ifndef CUSTOMIZERHELPER_H_
 #define CUSTOMIZERHELPER_H_
 
 #include "mainWindowAPI.h"
@@ -7,10 +7,12 @@
 
 class QMenu;
 class QToolBar;
+class SARibbonPannel;
+class SARibbonCategory;
 
 namespace Ui
 {
-	class MainWindow;
+	class MainWindowRibbon;
 }
 
 namespace GUI
@@ -21,17 +23,18 @@ namespace GUI
 	{
 		Q_OBJECT
 	public:
-		CustomizerHelper(MainWindow* m, Ui::MainWindow* ui);
+		CustomizerHelper(MainWindow* m, Ui::MainWindowRibbon* ui);
 		~CustomizerHelper() = default;
 
 		void startCustomizer();
 		void finishCustomizer();
 
 	public slots:
-		/*¸ù¾İÅäÖÃÎÄ¼ş¿ª·Å½Ó¿Ú */
+		/*æ ¹æ®é…ç½®æ–‡ä»¶å¼€æ”¾æ¥å£ */
 		void registerInterface();
 
 	private:
+		bool isUseRibbon() const;
 		QString readConfigOptions();
 		void updateBasicInfo();
 
@@ -52,11 +55,10 @@ namespace GUI
 
 	private:
 		GUI::MainWindow* _mainWindow{};
-		Ui::MainWindow* _ui{};
+		Ui::MainWindowRibbon* _ui{};
 
 		QList<QMenu*> _menuList{};
 		QList<QToolBar*> _toolBarList{};
-
 	};
 }
 

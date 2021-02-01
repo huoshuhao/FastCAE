@@ -1,4 +1,4 @@
-#include "dialogCreatePoint.h"
+﻿#include "dialogCreatePoint.h"
 #include "ui_dialogCreatePoint.h"
 #include "geoPointWidget.h"
 #include "geometry/geometrySet.h"
@@ -32,7 +32,6 @@ namespace GeometryWidget
 	CreatePointDialog::~CreatePointDialog()
 	{
 		if (_ui != nullptr) delete _ui;
-		emit updateGraphOptions();
 	}
 
 	void CreatePointDialog::init()
@@ -66,11 +65,11 @@ namespace GeometryWidget
 		}
 	}
 
-	void CreatePointDialog::closeEvent(QCloseEvent *e)
-	{
-		QDialog::closeEvent(e);
-		delete this;
-	}
+// 	void CreatePointDialog::closeEvent(QCloseEvent *e)
+// 	{
+// 		QDialog::closeEvent(e);
+// 		delete this;
+// 	}
 
 	void CreatePointDialog::reject()
 	{

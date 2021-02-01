@@ -1,4 +1,4 @@
-#ifndef VECTORMODEL_H
+﻿#ifndef VECTORMODEL_H
 #define VECTORMODEL_H
 
 #include "ModelBase.h"

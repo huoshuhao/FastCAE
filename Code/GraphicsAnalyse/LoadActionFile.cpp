@@ -1,4 +1,4 @@
-#include "LoadActionFile.h"
+﻿#include "LoadActionFile.h"
 
 #include <qtextstream.h>
 #include <qfile.h>

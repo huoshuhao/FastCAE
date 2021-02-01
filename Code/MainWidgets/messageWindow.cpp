@@ -1,4 +1,4 @@
-#include "messageWindow.h"
+﻿#include "messageWindow.h"
 //#include <ui_MessageWindow.h>
 
 namespace MainWidget
@@ -11,7 +11,14 @@ namespace MainWidget
 // 		_ui->setupUi(this);
 // 		//connect(parent, SIGNAL(sendInfoToStatesBar(QString)), this, SLOT(ReceiveEvtInfo(QString)));
 // 		RegistConnet();
-		this->repaintTitleBar();
+//		this->repaintTitleBar();
+//		this->titleBarWidget()->setVisible(false);
+
+		QWidget* lTitleBar = this->titleBarWidget();
+		QWidget* lEmptyWidget = new QWidget();
+		this->setTitleBarWidget(lEmptyWidget);
+		delete lTitleBar;
+
 	}
 	MessageWindow::~MessageWindow()
 	{

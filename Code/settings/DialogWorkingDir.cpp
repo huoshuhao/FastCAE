@@ -1,4 +1,4 @@
-#include "DialogWorkingDir.h"
+﻿#include "DialogWorkingDir.h"
 #include "ui_DialogWorkingDir.h"
 #include "mainSetting.h"
 #include "QFileDialog"

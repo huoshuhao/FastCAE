@@ -1,4 +1,4 @@
-#ifndef _POST3DAPI_H_
+﻿#ifndef _POST3DAPI_H_
 #define _POST3DAPI_H_
 
 #include <QtCore/QtGlobal>

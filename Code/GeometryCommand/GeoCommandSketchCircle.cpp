@@ -1,4 +1,4 @@
-#include "GeoCommandSketchCircle.h"
+﻿#include "GeoCommandSketchCircle.h"
 #include <gp_Pnt.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include "geometry/geometryData.h"

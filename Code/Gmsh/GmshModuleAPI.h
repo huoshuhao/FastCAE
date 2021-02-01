@@ -1,4 +1,4 @@
-#ifndef _GMSH_API_H__
+﻿#ifndef _GMSH_API_H__
 #define _GMSH_API_H__
 
 #include <QtCore/QtGlobal>

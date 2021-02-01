@@ -1,4 +1,4 @@
-#include "ReadData_Vtk.h"
+﻿#include "ReadData_Vtk.h"
 #include "qdebug.h"
 #include "vtkRectilinearGridToPointSet.h"
 #include "vtkSmartPointer.h"
@@ -57,15 +57,15 @@ ReadData_Vtk::~ReadData_Vtk()
 bool ReadData_Vtk::Read(QString tep_filename)
 {
 	if (suffixName == "vtk")
-		ReadVtk(tep_filename);
+		return ReadVtk(tep_filename);
 	else if (suffixName == "vtu")
-		ReadVtu(tep_filename);
+		return ReadVtu(tep_filename);
 	else if (suffixName == "vts")
-		ReadVts(tep_filename);
+		return ReadVts(tep_filename);
 	else if (suffixName == "vtr")
-		ReadVtr(tep_filename);
+		return ReadVtr(tep_filename);
 	else if (suffixName == "vtp")
-		ReadVtp(tep_filename);
+		return ReadVtp(tep_filename);
 	else
 		return false;
 }

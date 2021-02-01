@@ -1,4 +1,4 @@
-#ifndef _SELECTABLEPARA_H_
+ï»¿#ifndef _SELECTABLEPARA_H_
 #define _SELECTABLEPARA_H_
 
 #include "ParameterBase.h"
@@ -12,14 +12,14 @@ namespace DataProperty
 		ParameterSelectable();
 		~ParameterSelectable() = default;
 
-		void copy(ParameterBase* ori) override;
-		//ÉèÖÃ¿ÉÑ¡Ïî
+		void copy(ParameterBase* ori, bool valueOnly= false) override;
+		//è®¾ç½®å¯é€‰é¡¹
 		void setOption(QStringList s);
-		//»ñÈ¡¿ÉÑ¡Ïî
+		//è·å–å¯é€‰é¡¹
 		QStringList getOption();
-		//ÉèÖÃµ±Ç°Ë÷Òı
+		//è®¾ç½®å½“å‰ç´¢å¼•
 		void setCurrentIndex(const int index);
-		//ÉèÖÃµ±Ç°Ë÷Òı
+		//è®¾ç½®å½“å‰ç´¢å¼•
 		int getCurrentIndex();
 		QStringList getChinese();
 		bool isSameValueWith(ParameterBase* p) override;

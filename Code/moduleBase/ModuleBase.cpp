@@ -1,4 +1,4 @@
-#include "ModuleBase.h"
+﻿#include "ModuleBase.h"
 #include "mainWindow/mainWindow.h"
 
 namespace ModuleBase

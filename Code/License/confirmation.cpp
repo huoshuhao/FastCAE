@@ -1,4 +1,4 @@
-#include "confirmation.h"
+﻿#include "confirmation.h"
 #include <QDesktopServices>
 #include <QFileDialog>
 #include <QMessageBox>

@@ -1,4 +1,4 @@
-#include "GlobalConfig.h"
+﻿#include "GlobalConfig.h"
 
 namespace ConfigOption
 {
@@ -98,6 +98,16 @@ namespace ConfigOption
 	{
 		_userManual = userManual;
 	}
+
+	// 	void GlobalConfig::setUseRibbon(const QString& str)
+	// 	{
+	// 		_useRibbon = str;
+	// 	}
+
+	// 	const QString GlobalConfig::getUseRibbon() const
+	// 	{
+	// 		return _useRibbon; 
+	// 	}
 
 	void GlobalConfig::clearData()
 	{

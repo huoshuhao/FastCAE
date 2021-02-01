@@ -1,4 +1,4 @@
-#ifndef _PYTHONAPI_H_
+﻿#ifndef _PYTHONAPI_H_
 #define _PYTHONAPI_H_
 
 #include <QtCore/QtGlobal>

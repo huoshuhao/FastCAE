@@ -1,4 +1,4 @@
-/*********************************
+﻿/*********************************
 ProjectWindow
 2017.09.12
 libaojun
@@ -40,23 +40,31 @@ namespace MainWidget
 		virtual ~ControlPanel();
 		virtual void reTranslate() override;
 
+		void setTabText(QWidget* w, QString text);
+
 	signals:
 		void updateActionStates();
 		//void updataPropertyTab(DataProperty::DataBase* popList);
 
 	public:
 		/*添加模型树 */
-//		void addTreeWidget(PhysicsWidget* treewidget);
-// 		/*设置属性窗口的头 */
-// 		void setHorizontalHeader(const QString label1, const QString label2);
-// 		/*设置属性窗口的头 */
-// 		void setHorizontalHeader(const QStringList _lables);
+		//		void addTreeWidget(PhysicsWidget* treewidget);
+		// 		/*设置属性窗口的头 */
+		// 		void setHorizontalHeader(const QString label1, const QString label2);
+		// 		/*设置属性窗口的头 */
+		// 		void setHorizontalHeader(const QStringList _lables);
 		///更新两个post widget
 		void updatePostWidget(QWidget* tree, QWidget* prop);
 		//清空属性窗widget
 		void clearWidget();
 		//根据配置信息更新开放接口
 		void registerEnabledModule();
+		//添加窗口
+		void addTabWidgetPlugin(QWidget* w, QString name);
+		//移除窗口
+		void removeTabWidgetPlugin(QWidget* w);
+		//设置当前窗口
+		void setCurrentWidget(QWidget* w);
 
 	public slots :
 		//鼠标点击事件，包括左键单击双击及右键菜单
@@ -69,10 +77,10 @@ namespace MainWidget
 		void updataParaWidget(QWidget* w);
 	private:
 		void Init();
-		
+
 		void resizeEvent(QResizeEvent *);
-// 		void fillProp();
-// 		void fillPara();
+		// 		void fillProp();
+		// 		void fillPara();
 
 	protected:
 		Ui::ControlPanel* _ui{};
@@ -86,7 +94,9 @@ namespace MainWidget
 		DataProperty::DataBase* _data{};
 
 		QWidget* _paraWidget{};
-	
+
+		QHash<QWidget*, QString>  _addinWidget{};
+
 	};
 
 }

@@ -1,4 +1,4 @@
-#include "EditorDescripttionSetup.h"
+ï»¿#include "EditorDescripttionSetup.h"
 #include "ui_EditorDescripttionSetup.h"
 #include "CustomParameterModel.h"
 #include <QMenu>
@@ -27,6 +27,9 @@
 #include "InputValidator.h"
 #include <QFileDialog>
 #include "DataProperty/modelTreeItemType.h"
+#include "ParametersLinkage.h"
+#include "DataManager.h"
+#include "ParaLinkageManager.h"
 
 #pragma execution_character_set("utf-8")
 
@@ -39,6 +42,19 @@ namespace FastCAEDesigner
 		_treeItem(treeItem)
 	{
 		ui->setupUi(this);
+		//202003026 xuxinwei
+// 		if (_model->GetType() == TreeItemType::ProjectBoundaryCondationChild)
+// 			ui->parameterLinkagePBtn->setVisible(false);
+// 		else
+// 		{
+// 			ui->parameterLinkagePBtn->setVisible(false);
+ 			_treeType = getCaseType(_model);
+ 			//qDebug() << caseName;
+			_parameterList = DataManager::getInstance()->getAllParameterList(_treeType);
+			_parameterGroupList = DataManager::getInstance()->getAllParameterGroupList(_treeType);
+			ui->parameterLinkagePBtn->setVisible(false);
+// 		}
+			_currentType = model->GetType();
 		//resizeEvent(0);
 		Init();
 		//ui->groupBox->hide();
@@ -46,6 +62,13 @@ namespace FastCAEDesigner
 
 	EditorDescripttionSetup::~EditorDescripttionSetup()
 	{
+		//éè¾¹ç•Œæ•°æ®æ›´æ–°
+		if (_currentType != TreeItemType::ProjectBoundaryCondationChild)
+		{
+			DataManager::getInstance()->setAllParameterListDict(_treeType, _parameterList);
+			DataManager::getInstance()->setAllParameterGroupListDict(_treeType, _parameterGroupList);
+		}
+		
 		delete ui;
 	}
 
@@ -74,7 +97,7 @@ namespace FastCAEDesigner
 
 	void EditorDescripttionSetup::Init()
 	{
-		//Èç¹û½ÚµãÎª·ÂÕæ¡¢Çó½âÔòÒş²Ø»ù±¾ĞÅÏ¢±à¼­UI
+		//å¦‚æœèŠ‚ç‚¹ä¸ºä»¿çœŸã€æ±‚è§£åˆ™éšè—åŸºæœ¬ä¿¡æ¯ç¼–è¾‘UI
 		if (_model->GetType() == TreeItemType::ProjectSimulationSetting ||
 			_model->GetType() == TreeItemType::ProjectSolver)
 		{
@@ -85,13 +108,19 @@ namespace FastCAEDesigner
 		QString title = _model->GetChnName();
 		setWindowTitle(title);
 		UpdateDataToUi();
+
+		//20200324 xuxinwei
+		QFileInfo icon(ui->txtIcon->text().trimmed());
+		DataManager::getInstance()->removeIconNameFromList(icon.fileName());
+		//20200324 xuxinwei
+
 		//SetIsEdit(_model->GetIsEdit()); 
 		connect(ui->btnOk, SIGNAL(clicked()), this, SLOT(OnBtnOkClicked()));
 		connect(ui->btnCancel, SIGNAL(clicked()), this, SLOT(close()));
 		connect(ui->btnLoadIcon, SIGNAL(clicked()), this, SLOT(OnBtnLoadIconClicked()));
 		CreateAddParameterMenu();
 
-		//²ÎÊıÁĞ±í°´Å¥²Û
+		//å‚æ•°åˆ—è¡¨æŒ‰é’®æ§½
 		connect(ui->btnAdd_s, SIGNAL(clicked()), this, SLOT(OnBtnAddParaClicked()));
 		connect(ui->btnEdit_s, SIGNAL(clicked()), this, SLOT(OnBtnEditParaClicked()));
 		connect(ui->btnDel_s, SIGNAL(clicked()), this, SLOT(OnBtnDelParaClicked()));
@@ -100,7 +129,7 @@ namespace FastCAEDesigner
 		connect(ui->tableWidget_PList, SIGNAL(clicked(QModelIndex)), this, SLOT(TableWidgetParaClicked(QModelIndex)));
 		//connect(ui->tableWidget_PList, SIGNAL(currentCellChanged(int, int, int, int)), this, SLOT(TableWidgetParaCurrentCellChanged()));
 
-		//²ÎÊı×éÁĞ±í°´Å¥²Û
+		//å‚æ•°ç»„åˆ—è¡¨æŒ‰é’®æ§½
 		connect(ui->btnAdd_G, SIGNAL(clicked()), this, SLOT(OnBtnAddGroupClicked()));
 		connect(ui->btnEdit_G, SIGNAL(clicked()), this, SLOT(OnBtnEditGroupClicked()));
 		connect(ui->btnDel_G, SIGNAL(clicked()), this, SLOT(OnBtnDelGroupClicked()));
@@ -109,7 +138,7 @@ namespace FastCAEDesigner
 		connect(ui->tableWidget_GList, SIGNAL(clicked(QModelIndex)), this, SLOT(TableWidgetGroupClicked(QModelIndex)));
 		connect(ui->tableWidget_GList, SIGNAL(currentCellChanged(int, int, int, int)), this, SLOT(TableWidgetGroupCurrentCellChanged()));
 
-		//²ÎÊı×é--²ÎÊıÁĞ±í°´Å¥²Û
+		//å‚æ•°ç»„--å‚æ•°åˆ—è¡¨æŒ‰é’®æ§½
 		connect(ui->btnAdd_S_G, SIGNAL(clicked()), this, SLOT(OnBtnAddGroupParaClicked()));
 		connect(ui->btnEdit_S_G, SIGNAL(clicked()), this, SLOT(OnBtnEditGroupParaClicked()));
 		connect(ui->btnDel_S_G, SIGNAL(clicked()), this, SLOT(OnBtnDelGroupParaClicked()));
@@ -132,10 +161,16 @@ namespace FastCAEDesigner
 			connect(ui->txtChineseName, SIGNAL(textChanged(QString)), ui->txtEnglishName, SLOT(setText(QString)));
 		}
 
+		//xuxinwei
+		connect(ui->parameterLinkagePBtn, SIGNAL(clicked()), this, SLOT(OnParameterLinkagePBtnClicked()));
+		//xuxinwei
+
+
 		ui->tableWidget_GList->setMaximumHeight(160);
+
 	}
 
-	//Ìî³ä²ÎÊı×éÁĞ±í
+	//å¡«å……å‚æ•°ç»„åˆ—è¡¨
 	void EditorDescripttionSetup::FillParameterList()
 	{
 		DataProperty::DataBase* dataBase = _model->GetDataBase();
@@ -163,10 +198,10 @@ namespace FastCAEDesigner
 		//ui->tableWidget_PList->horizontalHeader()->setVisible(false);
 		ui->tableWidget_PList->verticalHeader()->setVisible(false);
 
-		ui->tableWidget_PList->setSelectionBehavior(QAbstractItemView::SelectRows);  //µ¥»÷Ñ¡ÔñÒ»ĞĞ
-		ui->tableWidget_PList->setSelectionMode(QAbstractItemView::SingleSelection); //ÉèÖÃÖ»ÄÜÑ¡ÔñÒ»ĞĞ£¬²»ÄÜ¶àĞĞÑ¡ÖĞ
-		ui->tableWidget_PList->setEditTriggers(QAbstractItemView::NoEditTriggers);   //ÉèÖÃÃ¿ĞĞÄÚÈİ²»¿É¸ü¸Ä
-		ui->tableWidget_PList->setAlternatingRowColors(false);                        //ÉèÖÃ¸ôÒ»ĞĞ±äÒ»ÑÕÉ«£¬¼´£ºÒ»»ÒÒ»°×
+		ui->tableWidget_PList->setSelectionBehavior(QAbstractItemView::SelectRows);  //å•å‡»é€‰æ‹©ä¸€è¡Œ
+		ui->tableWidget_PList->setSelectionMode(QAbstractItemView::SingleSelection); //è®¾ç½®åªèƒ½é€‰æ‹©ä¸€è¡Œï¼Œä¸èƒ½å¤šè¡Œé€‰ä¸­
+		ui->tableWidget_PList->setEditTriggers(QAbstractItemView::NoEditTriggers);   //è®¾ç½®æ¯è¡Œå†…å®¹ä¸å¯æ›´æ”¹
+		ui->tableWidget_PList->setAlternatingRowColors(false);                        //è®¾ç½®éš”ä¸€è¡Œå˜ä¸€é¢œè‰²ï¼Œå³ï¼šä¸€ç°ä¸€ç™½
 		//ui->tableWidget->horizontalHeader()->setResizeMode(0,QHeaderView::Stretch);
 		//ui->tableWidget->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
 		ui->tableWidget_PList->resizeColumnsToContents();
@@ -203,7 +238,7 @@ namespace FastCAEDesigner
 			ui->btnDelAll_s->setEnabled(false);
 	}
 
-	//ÏòÖ¸¶¨±íµ¥¿Ø¼şÖĞÌí¼Ó²ÎÊıÁĞ±í
+	//å‘æŒ‡å®šè¡¨å•æ§ä»¶ä¸­æ·»åŠ å‚æ•°åˆ—è¡¨
 	void EditorDescripttionSetup::FillParameterList(DataProperty::ParameterList* parameterList, QTableWidget* tableWidget)
 	{
 		if (nullptr == parameterList)
@@ -228,10 +263,10 @@ namespace FastCAEDesigner
 		//ui->tableWidget_PList->horizontalHeader()->setVisible(false);
 		tableWidget->verticalHeader()->setVisible(false);
 
-		tableWidget->setSelectionBehavior(QAbstractItemView::SelectRows);  //µ¥»÷Ñ¡ÔñÒ»ĞĞ
-		tableWidget->setSelectionMode(QAbstractItemView::SingleSelection); //ÉèÖÃÖ»ÄÜÑ¡ÔñÒ»ĞĞ£¬²»ÄÜ¶àĞĞÑ¡ÖĞ
-		tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);   //ÉèÖÃÃ¿ĞĞÄÚÈİ²»¿É¸ü¸Ä
-		tableWidget->setAlternatingRowColors(false);                        //ÉèÖÃ¸ôÒ»ĞĞ±äÒ»ÑÕÉ«£¬¼´£ºÒ»»ÒÒ»°×
+		tableWidget->setSelectionBehavior(QAbstractItemView::SelectRows);  //å•å‡»é€‰æ‹©ä¸€è¡Œ
+		tableWidget->setSelectionMode(QAbstractItemView::SingleSelection); //è®¾ç½®åªèƒ½é€‰æ‹©ä¸€è¡Œï¼Œä¸èƒ½å¤šè¡Œé€‰ä¸­
+		tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);   //è®¾ç½®æ¯è¡Œå†…å®¹ä¸å¯æ›´æ”¹
+		tableWidget->setAlternatingRowColors(false);                        //è®¾ç½®éš”ä¸€è¡Œå˜ä¸€é¢œè‰²ï¼Œå³ï¼šä¸€ç°ä¸€ç™½
 		//ui->tableWidget->horizontalHeader()->setResizeMode(0,QHeaderView::Stretch);
 		//ui->tableWidget->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
 		tableWidget->resizeColumnsToContents();
@@ -281,10 +316,10 @@ namespace FastCAEDesigner
 		//ui->tableWidget_PList->horizontalHeader()->setVisible(false);
 		tableWidget->verticalHeader()->setVisible(false);
 
-		tableWidget->setSelectionBehavior(QAbstractItemView::SelectRows);  //µ¥»÷Ñ¡ÔñÒ»ĞĞ
-		tableWidget->setSelectionMode(QAbstractItemView::SingleSelection); //ÉèÖÃÖ»ÄÜÑ¡ÔñÒ»ĞĞ£¬²»ÄÜ¶àĞĞÑ¡ÖĞ
-		tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);   //ÉèÖÃÃ¿ĞĞÄÚÈİ²»¿É¸ü¸Ä
-		tableWidget->setAlternatingRowColors(false);                        //ÉèÖÃ¸ôÒ»ĞĞ±äÒ»ÑÕÉ«£¬¼´£ºÒ»»ÒÒ»°×
+		tableWidget->setSelectionBehavior(QAbstractItemView::SelectRows);  //å•å‡»é€‰æ‹©ä¸€è¡Œ
+		tableWidget->setSelectionMode(QAbstractItemView::SingleSelection); //è®¾ç½®åªèƒ½é€‰æ‹©ä¸€è¡Œï¼Œä¸èƒ½å¤šè¡Œé€‰ä¸­
+		tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);   //è®¾ç½®æ¯è¡Œå†…å®¹ä¸å¯æ›´æ”¹
+		tableWidget->setAlternatingRowColors(false);                        //è®¾ç½®éš”ä¸€è¡Œå˜ä¸€é¢œè‰²ï¼Œå³ï¼šä¸€ç°ä¸€ç™½
 		//ui->tableWidget->horizontalHeader()->setResizeMode(0,QHeaderView::Stretch);
 		//ui->tableWidget->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
 		tableWidget->resizeColumnsToContents();
@@ -293,7 +328,7 @@ namespace FastCAEDesigner
 		resizeEvent(0);
 	}
 
-	//Ìí¼Ó²ÎÊı×éÃû³ÆÁĞ±í
+	//æ·»åŠ å‚æ•°ç»„åç§°åˆ—è¡¨
 	void EditorDescripttionSetup::FillGroupList()
 	{
 		DataProperty::DataBase* dataBase = _model->GetDataBase();
@@ -330,10 +365,10 @@ namespace FastCAEDesigner
 		//ui->tableWidget_PList->horizontalHeader()->setVisible(false);
 		ui->tableWidget_GList->verticalHeader()->setVisible(false);
 
-		ui->tableWidget_GList->setSelectionBehavior(QAbstractItemView::SelectRows);  //µ¥»÷Ñ¡ÔñÒ»ĞĞ
-		ui->tableWidget_GList->setSelectionMode(QAbstractItemView::SingleSelection); //ÉèÖÃÖ»ÄÜÑ¡ÔñÒ»ĞĞ£¬²»ÄÜ¶àĞĞÑ¡ÖĞ
-		ui->tableWidget_GList->setEditTriggers(QAbstractItemView::NoEditTriggers);   //ÉèÖÃÃ¿ĞĞÄÚÈİ²»¿É¸ü¸Ä
-		ui->tableWidget_GList->setAlternatingRowColors(false);                        //ÉèÖÃ¸ôÒ»ĞĞ±äÒ»ÑÕÉ«£¬¼´£ºÒ»»ÒÒ»°×
+		ui->tableWidget_GList->setSelectionBehavior(QAbstractItemView::SelectRows);  //å•å‡»é€‰æ‹©ä¸€è¡Œ
+		ui->tableWidget_GList->setSelectionMode(QAbstractItemView::SingleSelection); //è®¾ç½®åªèƒ½é€‰æ‹©ä¸€è¡Œï¼Œä¸èƒ½å¤šè¡Œé€‰ä¸­
+		ui->tableWidget_GList->setEditTriggers(QAbstractItemView::NoEditTriggers);   //è®¾ç½®æ¯è¡Œå†…å®¹ä¸å¯æ›´æ”¹
+		ui->tableWidget_GList->setAlternatingRowColors(false);                        //è®¾ç½®éš”ä¸€è¡Œå˜ä¸€é¢œè‰²ï¼Œå³ï¼šä¸€ç°ä¸€ç™½
 		//ui->tableWidget->horizontalHeader()->setResizeMode(0,QHeaderView::Stretch);
 		//ui->tableWidget->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
 		ui->tableWidget_GList->resizeColumnsToContents();
@@ -354,7 +389,7 @@ namespace FastCAEDesigner
 			//ui->tableWidget_PList->item(i, 3)->setTextAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
 		}
 
-		ui->tableWidget_GList->selectRow(count - 1);//Ñ¡ÖĞ×îºóÒ»ĞĞ
+		ui->tableWidget_GList->selectRow(count - 1);//é€‰ä¸­æœ€åä¸€è¡Œ
 		//resizeEventGroupNameList();
 		//ResizeTableWidget(ui->tableWidget_GList, _groupListColNum);
 		//_currentParameterGroup = nullptr;                   
@@ -362,7 +397,7 @@ namespace FastCAEDesigner
 		resizeEvent(0);
 	}
 
-	//»ñÈ¡²ÎÊıĞèÒªÏÔÊ¾µÄ×Ö·û´®ÁĞ±í
+	//è·å–å‚æ•°éœ€è¦æ˜¾ç¤ºçš„å­—ç¬¦ä¸²åˆ—è¡¨
 	QStringList EditorDescripttionSetup::GetModelString(DataProperty::ParameterBase* parameter)
 	{
 		QStringList strList;
@@ -397,14 +432,14 @@ namespace FastCAEDesigner
 		return strList;
 	}
 
-	//²ÎÊıÁĞ±í -- Ìí¼ÓµÄ²ÎÊı--²Ûº¯Êı
+	//å‚æ•°åˆ—è¡¨ -- æ·»åŠ çš„å‚æ•°--æ§½å‡½æ•°
 	void EditorDescripttionSetup::OnBtnAddParaClicked()
 	{
 		_currentOpObject = ParaList;
 		topMenu->exec(QCursor::pos());
 	}
 
-	//²ÎÊıÁĞ±í -- ±à¼­²ÎÊı--²Ûº¯Êı
+	//å‚æ•°åˆ—è¡¨ -- ç¼–è¾‘å‚æ•°--æ§½å‡½æ•°
 	void EditorDescripttionSetup::OnBtnEditParaClicked()
 	{
 		int rowNo = ui->tableWidget_PList->currentRow();
@@ -417,11 +452,15 @@ namespace FastCAEDesigner
 		if (nullptr == model)
 			return;
 		
+		_parameterList.removeOne(model);
+
 		EditModel(model);
 		ui->tableWidget_PList->selectRow(rowNo);
+
+		_parameterList.append(model);
 	}
 
-	//²ÎÊıÁĞ±í --É¾³ı²ÎÊı--²Ûº¯Êı
+	//å‚æ•°åˆ—è¡¨ --åˆ é™¤å‚æ•°--æ§½å‡½æ•°
 	void EditorDescripttionSetup::OnBtnDelParaClicked()
 	{
 		int rowNo = ui->tableWidget_PList->currentRow();
@@ -436,6 +475,9 @@ namespace FastCAEDesigner
 		
 		if (QMessageBox::Yes == result)
 		{
+			_parameterList.removeOne(model);
+			removeNameFromList(model);
+
 			DeleteParameter(model);
 			FillParameterList();
 		}
@@ -450,7 +492,7 @@ namespace FastCAEDesigner
 		ui->tableWidget_PList->selectRow(rowNo);
 	}
 
-	//²ÎÊıÁĞ±í -- Çå³ıËÑÓÑ²ÎÊı--²Ûº¯Êı
+	//å‚æ•°åˆ—è¡¨ -- æ¸…é™¤æœå‹å‚æ•°--æ§½å‡½æ•°
 	void EditorDescripttionSetup::OnBtnClearAllParaClicked()
 	{
 		DataProperty::DataBase* dataBase = _model->GetDataBase();
@@ -473,7 +515,12 @@ namespace FastCAEDesigner
 			DataProperty::ParameterBase* item = paraList.at(i);
 			if (nullptr == item)
 				continue;
+
+			removeNameFromList(item);
+
 			dataBase->removeParameter(item);
+
+			_parameterList.removeOne(item);
 		}
 
 		FillParameterList();
@@ -482,14 +529,14 @@ namespace FastCAEDesigner
 		ui->btnDelAll_s->setEnabled(false);
 	}
 	
-	//²ÎÊı±íµ¥¿Ø¼ş±»Ë«»÷
+	//å‚æ•°è¡¨å•æ§ä»¶è¢«åŒå‡»
 	void EditorDescripttionSetup::TableWidgetParaDoubleClicked(QModelIndex modelIndex)
 	{
 		_currentOpObject = ParaList;
 		OnBtnEditParaClicked();
 	}
 
-	//²ÎÊı±íµ¥¿Ø¼ş±»µ¥»÷
+	//å‚æ•°è¡¨å•æ§ä»¶è¢«å•å‡»
 	void  EditorDescripttionSetup::TableWidgetParaClicked(QModelIndex modelIndex)
 	{
 		/*
@@ -521,7 +568,7 @@ namespace FastCAEDesigner
 
 	}
 
-	//²ÎÊı×é±íµ¥¿Ø¼ş---ĞĞºÅ¸Ä±ä²Ûº¯Êı
+	//å‚æ•°ç»„è¡¨å•æ§ä»¶---è¡Œå·æ”¹å˜æ§½å‡½æ•°
 	void EditorDescripttionSetup::TableWidgetParaCurrentCellChanged()
 	{
 	}
@@ -553,7 +600,7 @@ namespace FastCAEDesigner
 		dataBase->removeParameter(model);
 	}
 
-	//²ÎÊı×é--Ìí¼ÓĞÂµÄ²ÎÊı×é
+	//å‚æ•°ç»„--æ·»åŠ æ–°çš„å‚æ•°ç»„
 	void EditorDescripttionSetup::OnBtnAddGroupClicked()
 	{
 		DataProperty::DataBase* dataBase = _model->GetDataBase();
@@ -561,8 +608,14 @@ namespace FastCAEDesigner
 		if (nullptr == dataBase)
 			return;
 
-		QList<QString> usedNameList = GetParameterGroupNameList();
+		QList<QString> usedNameList {};
+		if (_currentType == TreeItemType::ProjectBoundaryCondationChild)
+			usedNameList = GetParameterGroupNameList();
+		else
+			usedNameList = DataManager::getInstance()->getParaGroupNameList();
+
 		EditorNameValue dlg(this);
+		usedNameList.append("0");
 		dlg.SetUsedNameList(usedNameList);
 		int r = dlg.exec();
 
@@ -576,10 +629,13 @@ namespace FastCAEDesigner
 			ui->btnEdit_S_G->setEnabled(false);
 			ui->btnDel_S_G->setEnabled(false);
 			ui->btnClearAll_S_G->setEnabled(true);
+
+			_parameterGroupList.append(group);
+			DataManager::getInstance()->appendParaGroupNameList(group->getDescribe());
 		}
 	}
 
-	//±à¼­²ÎÊı×é
+	//ç¼–è¾‘å‚æ•°ç»„
 	void EditorDescripttionSetup::OnBtnEditGroupClicked()
 	{
 		/*
@@ -608,11 +664,19 @@ namespace FastCAEDesigner
 		if (nullptr == group)
 			return;
 
+		_parameterGroupList.removeOne(group);
+
 		int row = ui->tableWidget_GList->currentRow();
 
 		QString name = group->getDescribe();
-		QList<QString> usedNameList = GetParameterGroupNameList();
+		QList<QString> usedNameList{};
+		if (_currentType == TreeItemType::ProjectBoundaryCondationChild)
+			usedNameList = GetParameterGroupNameList();
+		else
+			usedNameList = DataManager::getInstance()->getParaGroupNameList();
+
 		usedNameList.removeOne(name);
+		usedNameList.append("0");
 
 		EditorNameValue dlg(this);
 		dlg.SetNameString(name);
@@ -621,13 +685,18 @@ namespace FastCAEDesigner
 
 		if (r == QDialog::Accepted)
 		{
+			DataManager::getInstance()->removeParaGroupName(name);
+			DataManager::getInstance()->appendParaGroupNameList(dlg.GetNameString());
+
 			group->setDescribe(dlg.GetNameString());
 			this->FillGroupList();
 			ui->tableWidget_GList->selectRow(row);
 		}
+
+		_parameterGroupList.append(group);
 	}
 
-	//É¾³ı²ÎÊı×é
+	//åˆ é™¤å‚æ•°ç»„
 	void EditorDescripttionSetup::OnBtnDelGroupClicked()
 	{
 		DataProperty::ParameterGroup* group = GetCurrentSelecctedGroup();
@@ -646,8 +715,12 @@ namespace FastCAEDesigner
 		QString msg = tr("Deleted parameter group %1?").arg(group->getDescribe());
 		QMessageBox::StandardButton result = QMessageBox::warning(NULL, title, msg, QMessageBox::Yes | QMessageBox::No);
 
+		qDebug() << group->getParameterCount();
+
 		if (QMessageBox::Yes == result)
 		{
+			deleteGroupAndParameters(group);
+			
 			dataBase->removeParameterGroup(group);
 			FillGroupList();
 		}
@@ -664,7 +737,7 @@ namespace FastCAEDesigner
 		ui->tableWidget_GList->selectRow(rowNo);
 	}
 
-	//Çå³ıËùÓĞ²ÎÊı×é
+	//æ¸…é™¤æ‰€æœ‰å‚æ•°ç»„
 	void EditorDescripttionSetup::OnBtnClearAllGroupClicked()
 	{
 		DataProperty::DataBase* dataBase = _model->GetDataBase();
@@ -688,26 +761,29 @@ namespace FastCAEDesigner
 
 		for (int i = 0; i < count; i++)
 		{
-			dataBase->removeParameterGroupAt(0);
+			DataProperty::ParameterGroup* group = dataBase->getParameterGroupAt(0);
+			deleteGroupAndParameters(group);
+
+			dataBase->removeParameterGroupAt(0);			
 		}
 
 		FillGroupList();
 		FillParameterList(ui->tableWidget_GPList);
 	}
 
-	//²ÎÊı×éÃû³Æ±íµ¥--Ë«»÷²Ûº¯Êı
+	//å‚æ•°ç»„åç§°è¡¨å•--åŒå‡»æ§½å‡½æ•°
 	void EditorDescripttionSetup::TableWidgetGoupDoubleClicked(QModelIndex modelIndex)
 	{
 		OnBtnEditGroupClicked();
 	}
 
-	//²ÎÊı×éÃû³Æ±íµ¥--µ¥»÷²Ûº¯Êı
+	//å‚æ•°ç»„åç§°è¡¨å•--å•å‡»æ§½å‡½æ•°
 	void EditorDescripttionSetup::TableWidgetGroupClicked(QModelIndex modelIndex)
 	{
 		TableWidgetGroupCurrentCellChanged();
 	}
 
-	//²ÎÊı×é±íµ¥¿Ø¼ş---ĞĞºÅ¸Ä±ä²Ûº¯Êı
+	//å‚æ•°ç»„è¡¨å•æ§ä»¶---è¡Œå·æ”¹å˜æ§½å‡½æ•°
 	void EditorDescripttionSetup::TableWidgetGroupCurrentCellChanged()
 	{
 		DataProperty::DataBase* dataBase = _model->GetDataBase();
@@ -747,7 +823,7 @@ namespace FastCAEDesigner
 		return group;
 	}
 
-	//²ÎÊı×é--²ÎÊı²Ù×÷²Ûº¯Êı
+	//å‚æ•°ç»„--å‚æ•°æ“ä½œæ§½å‡½æ•°
 	void EditorDescripttionSetup::OnBtnAddGroupParaClicked()
 	{
 		DataProperty::ParameterGroup* group = GetCurrentSelecctedGroup();
@@ -759,7 +835,7 @@ namespace FastCAEDesigner
 		topMenu->exec(QCursor::pos());
 	}
 	
-	//²ÎÊı×é--²ÎÊı±íµ¥--±à¼­Êı¾İ
+	//å‚æ•°ç»„--å‚æ•°è¡¨å•--ç¼–è¾‘æ•°æ®
 	void EditorDescripttionSetup::OnBtnEditGroupParaClicked()
 	{
 		int rowNo = ui->tableWidget_GPList->currentRow();
@@ -772,11 +848,15 @@ namespace FastCAEDesigner
 		if (nullptr == model)
 			return;
 
+		_parameterList.removeOne(model);
+
 		EditModel(model);
 		ui->tableWidget_GPList->selectRow(rowNo);
+
+		_parameterList.append(model);
 	}
 
-	//²ÎÊı×é--²ÎÊı±íµ¥--É¾³ıÒ»¸öÊı¾İ
+	//å‚æ•°ç»„--å‚æ•°è¡¨å•--åˆ é™¤ä¸€ä¸ªæ•°æ®
 	void EditorDescripttionSetup::OnBtnDelGroupParaClicked()
 	{
 		int rowNo = ui->tableWidget_GPList->currentRow();
@@ -796,6 +876,9 @@ namespace FastCAEDesigner
 
 		if (QMessageBox::Yes == result)
 		{
+			_parameterList.removeOne(model);
+			removeNameFromList(model);
+
 			group->removeParameter(model);
 			FillParameterList(group, ui->tableWidget_GPList);
 		}
@@ -809,7 +892,7 @@ namespace FastCAEDesigner
 		ui->tableWidget_GPList->selectRow(rowNo);
 	}
 
-	//²ÎÊı×é--²ÎÊı±íµ¥-Çå³ıËùÓĞÊı¾İ
+	//å‚æ•°ç»„--å‚æ•°è¡¨å•-æ¸…é™¤æ‰€æœ‰æ•°æ®
 	void EditorDescripttionSetup::OnBtnClearAllGroupParaClicked()
 	{
 		DataProperty::ParameterGroup* group = GetCurrentSelecctedGroup();
@@ -836,6 +919,10 @@ namespace FastCAEDesigner
 			DataProperty::ParameterBase* item = paraList.at(i);
 			if (nullptr == item)
 				continue;
+
+			_parameterList.removeOne(item);
+			removeNameFromList(item);
+
 			group->removeParameter(item);
 		}
 
@@ -846,7 +933,7 @@ namespace FastCAEDesigner
 		ui->btnClearAll_S_G->setEnabled(false);
 	}
 
-	//²ÎÊı×é--²ÎÊı±íµ¥±»Ë«»÷²Ûº¯Êı
+	//å‚æ•°ç»„--å‚æ•°è¡¨å•è¢«åŒå‡»æ§½å‡½æ•°
 	void EditorDescripttionSetup::TableWidgetGroupParaDoubleClicked(QModelIndex modelIndex)
 	{
 		_currentOpObject = ParaGroupList;
@@ -857,7 +944,7 @@ namespace FastCAEDesigner
 		ui->btnClearAll_S_G->setEnabled(true);
 	}
 
-	//²ÎÊı×é--²ÎÊı±íµ¥±»µ¥»÷²Ûº¯Êı
+	//å‚æ•°ç»„--å‚æ•°è¡¨å•è¢«å•å‡»æ§½å‡½æ•°
 	void EditorDescripttionSetup::TableWidgetGroupParaClicked(QModelIndex modelIndex)
 	{
 		_currentOpObject = ParaGroupList;
@@ -867,7 +954,7 @@ namespace FastCAEDesigner
 		ui->btnClearAll_S_G->setEnabled(true);
 	}
 
-	//²ÎÊı×é--²ÎÊı±íµ¥¿Ø¼şÑ¡ÔñĞĞºÅ±ä»¯²Ûº¯Êı
+	//å‚æ•°ç»„--å‚æ•°è¡¨å•æ§ä»¶é€‰æ‹©è¡Œå·å˜åŒ–æ§½å‡½æ•°
 	void EditorDescripttionSetup::TableWidgetGroupParaCurrentCellChanged()
 	{
 
@@ -890,7 +977,7 @@ namespace FastCAEDesigner
 		return model;
 	}
 
-	//½¨Á¢°ïÖú²Ëµ¥
+	//å»ºç«‹å¸®åŠ©èœå•
 	void EditorDescripttionSetup::CreateAddParameterMenu()
 	{
 		topMenu = new QMenu(this);
@@ -919,7 +1006,7 @@ namespace FastCAEDesigner
 		connect(action_path, SIGNAL(triggered()), this, SLOT(OnCreatePathClicked()));
 	}
 
-	//»ñÈ¡²ÎÊı×éÃû³ÆÁĞ±í
+	//è·å–å‚æ•°ç»„åç§°åˆ—è¡¨
 	QList<QString> EditorDescripttionSetup::GetParameterGroupNameList()
 	{
 		QList<QString> usedNameList;
@@ -939,7 +1026,7 @@ namespace FastCAEDesigner
 		return usedNameList;
 	}
 
-	//»ñÈ¡¸ø¶¨²ÎÊıÁĞ±íµÄÃû³ÆÁĞ±í
+	//è·å–ç»™å®šå‚æ•°åˆ—è¡¨çš„åç§°åˆ—è¡¨
 	QList<QString> EditorDescripttionSetup::GetParameterNameList(QList<DataProperty::ParameterBase*> parameterList)
 	{
 		QList<QString> usedNameList;
@@ -954,7 +1041,7 @@ namespace FastCAEDesigner
 		return usedNameList;
 	}
 
-	//»ñÈ¡²ÎÊıÁĞ±íµÄÃû³ÆÁĞ±í
+	//è·å–å‚æ•°åˆ—è¡¨çš„åç§°åˆ—è¡¨
 	QList<QString> EditorDescripttionSetup::GetParameterNameList()
 	{
 		QList<QString> usedNameList;
@@ -963,11 +1050,14 @@ namespace FastCAEDesigner
 		if (nullptr == dataBase)
 			return usedNameList;
 		
-		if (_currentOpObject == ParaList)//»ñÈ¡²ÎÊıÁĞ±íÖĞµÄ²ÎÊıÃû³Æ
-		{
-			usedNameList = GetParameterNameList(dataBase->getParaList());
+		if (_currentOpObject == ParaList)//è·å–å‚æ•°åˆ—è¡¨ä¸­çš„å‚æ•°åç§°
+		{ 
+			if (_currentType == TreeItemType::ProjectBoundaryCondationChild)
+				usedNameList = GetParameterNameList(dataBase->getParaList());
+			else
+				usedNameList = DataManager::getInstance()->getParameterNameList();
 		}
-		else//»ñÈ¡²ÎÊı×é--²ÎÊıÁĞ±íÖĞµÄ²ÎÊıÃû³Æ
+		else//è·å–å‚æ•°ç»„--å‚æ•°åˆ—è¡¨ä¸­çš„å‚æ•°åç§°
 		{
 			DataProperty::ParameterGroup* group = GetCurrentSelecctedGroup();
 			
@@ -981,7 +1071,7 @@ namespace FastCAEDesigner
 	}
 
 	
-	//ÊµÏÖ½«²ÎÊı²åÈëµ½²ÎÊıÁĞ±í»ò²ÎÊı×éÁĞ±íÖĞ
+	//å®ç°å°†å‚æ•°æ’å…¥åˆ°å‚æ•°åˆ—è¡¨æˆ–å‚æ•°ç»„åˆ—è¡¨ä¸­
 	void EditorDescripttionSetup::InsertModelInParameterList(DataProperty::ParameterBase* model)
 	{
 		DataProperty::DataBase* dataBase = _model->GetDataBase();
@@ -1017,7 +1107,7 @@ namespace FastCAEDesigner
 		}
 	}
 	
-	//½¨Á¢²¼¶ûĞÍ²ÎÊı
+	//å»ºç«‹å¸ƒå°”å‹å‚æ•°
 	void EditorDescripttionSetup::OnCreateBoolClicked()
 	{
 		QList<QString> usedNameList = GetParameterNameList();
@@ -1030,10 +1120,13 @@ namespace FastCAEDesigner
 		if (r == QDialog::Accepted)
 		{
 			InsertModelInParameterList(modelBool);
+
+			_parameterList.append(modelBool);
+			DataManager::getInstance()->appendParameterNameList(modelBool->getDescribe());
 		}
 	}
 	
-	//½¨Á¢ÕûĞÎ²ÎÊı
+	//å»ºç«‹æ•´å½¢å‚æ•°
 	void EditorDescripttionSetup::OnCreateIntClicked()
 	{
 		QList<QString> usedNameList = GetParameterNameList();
@@ -1046,10 +1139,14 @@ namespace FastCAEDesigner
 		if (r == QDialog::Accepted)
 		{
 			InsertModelInParameterList(modelInt);
+
+			DataManager::getInstance()->appendParameterNameList(modelInt->getDescribe());
+
+			_parameterList.append(modelInt);
 		}
 	}
 
-	//½¨Á¢²¼¶ûĞÍ²ÎÊı
+	//å»ºç«‹å¸ƒå°”å‹å‚æ•°
 	void EditorDescripttionSetup::OnCreateDoubleClicked()
 	{
 		QList<QString> usedNameList = GetParameterNameList();
@@ -1062,10 +1159,13 @@ namespace FastCAEDesigner
 		if (r == QDialog::Accepted)
 		{
 			InsertModelInParameterList(modelDouble);
+
+			_parameterList.append(modelDouble);
+			DataManager::getInstance()->appendParameterNameList(modelDouble->getDescribe());
 		}
 	}
 
-	//½¨Á¢×Ö·û´®±ä²ÎÊı
+	//å»ºç«‹å­—ç¬¦ä¸²å˜å‚æ•°
 	void EditorDescripttionSetup::OnCreateStringClicked()
 	{
 		QList<QString> usedNameList = GetParameterNameList();
@@ -1079,10 +1179,13 @@ namespace FastCAEDesigner
 		if (r == QDialog::Accepted)
 		{
 			InsertModelInParameterList(modelString);
+
+			_parameterList.append(modelString);
+			DataManager::getInstance()->appendParameterNameList(modelString->getDescribe());
 		}
 	}
 	
-	//½¨Á¢Ã¶¾ÙĞÍ²ÎÊı
+	//å»ºç«‹æšä¸¾å‹å‚æ•°
 	void EditorDescripttionSetup::OnCreateEnumClicked()
 	{
 		QList<QString> usedNameList = GetParameterNameList();
@@ -1094,6 +1197,9 @@ namespace FastCAEDesigner
 		if (r == QDialog::Accepted)
 		{
 			InsertModelInParameterList(modelEnum);
+
+			_parameterList.append(modelEnum);
+			DataManager::getInstance()->appendParameterNameList(modelEnum->getDescribe());
 		}
 
 	}
@@ -1111,6 +1217,9 @@ namespace FastCAEDesigner
 		if (r == QDialog::Accepted)
 		{
 			InsertModelInParameterList(modelTable);
+
+			_parameterList.append(modelTable);
+			DataManager::getInstance()->appendParameterNameList(modelTable->getDescribe());
 		}
 	}
 
@@ -1126,11 +1235,14 @@ namespace FastCAEDesigner
 		if (r == QDialog::Accepted)
 		{
 			InsertModelInParameterList(modelPath);
+
+			_parameterList.append(modelPath);
+			DataManager::getInstance()->appendParameterNameList(modelPath->getDescribe());
 		}
 	}
 
 
-	//±à¼­Êı¾İ
+	//ç¼–è¾‘æ•°æ®
 	void EditorDescripttionSetup::EditModel(DataProperty::ParameterBase* model)
 	{
 		if (nullptr == model)
@@ -1139,6 +1251,7 @@ namespace FastCAEDesigner
 		QList<QString> usedNameList = GetParameterNameList();
 		QString modelName = model->getDescribe();
 		usedNameList.removeOne(modelName);
+		DataManager::getInstance()->removeParameterName(modelName);
 		int r = 0;
 
 		if (model->getParaType() == DataProperty::ParaType::Para_Int)
@@ -1192,9 +1305,13 @@ namespace FastCAEDesigner
 			r = dlg.exec();
 		}
 
-
 		if (r != QDialog::Accepted)
+		{
+			DataManager::getInstance()->appendParameterNameList(model->getDescribe());
 			return;
+		}
+			
+		DataManager::getInstance()->appendParameterNameList(model->getDescribe());
 
 		if (_currentOpObject == ParaList)
 		{
@@ -1208,7 +1325,7 @@ namespace FastCAEDesigner
 		}
 
 	}
-	//Ë¢ĞÂÊı¾İµ½UI
+	//åˆ·æ–°æ•°æ®åˆ°UI
 	void EditorDescripttionSetup::UpdateDataToUi()
 	{
 		if (nullptr == _model)
@@ -1225,7 +1342,7 @@ namespace FastCAEDesigner
 		ui->btnDelAll_s->setEnabled(true);
 	}
 
-	//Ë¢ĞÂUIĞÅÏ¢µ½Êı¾İ
+	//åˆ·æ–°UIä¿¡æ¯åˆ°æ•°æ®
 	void EditorDescripttionSetup::UpdateUiToData()
 	{
 		if (nullptr == _model)
@@ -1236,7 +1353,7 @@ namespace FastCAEDesigner
 		_model->SetIconName(ui->txtIcon->text());
 	}
 
-	//Éè¶¨»ù±¾²ÎÊıÊÇ·ñ¿ÉÒÔ±à¼­×´Ì¬
+	//è®¾å®šåŸºæœ¬å‚æ•°æ˜¯å¦å¯ä»¥ç¼–è¾‘çŠ¶æ€
 	void EditorDescripttionSetup::SetIsEdit(bool b)
 	{
 		ui->txtChineseName->setEnabled(b);
@@ -1244,7 +1361,7 @@ namespace FastCAEDesigner
 		ui->txtIcon->setEnabled(b);
 		ui->btnLoadIcon->setEnabled(b);
 	}
-	//²Ûº¯Êı---Ok°´Å¥
+	//æ§½å‡½æ•°---OkæŒ‰é’®
 	void EditorDescripttionSetup::OnBtnOkClicked()
 	{
 		QString nameChn = ui->txtChineseName->text().trimmed();
@@ -1260,6 +1377,19 @@ namespace FastCAEDesigner
 			return;
 		}
 
+		//20200324  xuxinwei
+		QFileInfo icon(ui->txtIcon->text().trimmed());
+		if (!DataManager::getInstance()->getIconNameIsAvailable(icon.fileName()))
+		{
+			ui->lbl_info->setText(tr("The icon file is already existed."));
+			ui->lbl_info->show();
+			QTimer::singleShot(3000, this, SLOT(OnTimeout()));
+			return;
+		}
+
+		DataManager::getInstance()->setIconNameList(icon.fileName());
+		//20200324	xuxinwei
+
 		UpdateUiToData();
 
 		if (nullptr != _treeItem)
@@ -1273,7 +1403,7 @@ namespace FastCAEDesigner
 		close();
 	}
 	
-	//¶¨Ê±Æ÷²Ûº¯Êı
+	//å®šæ—¶å™¨æ§½å‡½æ•°
 	void EditorDescripttionSetup::OnTimeout()
 	{
 		ui->lbl_info->setText("");
@@ -1305,4 +1435,66 @@ namespace FastCAEDesigner
 
 		resizeEvent(nullptr);
 	}
+
+	//xuxinwei
+	void EditorDescripttionSetup::OnParameterLinkagePBtnClicked()
+	{
+		/*ParametersLinkage dlg/ *(/ *_parameterList* /)* /;
+		dlg.exec();*/
+	//	this->close();
+
+// 		ParaLinkageManager wid /*= new ParaLinkageManager()*/;
+//  		wid.exec();
+// 		this->close();
+// 		emit dispalyParameterLinkageManager();
+	}
+
+	//xuxinwei 20200326
+	int EditorDescripttionSetup::getCaseType(ModelBase* model)
+	{
+		int type{-1};
+		if (model == nullptr)
+			return type;
+		//QString caseName{};
+		if ((model->GetType() == TreeItemType::ProjectSimulationSettingGrandSon) || (model->GetType() == TreeItemType::ProjectSolverGrandSon))
+
+		{
+			type = model->GetParentModelBase()->GetParentModelBase()->GetParentModelBase()->getTreeType();
+			qDebug() << type;
+		}
+		else if ((model->GetType() == TreeItemType::ProjectSimulationSettingChild) || (model->GetType() == TreeItemType::ProjectSolverChild))
+	
+		{
+			type = model->GetParentModelBase()->GetParentModelBase()->getTreeType();
+			qDebug() << type;
+		}
+		else
+			type = model->GetParentModelBase()->getTreeType();
+
+		return type;
+	}
+
+	void EditorDescripttionSetup::deleteGroupAndParameters(DataProperty::ParameterGroup* group)
+	{
+		//QList<DataProperty::ParameterBase*> list = group->getParaList();
+		for (int i = 0; i < group->getParameterCount();i++)
+		{
+			if (group->getParameterAt(i) == nullptr)
+				continue;
+
+			if (_parameterList.contains(group->getParameterAt(i)))
+				_parameterList.removeOne(group->getParameterAt(i));
+
+			removeNameFromList(group->getParameterAt(i));
+		}
+
+		_parameterGroupList.removeOne(group);
+		DataManager::getInstance()->removeParaGroupName(group->getDescribe());
+	}
+
+	void EditorDescripttionSetup::removeNameFromList(DataProperty::ParameterBase* base)
+	{
+		DataManager::getInstance()->removeParameterName(base->getDescribe());
+	}
+
 }

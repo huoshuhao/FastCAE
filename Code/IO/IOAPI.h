@@ -1,4 +1,4 @@
-#ifndef _IOAPI_H_
+﻿#ifndef _IOAPI_H_
 #define _IOAPI_H_
 
 #include <QtCore/QtGlobal>

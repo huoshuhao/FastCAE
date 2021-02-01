@@ -1,4 +1,4 @@
-#include "ParaWidgetFactory.h"
+﻿#include "ParaWidgetFactory.h"
 #include "DataProperty/ParameterBase.h"
 #include "ParaDoubleSpin.h"
 #include "ParaSpin.h"

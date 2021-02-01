@@ -1,5 +1,5 @@
-/****************************
-Ğ´³öÎÄ¼ş¹©Çó½âÆ÷µ÷ÓÃ
+ï»¿/****************************
+å†™å‡ºæ–‡ä»¶ä¾›æ±‚è§£å™¨è°ƒç”¨
 *********************** */ 
 
 #ifndef SOLVERINFOWRITER_H
@@ -39,19 +39,19 @@ namespace IO
 	class IOAPI SolverInfoWriter : public ModuleBase::IOBase
 	{
 	public:
-		SolverInfoWriter(const QString& filename);
+		SolverInfoWriter(const QString& fileName);
 		SolverInfoWriter();
 		~SolverInfoWriter() = default;
 
-		///ÉèÖÃÃû³Æ£¬²»°üº¬Â·¾¶ eg 123.txt
+		///è®¾ç½®åç§°ï¼Œä¸åŒ…å«è·¯å¾„ eg 123.txt
 //		void setName(const QString filenam);
 		void appendModel(ModelData::ModelDataBase *model);
 		bool write(QString dir = QString()) override;
 //		void setFileType(FileType type);
-		void xml2json_model(QString filename);
-		void xml2json_material(QString filename);
-		void xml2json_geometry(QString filename);
-		void xml2json_meshdata(QString filename);
+		void xml2json_model(QString fileName);
+		void xml2json_material(QString fileName);
+		void xml2json_geometry(QString fileName);
+		void xml2json_meshdata(QString fileName);
 		void write_xml_model();
 		void write_xml_material();
 		void write_xml_geometry();
@@ -63,7 +63,7 @@ namespace IO
 		QList<ModelData::ModelDataBase*> _modelList{};
 		QString _name{};
 		bool  _isTextType{ true };
-		bool isjson{ false };//ÅĞ¶ÏÓÃ»§Ñ¡ÔñµÄÊÇxmlÎÄ¼ş»¹ÊÇjsonÎÄ¼şÊä³öÀàĞÍ£¬Ä¬ÈÏÎªfalse¾ÍÊÇxml
+		bool isjson{ false };//åˆ¤æ–­ç”¨æˆ·é€‰æ‹©çš„æ˜¯xmlæ–‡ä»¶è¿˜æ˜¯jsonæ–‡ä»¶è¾“å‡ºç±»å‹ï¼Œé»˜è®¤ä¸ºfalseå°±æ˜¯xml
 		Setting::SolveOption* _solveOption{};
 	private:
 		Geometry::GeometryData* _geoData{};

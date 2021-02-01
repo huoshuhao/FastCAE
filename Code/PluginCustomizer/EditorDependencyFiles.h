@@ -1,4 +1,4 @@
-#ifndef EDITORDEPENDENCYFILES_H
+ï»¿#ifndef EDITORDEPENDENCYFILES_H
 #define EDITORDEPENDENCYFILES_H
 
 #include <QDialog>
@@ -14,7 +14,7 @@ namespace FastCAEDesigner{
 
 	public:
 		explicit EditorDependencyFiles(QWidget *parent = 0);
-		EditorDependencyFiles(QString filename, QWidget *parent = 0);
+		EditorDependencyFiles(QString fileName, QWidget *parent = 0);
 		~EditorDependencyFiles();
 
 		QString getFiles();
@@ -27,7 +27,7 @@ namespace FastCAEDesigner{
 
 	private:
 		void init();
-		void UpdateFileNames();//Added xvdongming 2020-02-14 Ë¢ĞÂÑ¡ÔñµÄÒÀÀµÎÄ¼şÁĞ±í
+		void UpdateFileNames();//Added xvdongming 2020-02-14 åˆ·æ–°é€‰æ‹©çš„ä¾èµ–æ–‡ä»¶åˆ—è¡¨
 
 	private:
 		Ui::EditorDependencyFiles *ui;

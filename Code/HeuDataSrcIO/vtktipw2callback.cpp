@@ -1,4 +1,4 @@
-#include "vtktipw2callback.h"
+﻿#include "vtktipw2callback.h"
 
 void vtkTIPW2Callback::Execute(vtkObject *caller, unsigned long, void*)
 {

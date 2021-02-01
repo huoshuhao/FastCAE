@@ -1,4 +1,4 @@
-#include "GeoCommandMakeSweep.h"
+﻿#include "GeoCommandMakeSweep.h"
 #include <TopoDS_Edge.hxx>
 #include <list>
 #include <vector>

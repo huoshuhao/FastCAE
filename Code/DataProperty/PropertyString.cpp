@@ -1,4 +1,4 @@
-#include "PropertyString.h"
+﻿#include "PropertyString.h"
 
 namespace DataProperty
 {

@@ -1,4 +1,4 @@
-#ifndef GEOCOMMANDMOVEFEATURE_H_
+﻿#ifndef GEOCOMMANDMOVEFEATURE_H_
 #define GEOCOMMANDMOVEFEATURE_H_
 
 #include "GeoCommandBase.h"
@@ -24,7 +24,7 @@ namespace Command
 		void redo() override;
 		void releaseResult() override;
 
-		void setBodys(QList<Geometry::GeometrySet*> b);
+		void setBodys(QMultiHash<Geometry::GeometrySet*, int> bodyhash);
  		void setVector(double* vec);
  		void setSaveOrigin(bool on);
 		void setOptionIndex(int i);
@@ -40,10 +40,12 @@ namespace Command
 	protected:
 
 	private:
+		//待删
 		QList<Geometry::GeometrySet*> _bodys{};
+		//新加
+		QMultiHash<Geometry::GeometrySet*, int> _solidhash{};
 		double _vector[3];
 		bool _saveOrigin{ false };
-
 		int _optionindex{};
 		double _startpt[3]{};
 		double _endpt[3]{};

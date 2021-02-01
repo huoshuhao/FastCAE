@@ -1,4 +1,4 @@
-#include "ParameterGroup.h"
+﻿#include "ParameterGroup.h"
 #include <QDomElement>
 #include <QDomDocument>
 #include <QDomAttr>

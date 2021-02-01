@@ -1,4 +1,4 @@
-#include "TreeItemData.h"
+﻿#include "TreeItemData.h"
 #include <QString>
 #include <QDir>
 

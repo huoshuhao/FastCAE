@@ -1,4 +1,4 @@
-#ifndef CREATESPHERECOMMAND_H_
+﻿#ifndef CREATESPHERECOMMAND_H_
 #define CREATESPHERECOMMAND_H_
 
 #include "GeoCommandBase.h"

@@ -1,4 +1,4 @@
-#include "TemplateReplacer.h"
+﻿#include "TemplateReplacer.h"
 #include <QFile>
 #include <QTextStream>
 #include <QRegExp>

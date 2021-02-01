@@ -1,4 +1,4 @@
-#ifndef PROPERTYDOUBLE_H
+ï»¿#ifndef PROPERTYDOUBLE_H
 #define PROPERTYDOUBLE_H
 
 #include "DataPropertyAPI.h"
@@ -9,16 +9,16 @@ namespace DataProperty
 	class DATAPROPERTYAPI PropertyDouble : public PropertyBase
 	{
 	public:
-		//¹¹Ôìº¯Êı
+		//æ„é€ å‡½æ•°
 		PropertyDouble();
-		//¹¹Ôìº¯Êı
+		//æ„é€ å‡½æ•°
 		PropertyDouble(QString name, double val);
 		~PropertyDouble() = default;
-		//ÉèÖÃÖµ
+		//è®¾ç½®å€¼
 		void setValue(double v);
-		//»ñÈ¡Öµ
+		//è·å–å€¼
 		double getValue();
-		//ÀàĞÍ×ª»¯
+		//ç±»å‹è½¬åŒ–
 		QVariant getVariant() override;
 
 	private:

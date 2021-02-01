@@ -1,4 +1,4 @@
-#include "dialogCreateBoxComplex.h"
+﻿#include "dialogCreateBoxComplex.h"
 #include "ui_dialogCreateBoxComplex.h"
 #include "geometry/geometrySet.h"
 #include "geometry/geometryData.h"

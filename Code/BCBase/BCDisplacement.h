@@ -1,4 +1,4 @@
-#ifndef _BCDISPLACEMENT_H_
+﻿#ifndef _BCDISPLACEMENT_H_
 #define _BCDISPLACEMENT_H_
 
 #include "BCVectorBase.h"

@@ -1,4 +1,4 @@
-#ifndef _SIGNALHANDLERPY_H_
+ï»¿#ifndef _SIGNALHANDLERPY_H_
 #define _SIGNALHANDLERPY_H_
 
 #include <QObject>
@@ -19,9 +19,9 @@ namespace Ui {
 		SignalHandlerPy(graph_MainWindow* mainwindow);
 		~SignalHandlerPy();
 	public slots:
-		/*ÇĞ»»ÎªÓ¢Óï */
+		/*åˆ‡æ¢ä¸ºè‹±è¯­ */
 		void on_actionEnglish();
-		/*ÇĞ»»ÎªÖĞÎÄ */
+		/*åˆ‡æ¢ä¸ºä¸­æ–‡ */
 		void on_actionChinese();
 		
 		void script_openFile(QString args);

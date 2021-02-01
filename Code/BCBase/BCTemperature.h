@@ -1,4 +1,4 @@
-#ifndef _BCTEMPERATURE_H_
+﻿#ifndef _BCTEMPERATURE_H_
 #define _BCTEMPERATURE_H_
 
 #include "BCScalarBase.h"

@@ -10,12 +10,13 @@ include(../occ.pri)
 
 win32{
 
-QMAKE_LFLAGS += /MANIFESTUAC:"level='requireAdministrator'uiAccess='false'"
+Release:QMAKE_LFLAGS += /MANIFESTUAC:"level='requireAdministrator'uiAccess='false'"
 
   INCLUDEPATH	+=  ./ \
 					../ \
 					../Licese/ \
 
+# Release:CONFIG	    	+=  console
   Release:DESTDIR         = ../../output/bin 
   Release:MOC_DIR         = ./release/moc 
   Release:RCC_DIR         = ./release/rcc
@@ -73,13 +74,13 @@ unix{
         -L../../output/bin -lCurveAnalyse \
         -L../../output/bin -lModuleBase \
         -L../../output/bin -lGraphicsAnalyse \
-	-L../../output/bin -lPostWidgets \
-	-L../../output/bin -lIO \
-	-L../../output/bin -lProjectTree \
-	-L../../output/bin -lSolverControl \
-	-L../../output/bin -lProjectTreeExtend \
-	-L../../output/bin -lMainWidgets \
-	-L../../output/bin -lMainWindow \        
+		-L../../output/bin -lPostWidgets \
+		-L../../output/bin -lIO \
+		-L../../output/bin -lProjectTree \
+		-L../../output/bin -lSolverControl \
+		-L../../output/bin -lProjectTreeExtend \
+		-L../../output/bin -lMainWidgets \
+		-L../../output/bin -lMainWindow \        
 	
   message("Linux main build")
 }

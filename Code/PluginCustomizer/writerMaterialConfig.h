@@ -1,4 +1,4 @@
-#ifndef WRITERMATERIALCONFIG_H
+﻿#ifndef WRITERMATERIALCONFIG_H
 #define WRITERMATERIALCONFIG_H
 
 #include "WriterBase.h"

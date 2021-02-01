@@ -1,4 +1,4 @@
-#include "SolverModel.h"
+﻿#include "SolverModel.h"
 #include "EditorDescripttionSetup.h"
 #include "DataProperty/modelTreeItemType.h"
 

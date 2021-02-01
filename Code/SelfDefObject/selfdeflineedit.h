@@ -1,4 +1,4 @@
-#ifndef SELFDEFINELINEEDIT_H
+﻿#ifndef SELFDEFINELINEEDIT_H
 #define SELFDEFINELINEEDIT_H
 
 /* ***********************************

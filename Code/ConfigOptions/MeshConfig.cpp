@@ -1,14 +1,26 @@
-#include "MeshConfig.h"
+ï»¿#include "MeshConfig.h"
+#include <QDebug>
+
+#define MESHON  true;
+#define MESHOFF false;
+#define MESHIMPORT "cgns;msh;neu;stl;dat;vtk;inp"
+#define MESHEXPORT "vtk;neu"
+
 
 namespace ConfigOption
 {
+	MeshConfig::MeshConfig()
+	{
+		this->clearData();
+
+	}
 
 	bool MeshConfig::isMeshEnabled()
 	{
 		bool in = this->isImportMeshEnabled();
 		bool ex = this->isExportMeshEnabled();
 
-		bool gen = _enableSurfaceMesh || _enableSolidMesh;
+		bool gen = _enableSurfaceMesh || _enableSolidMesh || _fluidMesh;
 
 		return in || ex || gen ;
 	}
@@ -29,7 +41,7 @@ namespace ConfigOption
 	}
 	
 	QString MeshConfig::getImportSuffix()
-	{
+	{		
 		return _importSuffix;
 	}
 
@@ -45,7 +57,7 @@ namespace ConfigOption
 	
 	bool MeshConfig::isMeshGenerationEnabled()
 	{
-		return _enableSolidMesh || _enableSurfaceMesh;
+		return _enableSolidMesh || _enableSurfaceMesh || _fluidMesh;
 	}
 	void MeshConfig::enableSurfaceMesh(bool on)
 	{
@@ -75,24 +87,57 @@ namespace ConfigOption
 	void MeshConfig::clearData()
 	{
 		
-		_importSuffix.clear();
-		_exportSuffix.clear();
-	
-		_enableSurfaceMesh = _enableSolidMesh = false;
-		_enableComponent = false;
-		_checkMesh	= false;
+		_exportSuffix = MESHEXPORT;
+		_importSuffix = MESHIMPORT;
 
+		_enableSurfaceMesh = MESHON;
+		_enableSolidMesh = MESHON;
+		_enableComponent = MESHON;
+		_checkMesh = MESHON;
+		_fluidMesh = MESHON;
+		_filterMesh = MESHON;
+		_meshModeling = MESHON;
 	}
 
-	//ÉèÖÃ¼ì²âÍø¸ñÖÊÁ¿
+	//è®¾ç½®æ£€æµ‹ç½‘æ ¼è´¨é‡
 	void MeshConfig::setCheckMesh(bool on)
 	{
 		_checkMesh = on;
 	}
-	//»ñÈ¡¼ì²âÍø¸ñÖÊÁ¿×´Ì¬
+	//è·å–æ£€æµ‹ç½‘æ ¼è´¨é‡çŠ¶æ€
 	bool MeshConfig::getCheckMeshEnabled()
 	{
 		return _checkMesh;
+	}
+
+	void MeshConfig::enableFluidMesh(bool on)
+	{
+		_fluidMesh = on;
+	}
+
+	bool MeshConfig::isFluidMeshEnabled()
+	{
+		return _fluidMesh;
+	}
+
+	void MeshConfig::enableFilterMesh(bool on)
+	{
+		_filterMesh = on;
+	}
+
+	bool MeshConfig::isFilterMeshEnabled()
+	{
+		return _filterMesh;
+	}
+
+	void MeshConfig::enableMeshModeling(bool on)
+	{
+		_meshModeling = on;
+	}
+
+	bool MeshConfig::isMeshModelingEnabled()
+	{
+		return _meshModeling;
 	}
 
 }

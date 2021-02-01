@@ -1,4 +1,4 @@
-#include "ReadData_Tecplot.h"
+ï»¿#include "ReadData_Tecplot.h"
 #include <vtkSmartPointer.h>
 #include <vtkTecplotReader.h>
 #include <vtkMultiBlockDataSet.h>
@@ -16,15 +16,15 @@
 
 bool ReadData_Tecplot::Read(QString tep_filename)
 {
-	TecPreProcessing(tep_filename);
+//	TecPreProcessing(tep_filename);
 	reader = vtkTecplotReader::New();
 	qDebug() << tep_filename;
-	//ÖÐÎÄÂ·¾¶
+	//ä¸­æ–‡è·¯å¾„
 	char * fileNamechar;
 	QByteArray ba = QStringToChar(tep_filename);
 	fileNamechar = ba.data();
 	reader->SetFileName(fileNamechar);
-	//ÖÐÎÄÂ·¾¶
+	//ä¸­æ–‡è·¯å¾„
 	//reader->SetFileName(tep_filename.toLatin1().data());
 	reader->Update();
 	mudataset = reader->GetOutput();
@@ -252,9 +252,9 @@ QString ReadData_Tecplot::readline()
 	return line;
 }
 
-bool ReadData_Tecplot::read1(QString filename)
+bool ReadData_Tecplot::read1(QString fileName)
 {
-	QFile file(filename);
+	QFile file(fileName);
 	if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) return false;
 	_textStream = new QTextStream;
 	_textStream->setDevice(&file);

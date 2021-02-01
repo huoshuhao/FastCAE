@@ -1,4 +1,4 @@
-#ifndef _CGNSBCZONE_H_
+ï»¿#ifndef _CGNSBCZONE_H_
 #define _CGNSBCZONE_H_
 
 #include "meshSet.h"
@@ -19,12 +19,12 @@ namespace MeshData
 		void setParent(QString p);
 
 		virtual QDomElement& writeToProjectFile(QDomDocument* doc, QDomElement* parent) override;
-		//´ÓXMLÎÄ¼ş¶ÁÈ¡Êı¾İ
+		//ä»XMLæ–‡ä»¶è¯»å–æ•°æ®
 		virtual void readDataFromProjectFile(QDomElement* e) override;
 
-		//Ğ´Èë¶ş½øÖÆÎÄ¼ş
+		//å†™å…¥äºŒè¿›åˆ¶æ–‡ä»¶
 		virtual void writeBinaryFile(QDataStream* dataStream) override;
-		//¶ÁÈë¶ş½øÖÆÎÄ¼ş
+		//è¯»å…¥äºŒè¿›åˆ¶æ–‡ä»¶
 		virtual void readBinaryFile(QDataStream* dataStream) override;
 
 		int getDataSetID();

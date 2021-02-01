@@ -1,4 +1,4 @@
-#ifndef _SCRIPTHANDLER_H_
+﻿#ifndef _SCRIPTHANDLER_H_
 #define _SCRIPTHANDLER_H_
 #include <QString>
 #include "NumericSrcObject.h"
@@ -8,7 +8,7 @@ class ScriptHandler : public QObject
 {
 	Q_OBJECT
 public:
-	ScriptHandler(graph_MainWindow* mainwindow, QString filename);
+	ScriptHandler(graph_MainWindow* mainwindow, QString fileName);
 	~ScriptHandler();
 	void Handle();
 	bool flag_commandLine;

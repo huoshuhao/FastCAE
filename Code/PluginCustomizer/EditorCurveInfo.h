@@ -1,4 +1,4 @@
-#ifndef EDITORCURVEINFO_H
+﻿#ifndef EDITORCURVEINFO_H
 #define EDITORCURVEINFO_H
 
 #include <QDialog>

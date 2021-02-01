@@ -1,4 +1,4 @@
-#ifndef PIPELINEOBJECT_H
+ï»¿#ifndef PIPELINEOBJECT_H
 #define PIPELINEOBJECT_H
 
 #include "global_define.h"
@@ -50,7 +50,7 @@
 
 class PipelineObjProp;
 
-class  HEUDATASRCIOSHARED_EXPORT PipelineObject : public QObject
+class HEUDATASRCIOSHARED_EXPORT PipelineObject : public QObject
 {
 	Q_OBJECT
 public:
@@ -131,8 +131,8 @@ public:
 	void SetScale();
 	void SetTranslate();	
 	void SetLightingSpecular();	
-	void SetLightingSpecularPower();//¹âÕÕ¸ß¹â£¨ÁÁ°ß£©¹â½à¶È£¬ËäÈ»Ó¢ÎÄÊÇpower£¬µ«ÊÇÊµ¼ÊÉÏÕâ¸ö²ÎÊıÓ¦¸ÃÊÇphong¹âÕÕÄ£ĞÍÖĞµÄ¹â½à¶È£¬·¶Î§0.0~128.0£¬×¢ÒâÖµºÜµÍ£¬±ÈÈçĞ¡ÓÚ5.0Ê±Ğ§¹û»áºÜÆæ¹Ö
-	void SetLightingSpecularCorlor();//¹âÕÕ¸ß¹â£¨ÁÁ°ß£©ÑÕÉ«
+	void SetLightingSpecularPower();//å…‰ç…§é«˜å…‰ï¼ˆäº®æ–‘ï¼‰å…‰æ´åº¦ï¼Œè™½ç„¶è‹±æ–‡æ˜¯powerï¼Œä½†æ˜¯å®é™…ä¸Šè¿™ä¸ªå‚æ•°åº”è¯¥æ˜¯phongå…‰ç…§æ¨¡å‹ä¸­çš„å…‰æ´åº¦ï¼ŒèŒƒå›´0.0~128.0ï¼Œæ³¨æ„å€¼å¾ˆä½ï¼Œæ¯”å¦‚å°äº5.0æ—¶æ•ˆæœä¼šå¾ˆå¥‡æ€ª
+	void SetLightingSpecularCorlor();//å…‰ç…§é«˜å…‰ï¼ˆäº®æ–‘ï¼‰é¢œè‰²
 	void SetSolidCorlor();
 	void SetEdgeCorlor();
 	void SetLightingInterpolation();

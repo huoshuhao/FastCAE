@@ -1,4 +1,4 @@
-#include "geometryParaRevol.h"
+ï»¿#include "geometryParaRevol.h"
 #include <QDomElement>
 #include <QDomDocument>
 #include <QDomAttr>
@@ -13,8 +13,6 @@ namespace Geometry
 		_type = GeometryParaMakeRevol;
 	}
 
-
-	
 	void GeometryParaRevol::setShapeHash(QMultiHash<Geometry::GeometrySet*, int> shapehash)
 	{
 		_shapeHash = shapehash;
@@ -60,8 +58,6 @@ namespace Geometry
 			dir[i] = _basept[i];
 		}
 	}
-
-	
 
 	void GeometryParaRevol::setDegree(double d)
 	{
@@ -123,7 +119,7 @@ namespace Geometry
 
 	QDomElement& GeometryParaRevol::writeToProjectFile(QDomDocument* doc, QDomElement* parent)
 	{
-		QDomElement element = doc->createElement("Parameter");  //´´½¨×Ó½Úµã
+		QDomElement element = doc->createElement("Parameter");  //åˆ›å»ºå­èŠ‚ç‚¹
 		QDomAttr typeattr = doc->createAttribute("Type");
 		typeattr.setValue(this->typeToString());
 		element.setAttributeNode(typeattr);
@@ -214,7 +210,6 @@ namespace Geometry
 		solidEle.appendChild(solidText);
 		element.appendChild(solidEle);
 
-
 		parent->appendChild(element);
 		return element;
 	}
@@ -301,9 +296,6 @@ namespace Geometry
 		if (solidsr == "1") _solid = true;
 		else if (solidsr == "0") _solid = false;
 
-
 	}
-
-	
 
 }

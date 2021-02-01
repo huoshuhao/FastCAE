@@ -1,4 +1,4 @@
-#include "GeoCommandSketchBase.h"
+﻿#include "GeoCommandSketchBase.h"
 #include "MainWidgets/sketchViewProvider.h"
 
 namespace Command

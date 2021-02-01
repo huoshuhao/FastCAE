@@ -1,4 +1,4 @@
-#ifndef GEOCOMMANDROTATEFEATURE_H_
+﻿#ifndef GEOCOMMANDROTATEFEATURE_H_
 #define GEOCOMMANDROTATEFEATURE_H_
 
 #include "GeoCommandBase.h"
@@ -25,7 +25,7 @@ namespace Command
 		void redo() override;
 		void releaseResult() override;
 
-		void setBodys(QList<Geometry::GeometrySet*> b);
+		void setBodys(QMultiHash<Geometry::GeometrySet*, int> bodyhash);
 		void setVector(double* vec);
 		void setBasicPoint(double* bp);
 		void setSaveOrigin(bool on);
@@ -36,10 +36,12 @@ namespace Command
 	
 	private:
 		bool generateDir(double* d);
-		void setPara(Geometry::GeometrySet* n, Geometry::GeometrySet* o);
 
 	private:
+		//待删
 		QList<Geometry::GeometrySet*> _bodys{};
+		//新加
+		QMultiHash<Geometry::GeometrySet*, int> _solidHash{};
 		double _basicPoint[3];
 		double _degree{ 0.0 };
 		bool _saveOrigin{ false };

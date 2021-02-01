@@ -1,4 +1,4 @@
-#ifndef _SCRIPTHANDLER_H_
+﻿#ifndef _SCRIPTHANDLER_H_
 #define _SCRIPTHANDLER_H_
 #include <QString>
 class curve_MainWindow;
@@ -6,7 +6,7 @@ class curve_MainWindow;
 class CurveScriptHandler
 {
 public:
-	CurveScriptHandler(curve_MainWindow* mainwindow, QString filename);
+	CurveScriptHandler(curve_MainWindow* mainwindow, QString fileName);
 	~CurveScriptHandler();
 	void Handle();
 	

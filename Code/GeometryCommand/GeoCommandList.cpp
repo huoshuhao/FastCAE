@@ -1,4 +1,4 @@
-#include "GeoCommandList.h"
+﻿#include "GeoCommandList.h"
 #include "GeoCommandBase.h"
 
 namespace Command

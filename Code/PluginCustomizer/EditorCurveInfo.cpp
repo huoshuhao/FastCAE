@@ -1,4 +1,4 @@
-#include "EditorCurveInfo.h"
+﻿#include "EditorCurveInfo.h"
 #include "ui_EditorCurveInfo.h"
 #include "InputValidator.h"
 #include <QTimer>

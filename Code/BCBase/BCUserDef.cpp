@@ -1,4 +1,4 @@
-#include "BCUserDef.h"
+﻿#include "BCUserDef.h"
 #include <QDomDocument>
 #include <QDomElement>
 #include <QDomAttr>
@@ -9,7 +9,7 @@ namespace BCBase
 {
 	BCUserDef::BCUserDef()
 	{
-		this->setType(UserDef);
+		this->setBCType(UserDef);
 	}
 
 	QString BCUserDef::getName()

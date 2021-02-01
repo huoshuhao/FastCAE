@@ -1,4 +1,4 @@
-#include "pluginCustomizer.h"
+﻿#include "pluginCustomizer.h"
 #include "customizerActionManager.h"
 #include <QSettings>
 #include <QCoreApplication>
@@ -19,7 +19,7 @@ namespace Plugins
 		:_mainWindow(m)
 	{
 		_actionManager = new CustomActionManager(this, m);
-		_describe = QString(tr("Customizer"));
+		_describe = QCoreApplication::translate("CustomizerPlugin", "Customizer", nullptr);
 	}
 
 	CustomizerPlugin::~CustomizerPlugin()
@@ -34,7 +34,7 @@ namespace Plugins
 		else return false;
 
 		PluginBase::install();
-
+		
 		return true;
 	}
 

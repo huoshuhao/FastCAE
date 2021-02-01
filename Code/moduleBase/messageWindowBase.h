@@ -1,5 +1,5 @@
-/************************
-Êä³öĞÅÏ¢¿ò
+ï»¿/************************
+è¾“å‡ºä¿¡æ¯æ¡†
 ************************/
 #ifndef _MESSAGEWINDOWBASE_H_
 #define _MESSAGEWINDOWBASE_H_
@@ -70,11 +70,11 @@ namespace ModuleBase
 	public:
 		MessageWindowBase(GUI::MainWindow* mainwindow, QWidget* parent = 0);
 		virtual ~MessageWindowBase();
-		//·­Òë
+		//ç¿»è¯‘
 		virtual void reTranslate() override;
 		
-		//Ö´ĞĞpythonÃüÁî
-		void executePyscript();
+		//æ‰§è¡Œpythonå‘½ä»¤
+		bool executePyscript();
 		// 
 		protected slots:
 		virtual void showMessage(QString message);
@@ -101,7 +101,9 @@ namespace ModuleBase
 
 		void setFont(int _font);
 
-		bool eventFilter(QObject *target, QEvent *event);//ÊÂ¼ş¹ıÂËÆ÷
+		bool eventFilter(QObject *target, QEvent *event);//äº‹ä»¶è¿‡æ»¤å™¨
+
+		bool isParaComaand();
 	private:
 		void updateMessage();
 

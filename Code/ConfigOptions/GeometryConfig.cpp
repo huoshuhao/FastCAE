@@ -1,7 +1,17 @@
-#include "GeometryConfig.h"
+ï»¿#include "GeometryConfig.h"
+
+#define GEOON true;
+#define GEOOFF false;
+#define GEOIMPORT  "stp;step;igs;iges;brep"
+#define GEOEXPORT  "stp;step;igs;iges;brep"
 
 namespace ConfigOption
 {
+	GeometryConfig::GeometryConfig()
+	{
+		this->clearData();
+	}
+
 	//2019.11.20 xvxinwei Geometry modeling operations sketch
 	void GeometryConfig::enableGeometryModeling(bool on)
 	{
@@ -27,33 +37,70 @@ namespace ConfigOption
 	{
 		return _isCreateSketch;
 	}
-	//ÉèÖÃµ¼Èë¼¸ºÎ¸ñÊ½
+	//è®¾ç½®å¯¼å…¥å‡ ä½•æ ¼å¼
 	void GeometryConfig::setImportSuffix(QString s)
 	{
 		_importSuffix = s;
 	}
-	//»ñÈ¡µ¼Èë¼¸ºÎ¸ñÊ½
+	//èŽ·å–å¯¼å…¥å‡ ä½•æ ¼å¼
 	QString GeometryConfig::getImportSuffix()
 	{
 		return _importSuffix;
 	}
-	//ÉèÖÃµ¼³ö¼¸ºÎ¸ñÊ½
+	//è®¾ç½®å¯¼å‡ºå‡ ä½•æ ¼å¼
 	void GeometryConfig::setExportSuffix(QString s)
 	{
 		_exportSuffix = s;
 	}
-	//»ñÈ¡µ¼³ö¼¸ºÎ¸ñÊ½
+	//èŽ·å–å¯¼å‡ºå‡ ä½•æ ¼å¼
 	QString GeometryConfig::getExportSuffix()
 	{
 		return _exportSuffix;
 	}
 
 
+
+	void GeometryConfig::enableGeometryEdit(bool on)
+	{
+		_isGeometryEdit = on;
+	}
+
+	bool GeometryConfig::isGeometryEditEnabled()
+	{
+		return _isGeometryEdit;
+	}
+
+	void GeometryConfig::enableGeometryCreateSet(bool on)
+	{
+		_isGeoCreateSet = on;
+	}
+
+	bool GeometryConfig::isGeometryCreateSetEnabled()
+	{
+		return _isGeoCreateSet;
+	}
+
+	void GeometryConfig::enableMeasureDsitance(bool on)
+	{
+		_isMeasureDistance = on;
+	}
+
+	bool GeometryConfig::isMeasureDistanceEnabled()
+	{
+		return _isMeasureDistance;
+	}
+
 	void GeometryConfig::clearData()
 	{
-		_isCreateSketch = _isGeoModeling = _isGeoOperations = false;
-		_importSuffix.clear();
-		_exportSuffix.clear();
+		_importSuffix = GEOIMPORT;
+		_exportSuffix = GEOEXPORT;
+		_isGeoModeling = GEOON;
+		_isGeoOperations = GEOON;
+		_isCreateSketch = GEOON;
+		_isGeometryEdit = GEOON;
+		_isGeoCreateSet = GEOON;
+		_isMeasureDistance = GEOON;
+
 	}
 
 	bool GeometryConfig::isGeometryEnabled()
@@ -61,7 +108,7 @@ namespace ConfigOption
 		bool in = this->isImportGeometryEnabled();
 		bool ex = this->isExportGeometryEnabled();
 
-		bool op = _isCreateSketch || _isGeoModeling || _isGeoOperations;
+		bool op = _isCreateSketch || _isGeoModeling || _isGeoOperations || _isGeometryEdit || _isGeoCreateSet || _isMeasureDistance;
 
 		return in || ex || op;
 	}

@@ -1,4 +1,4 @@
-#include "EditorDependencyFiles.h"
+ï»¿#include "EditorDependencyFiles.h"
 #include "ui_EditorDependencyFiles.h"
 #include <QFileDialog>
 #include <QMessageBox>
@@ -19,10 +19,10 @@ namespace FastCAEDesigner{
 		connect(ui->CancelPBtn, SIGNAL(clicked()), this, SLOT(close()));
 	}
 
-	EditorDependencyFiles::EditorDependencyFiles(QString filename, QWidget *parent) :
+	EditorDependencyFiles::EditorDependencyFiles(QString fileName, QWidget *parent) :
 		QDialog(parent),
 		ui(new Ui::EditorDependencyFiles),
-		_fileNames(filename)
+		_fileNames(fileName)
 	{
 		ui->setupUi(this);
 
@@ -143,7 +143,7 @@ namespace FastCAEDesigner{
 		return _fileNames;
 	}
 
-	//Added xvdongming 2020-02014 Ë¢ÐÂÒÀÀµÎÄ¼þÁÐ±í
+	//Added xvdongming 2020-02014 åˆ·æ–°ä¾èµ–æ–‡ä»¶åˆ—è¡¨
 	void EditorDependencyFiles::UpdateFileNames()
 	{
 		int num = ui->listWidget->count();

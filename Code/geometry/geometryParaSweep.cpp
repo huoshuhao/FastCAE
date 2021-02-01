@@ -1,4 +1,4 @@
-#include "geometryParaSweep.h"
+ï»¿#include "geometryParaSweep.h"
 #include <QDomElement>
 #include <QDomDocument>
 #include <QDomAttr>
@@ -12,7 +12,6 @@ namespace Geometry
 	{
 		_type = GeometryParaMakeSweep;
 	}
-
 
 	void GeometryParaSweep::setShapeHash(QMultiHash<Geometry::GeometrySet*, int> shapehash)
 	{
@@ -39,6 +38,7 @@ namespace Geometry
 		_issolid = s;
 
 	}
+
 	bool GeometryParaSweep::getSloid()
 	{
 		return _issolid;
@@ -46,7 +46,7 @@ namespace Geometry
 
 	QDomElement& GeometryParaSweep::writeToProjectFile(QDomDocument* doc, QDomElement* parent)
 	{
-		QDomElement element = doc->createElement("Parameter");  //´´½¨×Ó½Úµã
+		QDomElement element = doc->createElement("Parameter");  //åˆ›å»ºå­èŠ‚ç‚¹
 		QDomAttr typeattr = doc->createAttribute("Type");
 		typeattr.setValue(this->typeToString());
 		element.setAttributeNode(typeattr);

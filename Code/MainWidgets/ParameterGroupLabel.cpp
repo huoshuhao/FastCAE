@@ -1,4 +1,4 @@
-#include "ParameterGroupLabel.h"
+﻿#include "ParameterGroupLabel.h"
 #include "ui_ParameterGroupLabel.h"
 
 namespace MainWidget

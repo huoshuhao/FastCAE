@@ -1,4 +1,4 @@
-#include "dockWidgetBase.h"
+﻿#include "dockWidgetBase.h"
 #include "mainWindow/mainWindow.h"
 #include "XDockTitleBarWidget.h"
 

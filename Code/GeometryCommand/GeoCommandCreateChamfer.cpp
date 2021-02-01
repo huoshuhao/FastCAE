@@ -1,4 +1,4 @@
-#include "GeoCommandCreateChamfer.h"
+﻿#include "GeoCommandCreateChamfer.h"
 #include "geometry/geometrySet.h"
 #include "geometry/geometryData.h"
 #include <BRepFilletAPI_MakeChamfer.hxx>

@@ -1,4 +1,4 @@
-#ifndef CURVEAXISPROPDIALOG_H
+﻿#ifndef CURVEAXISPROPDIALOG_H
 #define CURVEAXISPROPDIALOG_H
 
 #include <QDialog>

@@ -1,4 +1,4 @@
-#ifndef _TEMPLATEREPLACER_H_
+﻿#ifndef _TEMPLATEREPLACER_H_
 #define _TEMPLATEREPLACER_H_
 
 #include "IOAPI.h"

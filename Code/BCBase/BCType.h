@@ -1,4 +1,4 @@
-#ifndef _BCTYPE_H_
+ï»¿#ifndef _BCTYPE_H_
 #define _BCTYPE_H_
 
 #include <QString>
@@ -11,23 +11,23 @@ namespace BCBase
 		None = 0,
 		
 		//common
-		Pressure,           //Ñ¹Á¦
-		Velocity,           //ËÙ¶È
-		Temperature,        //ÎÂ¶È
+		Pressure,           //å‹åŠ›
+		Velocity,           //é€Ÿåº¦
+		Temperature,        //æ¸©åº¦
 
 		//Struct
-		FixSupport,         //¹Ì¶¨Ö§³Å
-		Displacement,       //Î»ÒÆ
-		AngleVelocity,      //½ÇËÙ¶È
-		Rotation,           //×ª½Ç
-		Acceleration,       //¼ÓËÙ¶È
-		AngleAcceleration,  //½Ç¼ÓËÙ¶È
+		FixSupport,         //å›ºå®šæ”¯æ’‘
+		Displacement,       //ä½ç§»
+		AngleVelocity,      //è§’é€Ÿåº¦
+		Rotation,           //è½¬è§’
+		Acceleration,       //åŠ é€Ÿåº¦
+		AngleAcceleration,  //è§’åŠ é€Ÿåº¦
 		
 		//Flow
-		Inlet,              //Èë¿Ú
-		Outlet,             //³ö¿Ú
-		Symmetry,           //¶Ô³ÆÃæ
-		Wall,               //±ÚÃæ
+		Inlet,              //å…¥å£
+		Outlet,             //å‡ºå£
+		Symmetry,           //å¯¹ç§°é¢
+		Wall,               //å£é¢
 
 		End,
 

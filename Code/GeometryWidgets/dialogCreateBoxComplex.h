@@ -1,4 +1,4 @@
-#ifndef CREATEBOXCOMPLEXDIALOG_H_
+﻿#ifndef CREATEBOXCOMPLEXDIALOG_H_
 #define CREATEBOXCOMPLEXDIALOG_H_
 
 #include "geometryWidgetsAPI.h"

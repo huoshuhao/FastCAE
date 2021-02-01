@@ -1,4 +1,4 @@
-#include "consolecmddockwidget.h"
+﻿#include "consolecmddockwidget.h"
 #include "qmessagebox.h"
 consoleCmdDockWidget::consoleCmdDockWidget(QWidget *parent) : QDockWidget(parent)
 {

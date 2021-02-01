@@ -1,4 +1,4 @@
-#include "scalarbareditdockwidget.h"
+﻿#include "scalarbareditdockwidget.h"
 #include "qmessagebox.h"
 
 scalarBarEditDockWidget::scalarBarEditDockWidget(QWidget *parent) : QDockWidget(parent)

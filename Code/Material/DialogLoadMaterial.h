@@ -1,4 +1,4 @@
-#ifndef _DIALOGLOADMATERIAL_H_
+﻿#ifndef _DIALOGLOADMATERIAL_H_
 #define _DIALOGLOADMATERIAL_H_
 
 #include "SelfDefObject/QFDialog.h"

@@ -1,4 +1,4 @@
-#ifndef SOLVERMODEL_H
+﻿#ifndef SOLVERMODEL_H
 #define SOLVERMODEL_H
 
 #include "ModelBase.h"

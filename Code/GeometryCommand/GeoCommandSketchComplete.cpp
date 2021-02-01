@@ -1,4 +1,4 @@
-#include "GeoCommandSketchComplete.h"
+﻿#include "GeoCommandSketchComplete.h"
 #include "GeoCommandList.h"
 #include <TopoDS_Compound.hxx>
 #include <BRep_Builder.hxx>

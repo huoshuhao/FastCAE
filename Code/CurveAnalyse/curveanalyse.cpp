@@ -1,4 +1,4 @@
-#include "curveanalyse.h"
+﻿#include "curveanalyse.h"
 
 CurveAnalyse::CurveAnalyse()
 {

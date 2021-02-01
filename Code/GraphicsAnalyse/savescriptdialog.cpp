@@ -1,4 +1,4 @@
-#include "savescriptdialog.h"
+﻿#include "savescriptdialog.h"
 #include "ui_savescriptdialog.h"
 
 saveScriptDialog::saveScriptDialog(QWidget *parent) :

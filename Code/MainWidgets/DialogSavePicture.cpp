@@ -1,4 +1,4 @@
-#include "DialogSavePicture.h"
+﻿#include "DialogSavePicture.h"
 #include "SelfDefObject/QFDialog.h"
 #include "ui_DialogSavePicture.h"
 #include "mainWindow/mainWindow.h"

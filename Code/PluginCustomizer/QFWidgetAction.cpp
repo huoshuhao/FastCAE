@@ -1,4 +1,4 @@
-#include "QFWidgetAction.h"
+﻿#include "QFWidgetAction.h"
 #include <QPushButton>
 #include <QSplitter>
 #include <QLabel>

@@ -1,4 +1,4 @@
-#include "selfdeflineedit.h"
+﻿#include "selfdeflineedit.h"
 #include "ui_selfdeflineedit.h"
 #include <QHelpEvent>
 #include <QToolTip>

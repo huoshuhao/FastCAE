@@ -1,4 +1,4 @@
-#include "Random.h"
+﻿#include "Random.h"
 #include "XRandomWidget.h"
 
 class RandomPrivate

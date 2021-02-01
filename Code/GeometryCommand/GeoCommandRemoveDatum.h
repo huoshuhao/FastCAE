@@ -1,4 +1,4 @@
-#ifndef GEOCPMMANDREMOVEDATUM_H_
+﻿#ifndef GEOCPMMANDREMOVEDATUM_H_
 #define GEOCPMMANDREMOVEDATUM_H_
 
 #include "GeoCommandBase.h"

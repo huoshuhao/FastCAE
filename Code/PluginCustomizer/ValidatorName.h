@@ -1,4 +1,4 @@
-#ifndef VALIDATORNAME_H
+﻿#ifndef VALIDATORNAME_H
 #define VALIDATORNAME_H
 
 #include <QObject>

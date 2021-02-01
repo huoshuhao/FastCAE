@@ -1,11 +1,10 @@
-#ifndef  _DIALOGMAKELOFT_H_
+﻿#ifndef  _DIALOGMAKELOFT_H_
 #define _DIALOGMAKELOFT_H_
 
 #include "moduleBase/ModuleType.h"
 #include "geoDialogBase.h"
 #include <QMultiHash>
 
-class vtkActor;
 class TopoDS_Shape;
 
 namespace Ui
@@ -25,14 +24,14 @@ namespace GeometryWidget
 		~CreateLoftDialog();
 
 	private slots:
-		void selectActorShape(vtkActor* ac, int shape, Geometry::GeometrySet* set) override;
+		void shapeSlected(Geometry::GeometrySet* set, int index) override;
 		void on_geoSelectCurve_clicked();
 		void on_addButton_clicked();
 		void on_removeButton_clicked();
 		void tableClicked(int row, int col);
 
 	private:
-		void closeEvent(QCloseEvent *);
+//		void closeEvent(QCloseEvent *);
 		void accept() override;
 		void reject() override;
 		void init();
@@ -41,10 +40,8 @@ namespace GeometryWidget
 	private:
 		Ui::CreateLoftDialog* _ui{};
 
-		QList<QList<vtkActor*>> _allActors{};
-		QList<QMultiHash<Geometry::GeometrySet*, int>> _allShapes{};
 
-		QList<vtkActor*> _tempActors{};
+		QList<QMultiHash<Geometry::GeometrySet*, int>> _allShapes{};
 		QMultiHash<Geometry::GeometrySet*, int> _tempShapes{};
 
 	};

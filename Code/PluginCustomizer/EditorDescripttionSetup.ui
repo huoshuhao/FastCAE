@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>EditorDescripttionSetup</class>
  <widget class="QDialog" name="EditorDescripttionSetup">
@@ -221,6 +221,13 @@
    </item>
    <item row="2" column="0" colspan="2">
     <layout class="QHBoxLayout" name="horizontalLayout_7">
+     <item>
+      <widget class="QPushButton" name="parameterLinkagePBtn">
+       <property name="text">
+        <string>Parameter Linkage</string>
+       </property>
+      </widget>
+     </item>
      <item>
       <widget class="QLabel" name="lbl_info">
        <property name="styleSheet">

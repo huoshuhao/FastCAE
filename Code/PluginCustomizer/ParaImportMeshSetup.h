@@ -1,4 +1,4 @@
-#ifndef PARAIMPORTMESHSETUP_H
+﻿#ifndef PARAIMPORTMESHSETUP_H
 #define PARAIMPORTMESHSETUP_H
 
 #include <QDialog>

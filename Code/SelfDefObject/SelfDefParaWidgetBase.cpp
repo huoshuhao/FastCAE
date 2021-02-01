@@ -1,4 +1,4 @@
-#include "SelfDefParaWidgetBase.h"
+﻿#include "SelfDefParaWidgetBase.h"
 #include "python/PyAgent.h"
 #include "DataProperty/ParameterBase.h"
 #include <QDebug>

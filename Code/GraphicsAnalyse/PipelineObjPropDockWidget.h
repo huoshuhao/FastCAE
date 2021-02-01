@@ -1,4 +1,4 @@
-#ifndef PIPELINEOBJPROPDOCKWIDGET_H
+﻿#ifndef PIPELINEOBJPROPDOCKWIDGET_H
 #define PIPELINEOBJPROPDOCKWIDGET_H
 #include <QWidget>
 #include <QDockWidget>

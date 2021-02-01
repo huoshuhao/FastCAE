@@ -1,4 +1,4 @@
-#include "PropertyColor.h"
+﻿#include "PropertyColor.h"
 
 namespace DataProperty
 {

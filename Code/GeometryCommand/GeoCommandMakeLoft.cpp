@@ -1,4 +1,4 @@
-#include "GeoCommandMakeLoft.h"
+﻿#include "GeoCommandMakeLoft.h"
 #include <gp_Ax2.hxx>
 #include <BRepPrimAPI_MakeCone.hxx>
 #include "geometry/geometryData.h"

@@ -1,4 +1,4 @@
-#include "SketchPointWidget.h"
+﻿#include "SketchPointWidget.h"
 #include "ui_SketchPointWidget.h"
 #include "mainWindow/mainWindow.h"
 #include "geometry/geometryData.h"

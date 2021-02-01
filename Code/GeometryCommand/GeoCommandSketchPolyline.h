@@ -1,4 +1,4 @@
-#ifndef GEOCOMMANDSKETCHPOLYLINE_H_
+﻿#ifndef GEOCOMMANDSKETCHPOLYLINE_H_
 #define GEOCOMMANDSKETCHPOLYLINE_H_
 
 #include "GeoCommandSketchBase.h"

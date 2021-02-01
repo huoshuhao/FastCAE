@@ -1,4 +1,4 @@
-#ifndef DIALOGMAKEMATRIX_H_
+﻿#ifndef DIALOGMAKEMATRIX_H_
 #define DIALOGMAKEMATRIX_H_
 
 #include "geoDialogBase.h"
@@ -12,7 +12,6 @@ namespace Ui
 {
 	class MakeMatrixDialog;
 }
-class vtkActor;
 namespace GeometryWidget
 {
 	class GeoPointWidget;
@@ -26,7 +25,7 @@ namespace GeometryWidget
 
 	private:
 		void init();
-		void closeEvent(QCloseEvent *) override;
+//		void closeEvent(QCloseEvent *) override;
 		void reject() override;
 		void accept() override;
 		bool getVector(double* vec);
@@ -41,7 +40,7 @@ namespace GeometryWidget
 		void on_TypeChanged(int index);
 		void on_geoSelectSurface_clicked();
 		void showLinearDir2InfoChbox();
-		void selectActorShape(vtkActor* actor, int index, Geometry::GeometrySet* set) override;
+		void shapeSlected(Geometry::GeometrySet* set, int index) override;
 		void pointWidgetClicked(GeoPointWidget* w);
 
 	private:
@@ -49,8 +48,7 @@ namespace GeometryWidget
 		GeoPointWidget*  _baseWidget{};
 	
 		bool _selectBody{ false };
-		QList<Geometry::GeometrySet*> _geobodyList{};
-
+		QMultiHash<Geometry::GeometrySet*, int> _bodysHash{};
 		double _axisdir[3]{};
 
 		bool _selectLinear{ true };

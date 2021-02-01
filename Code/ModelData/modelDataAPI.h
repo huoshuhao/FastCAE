@@ -1,4 +1,4 @@
-#ifndef _MODELDATAAPI_H_
+﻿#ifndef _MODELDATAAPI_H_
 #define _MODELDATAAPI_H_
 
 #include <QtCore/QtGlobal>

@@ -1,4 +1,4 @@
-#include "ProcessWindowBase.h"
+﻿#include "ProcessWindowBase.h"
 #include "ui_ProcessWindowBase.h"
 #include "mainWindow/mainWindow.h"
 #include "moduleBase/processBar.h"

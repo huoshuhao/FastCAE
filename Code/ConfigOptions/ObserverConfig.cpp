@@ -1,4 +1,4 @@
-#include "ObserverConfig.h"
+﻿#include "ObserverConfig.h"
 #include "ParameterObserver.h"
 
 namespace ConfigOption

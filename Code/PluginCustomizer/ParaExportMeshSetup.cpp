@@ -1,4 +1,4 @@
-#include "ParaExportMeshSetup.h"
+ï»¿#include "ParaExportMeshSetup.h"
 #include "ui_ParaExportMeshSetup.h"
 #include "DataManager.h"
 namespace FastCAEDesigner{
@@ -21,7 +21,8 @@ namespace FastCAEDesigner{
 		//connect(ui->chk_nastran, SIGNAL(clicked()), this, SLOT(CancelCheckAll()));
 		//connect(ui->chk_tecplot, SIGNAL(clicked()), this, SLOT(CancelCheckAll()));
 		connect(ui->chk_vtk, SIGNAL(clicked()), this, SLOT(CancelCheckAll()));
-		//³õÊ¼»¯µ½´¦Íø¸ñÀàÐÍ
+		connect(ui->chk_inp, SIGNAL(clicked()), this, SLOT(CancelCheckAll()));
+		//åˆå§‹åŒ–åˆ°å¤„ç½‘æ ¼ç±»åž‹
 		_suffix = FastCAEDesigner::DataManager::getInstance()->GetExportMeshSuffix();
 		initExportSuffix(_suffix);
 	}
@@ -40,6 +41,7 @@ namespace FastCAEDesigner{
 			///ui->chk_stl->setChecked(true);
 			//ui->chk_tecplot->setChecked(true);
 			ui->chk_vtk->setChecked(true);
+			ui->chk_inp->setChecked(true);
 		}
 		else
 		{
@@ -49,6 +51,7 @@ namespace FastCAEDesigner{
 			//ui->chk_flunet->setChecked(false);
 			//ui->chk_tecplot->setChecked(false);
 			ui->chk_vtk->setChecked(false);
+			ui->chk_inp->setChecked(false);
 		}
 	}
 	void ParaExportMeshSetup::OnBtnOkClicked()
@@ -62,6 +65,10 @@ namespace FastCAEDesigner{
 		if (ui->chk_vtk->isChecked())
 		{
 			sl.append("vtk");
+		}
+		if (ui->chk_inp->isChecked())
+		{
+			sl.append("inp");
 		}
 	/*	QStringList sl;
 		if (ui->chk_nastran->isChecked())
@@ -112,6 +119,11 @@ namespace FastCAEDesigner{
 				ui->chk_vtk->setChecked(true);
 				a = a + 1;
 			}
+			if (sl.at(i) == "inp")
+			{
+				ui->chk_inp->setChecked(true);
+				a = a + 1;
+			}
 			/*
 			if (sl.at(i) == "cgns")
 			{
@@ -126,7 +138,7 @@ namespace FastCAEDesigner{
 			{
 				ui->chk_tecplot->setChecked(true);
 			}*/
-			if (a == 2)
+			if (a == 3)
 			{
 				ui->chk_selectall->setChecked(true);
 			}

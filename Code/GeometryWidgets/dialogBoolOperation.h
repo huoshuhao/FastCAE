@@ -1,10 +1,8 @@
-#ifndef DIALOGBOOLOPERATION_H_
+﻿#ifndef DIALOGBOOLOPERATION_H_
 #define DIALOGBOOLOPERATION_H_
 
 #include "geoDialogBase.h"
 #include "GeometryCommand/GeoCommandBool.h"
-
-class vtkActor;
 
 namespace Ui
 {
@@ -28,18 +26,14 @@ namespace GeometryWidget
 		~BoolOpertionDialog();
 		void setType(BoolType t);
 
-	signals:
-		void setSelectMode(int);
-		void highLightGeometrySet(Geometry::GeometrySet* set ,bool on);
-
 	private slots:
 	    void on_geoSelectSurface_clicked();
 	    void on_geoSelectSurface_1_clicked();
-		void selectActorShape(vtkActor*, int, Geometry::GeometrySet*);
+		void shapeSlected( Geometry::GeometrySet*, int) override;
 
 	private:
 		
-		void closeEvent(QCloseEvent *);
+//		void closeEvent(QCloseEvent *);
 		void reject() override;
 		void accept() override;
 		QString booltypeToString(BoolType n);
@@ -52,8 +46,9 @@ namespace GeometryWidget
 		bool _selectBody1{ false };
 		bool _selectBody2{ false };
 
-		Geometry::GeometrySet* _body1{};
-		Geometry::GeometrySet* _body2{};
+		QPair<Geometry::GeometrySet*, int> _bodypair1{};
+		QPair<Geometry::GeometrySet*, int> _bodypair2{};
+
 	};
 }
 

@@ -1,4 +1,4 @@
-#include "ValidatorName.h"
+﻿#include "ValidatorName.h"
 #include <QRegExp>
 
 

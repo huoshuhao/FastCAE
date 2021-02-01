@@ -1,5 +1,5 @@
-#include "SubWindowManager.h"
-#include "ui_mainWindow.h"
+﻿#include "SubWindowManager.h"
+#include "SARibbonMWUi.h"
 #include <QMdiArea>
 #include <QMdiSubWindow>
 #include <QList>
@@ -17,6 +17,8 @@
 #include "python/PyAgent.h"
 #include "GeometryCommand/GeoCommandPy.h"
 #include "StartPage.h"
+#include "SARibbonBar/SARibbonBar.h"
+
 #include <QDebug>
 #include <assert.h>
 
@@ -83,6 +85,94 @@ namespace GUI
 		//_preWindow.first->setFocus();
 	}
 
+	QMdiArea *SubWindowManager::getMdiArea() const
+	{
+		return _mdiArea;
+	}
+
+	void SubWindowManager::add3dRenderPage(const QList<QToolBar*>& toolbars)
+	{
+		if (_threeD_render_page || toolbars.size() != 4)    return;
+		QList<QAction*> actions;
+		QAction* action{};
+		SARibbonBar* ribbon = _mainWindow->ribbonBar();
+		_threeD_render_page = ribbon->addCategoryPage(QObject::tr("3D Render"));
+
+		SARibbonPannel* pannel0 = _threeD_render_page->addPannel(QString());
+		QToolBar* toolbar0 = toolbars.at(0);
+		actions = toolbar0->actions();
+		for (int j = 0; j < actions.size(); j++)
+		{
+			action = actions.at(j);			
+			pannel0->addLargeAction(action);
+		}
+
+		SARibbonPannel* pannel2 = _threeD_render_page->addPannel(QString());
+		QToolBar* toolbar2 = toolbars.at(2);
+		actions = toolbar2->actions();
+		for (int j = 0; j < actions.size(); j++)
+		{
+			action = actions.at(j);
+			pannel2->addLargeAction(action);
+		}
+
+		SARibbonPannel* pannel3 = _threeD_render_page->addPannel(QString());
+		QToolBar* toolbar3 = toolbars.at(3);
+		actions = toolbar3->actions();
+		for (int j = 0; j < actions.size(); j++)
+		{
+			action = actions.at(j);
+			pannel3->addLargeAction(action);
+		}
+
+		SARibbonPannel* pannel1 = _threeD_render_page->addPannel(QString());
+		QToolBar* toolbar1 = toolbars.at(1);
+		actions = toolbar1->actions();
+		QList<QAction*> realActions;
+		QList<QWidget*> comboxs;
+		QWidget* widget{};
+		for (int j = 0; j < actions.size(); j++)
+		{
+			action = actions.at(j);
+			if (action->objectName() == "QComboBox")
+			{
+				widget = toolbar1->widgetForAction(action);
+				widget->setVisible(true);
+				comboxs.append(widget);
+			}
+			else if (action->objectName() == "QAction")
+				realActions.append(action);
+		}
+		if (realActions.size() != 4 && comboxs.size() != 3)    return;
+		pannel1->addLargeAction(realActions.at(0));
+		pannel1->addLargeAction(realActions.at(1));
+		pannel1->addLargeAction(realActions.at(2));
+		pannel1->addLargeAction(realActions.at(3));
+		pannel1->addSmallWidget(comboxs.at(0));
+		pannel1->addSmallWidget(comboxs.at(1));
+		pannel1->addLargeWidget(comboxs.at(2));
+
+		int index = ribbon->tabIndex(_threeD_render_page);
+		ribbon->setCurrentIndex(index);
+		ribbon->onCurrentRibbonTabChanged(index);
+	}
+
+	void SubWindowManager::remove3dRenderPage()
+	{
+		auto pannels = _threeD_render_page->pannelList();
+		for (SARibbonPannel* pannel : pannels)
+		{
+			_threeD_render_page->removePannel(pannel);
+			pannel = nullptr;
+		}
+
+		SARibbonBar* ribbon = _mainWindow->ribbonBar();
+		ribbon->removeCategory(_threeD_render_page);
+		_threeD_render_page = nullptr;
+
+		ribbon->setCurrentIndex(4);
+		ribbon->onCurrentRibbonTabChanged(4);
+	}
 
 	void SubWindowManager::updatePreActors()
 	{
@@ -214,24 +304,39 @@ namespace GUI
 			subWin->setFocus();
 		}
 		_controlPanel->updatePostWidget(ptree, pprop);
-		this->removeToolBars();
-		_mainWindow->addToolBarBreak();
+
 		QList<QToolBar*> toolBars = pwb->getToolBarList();
-		for (int i = 0; i < toolBars.size(); ++i)
+		if (_mainWindow->isUseRibbon())
 		{
-			_mainWindow->addToolBar(toolBars.at(i));
-			(toolBars.at(i))->show();
-			_currentToolBars.append(toolBars.at(i));
+			if (_threeD_render_page)    return;
+			add3dRenderPage(toolBars);
+		}
+		else
+		{
+			this->removeToolBars();
+			_mainWindow->addToolBarBreak();
+			for (int i = 0; i < toolBars.size(); ++i)
+			{
+				_mainWindow->addToolBar(toolBars.at(i));
+				(toolBars.at(i))->show();
+				_currentToolBars.append(toolBars.at(i));
+			}
 		}
 	}
+	
 	void SubWindowManager::closePostWindow(Post::PostWindowBase* w)
 	{
 		QMdiSubWindow* subw = _postWindow.key(w);
 		if (subw == nullptr) return;
+		Post::PostWindowType type = w->getPostWindowType();
 		removeToolBars();
+		if (type == Post::PostWindowType::D3 && _mainWindow->isUseRibbon())//使用ribbon，并且关闭的是3维窗口
+			remove3dRenderPage();
+
 		if (_controlPanel != nullptr)
 			_controlPanel->updatePostWidget(nullptr, nullptr);
 		emit _mainWindow->updateProperty(nullptr);
+
 		_postWindow.remove(subw);
 		QList<Post::PostWindowBase*> postsubwlist = _postWindow.values();
 		if (_preWindow.first != nullptr)
@@ -350,18 +455,18 @@ namespace GUI
 			return true;
 		return false;
 	}
-	void SubWindowManager::saveImage(QString filename, int winType, Post::PostWindowBase*winhandle, int w, int h)
+	void SubWindowManager::saveImage(QString fileName, int winType, Post::PostWindowBase*winhandle, int w, int h)
 	{
 		if (winType == 0)
 		{
 			MainWidget::PreWindow* preW = _preWindow.second;
 			if (preW == nullptr) return;
-			preW->saveImage(filename, w, h, false);
+			preW->saveImage(fileName, w, h, false);
 		}
 		else if (winType == 1)
 		{
 			if (_postWindow.key(winhandle) == nullptr) return;
-			winhandle->saveImage(filename, w, h, false);
+			winhandle->saveImage(fileName, w, h, false);
 		}
 	}
 
@@ -438,6 +543,8 @@ namespace GUI
 			XReport::ReportWindow* w = repWin.at(i);
 			w->reTranslate();
 		}
+		if(_threeD_render_page != nullptr)
+		_threeD_render_page->setWindowTitle(tr("3D Render"));
 
 	}
 
@@ -446,7 +553,7 @@ namespace GUI
 		_geometryWindow.first = nullptr;
 		_geometryWindow.second = nullptr;
 
-		_signalHander->clearData();
+		_signalHander->clearData(false);
 		emit _mainWindow->updateGeometryTreeSig();
 		emit _mainWindow->updateMeshTreeSig();
 		emit _mainWindow->updatePhysicsTreeSignal();

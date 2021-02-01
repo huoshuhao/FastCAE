@@ -1,4 +1,4 @@
-#ifndef _PARAMETERGROUPLABEL_H_
+﻿#ifndef _PARAMETERGROUPLABEL_H_
 #define _PARAMETERGROUPLABEL_H_
 
 #include <QWidget>

@@ -1,4 +1,4 @@
-#include "PostConfigInfo.h"
+﻿#include "PostConfigInfo.h"
 #include "PostCurve.h"
 
 namespace ConfigOption

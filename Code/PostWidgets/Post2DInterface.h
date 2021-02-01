@@ -1,4 +1,4 @@
-#ifndef _POST2DINTERFACE_H_
+ï»¿#ifndef _POST2DINTERFACE_H_
 #define _POST2DINTERFACE_H_
 
 #include "PostWindowBase.h"
@@ -26,15 +26,15 @@ namespace Post
 		Post2DWindowInterface(GUI::MainWindow* m, int proid);
 		~Post2DWindowInterface();
 		void reTranslate() override;
-		//»ñÈ¡¶şÎ¬»æÍ¼´°¿Ú
+		//è·å–äºŒç»´ç»˜å›¾çª—å£
 		Post2DWindow* getWindow();
-		//´ò¿ªÎÄ¼ş
-		void openfile(QString filename);
-		//Ìí¼ÓÇúÏß
+		//æ‰“å¼€æ–‡ä»¶
+		void openfile(QString fileName);
+		//æ·»åŠ æ›²çº¿
 		void addCurve(QString name, QString f, QString x, QString y);
-		//ÒÆ³ıÇúÏß
+		//ç§»é™¤æ›²çº¿
 		void removeCurve(QString name);
-		void saveImage(QString filename, int width, int heigh, bool showDlg) override;
+		void saveImage(QString fileName, int width, int heigh, bool showDlg) override;
 		
 	private:
 		QString readLine();

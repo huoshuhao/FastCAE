@@ -1,4 +1,4 @@
-#include "GeoCommandSketchPolyline.h"
+﻿#include "GeoCommandSketchPolyline.h"
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include "geometry/geometrySet.h"
 #include "geometry/geometryData.h"

@@ -1,4 +1,4 @@
-#ifndef GRAPH_MAINWINDOW_H
+ï»¿#ifndef GRAPH_MAINWINDOW_H
 #define GRAPH_MAINWINDOW_H
 
 #include <QMainWindow>
@@ -218,13 +218,13 @@ public:
 	//proerties public
 	//get pipelineobject list
 	QList<PipelineObject*> script_get_pipelineObject_list();
-	QToolBar* script_get_filterToolBar();//»ñÈ¡¹ıÂËÆ÷¹¤¾ßÀ¸
-	QToolBar* script_get_AniToolBar();//»ñÈ¡¶¯»­¹¤¾ßÀ¸
-	QToolBar* script_get_viewDirectionToolBar();//»ñÈ¡ÏÔÊ¾·½ÏòÉèÖÃ¹¤¾ßÀ¸
-	QToolBar* script_get_actorToolBar();//»ñÈ¡µ¥¸öÈıÎ¬Í¼ĞÎÒÆ¶¯¡¢Ğı×ª¹¤¾ßÀ¸
-	QToolBar* script_get_savePngAviToolBar();//»ñÈ¡±£´æ¶¯»­¹¤¾ßÀ¸
-	QToolBar* script_get_pipelineObjPropToolBar() { return objPropToolBar; };//»ñÈ¡½ÚµãÊôĞÔ¹¤¾ßÀ¸
-	QToolBar* script_get_mousePickToolBar() { return mousePickToolBar; };//»ñÈ¡Ê°È¡¹¤¾ßÀ¸
+	QToolBar* script_get_filterToolBar();//è·å–è¿‡æ»¤å™¨å·¥å…·æ 
+	QToolBar* script_get_AniToolBar();//è·å–åŠ¨ç”»å·¥å…·æ 
+	QToolBar* script_get_viewDirectionToolBar();//è·å–æ˜¾ç¤ºæ–¹å‘è®¾ç½®å·¥å…·æ 
+	QToolBar* script_get_actorToolBar();//è·å–å•ä¸ªä¸‰ç»´å›¾å½¢ç§»åŠ¨ã€æ—‹è½¬å·¥å…·æ 
+	QToolBar* script_get_savePngAviToolBar();//è·å–ä¿å­˜åŠ¨ç”»å·¥å…·æ 
+	QToolBar* script_get_pipelineObjPropToolBar() { return objPropToolBar; };//è·å–èŠ‚ç‚¹å±æ€§å·¥å…·æ 
+	QToolBar* script_get_mousePickToolBar() { return mousePickToolBar; };//è·å–æ‹¾å–å·¥å…·æ 
 	//get pipelineobject list
 
 	Camera_Para script_getCameraPara();
@@ -237,8 +237,8 @@ public:
 	void script_Camera_Zoom(double zoom);
 	void script_Camera_Reset();
 	void script_Camera_SelfAdaptation(bool flag);
-	void RunScript(QString filename);
-	void SetDosScriptFile(QString filename);
+	void RunScript(QString fileName);
+	void SetDosScriptFile(QString fileName);
 
 	//set view direction
 	void script_resetView();
@@ -246,14 +246,14 @@ public:
 	void script_setViewValueDirection(int x1, int x2, int x3, int y1, int y2, int y3, int z1, int z2, int z3);
 
 	void script_Save_Animate(QString aviFileName);
-	void script_saveImage(bool flag_dlg, int wid, int hei, QString filename);
+	void script_saveImage(bool flag_dlg, int wid, int hei, QString fileName);
 	void script_delPipelineObj(PipelineObject* pipeObj);
 	void script_update_pipelineObj_propForm(PipelineObject* pipeObj);
 	void script_projectTreeItemClicked(PipelineObject* tep_pipelineObj);
 	bool script_get_pipelineObj_visible_status(PipelineObject* tep_piplnObj);
 	int script_get_pipelineObj_ID(PipelineObject* tep_piplnObj);//get pipelineObject ID,-1 not exist
 
-	bool script_start_animate();//Æô¶¯Í£Ö¹¶¯»­
+	bool script_start_animate();//å¯åŠ¨åœæ­¢åŠ¨ç”»
 	bool script_stop_animate();
 	//pick
 	void script_draw_PickPoint(PipelineObject * tep_pipelineObj, vtkIdType pick_Id);
@@ -366,7 +366,7 @@ private:
 	void do_calculatorFilter(PipelineObject *pipelineobj);
 	void do_smoothFilter(PipelineObject *pipelineobj);
 	void do_streamLineFilter(PipelineObject *pipelineobj);
-	void func_saveImage(bool flag_dlg, int wid, int hei, QString filename);
+	void func_saveImage(bool flag_dlg, int wid, int hei, QString fileName);
 	saveAni_prop aniSetting_data;
 	int count_obj_id;
 	void ani_update_all_form(bool flag_start);
@@ -542,9 +542,9 @@ signals:
 	void sig_script_user_custom_del_pipelineObject(int pipelineObj_id);
 	//add for user refresh custom tree
 	void sig_script_user_custom_refresh_pipelineTree();
-	void sig_script_countAniFrame(int);//·¢ËÍµ±Ç°¶¯»­Ë¢ĞÂµ½µÚ¼¸Ö¡µÄĞÅºÅ
-	void sig_script_creatPickCurveWidget(QDockWidget*);//·¢ËÍµ±Ç°¶¯»­Ê°È¡ÇúÏß´°¿Ú
-	void sig_script_creatScalarBarEditWidget(QDockWidget*);//·¢ËÍlookupTableÑÕÉ«±à¼­´°¿Ú
+	void sig_script_countAniFrame(int);//å‘é€å½“å‰åŠ¨ç”»åˆ·æ–°åˆ°ç¬¬å‡ å¸§çš„ä¿¡å·
+	void sig_script_creatPickCurveWidget(QDockWidget*);//å‘é€å½“å‰åŠ¨ç”»æ‹¾å–æ›²çº¿çª—å£
+	void sig_script_creatScalarBarEditWidget(QDockWidget*);//å‘é€lookupTableé¢œè‰²ç¼–è¾‘çª—å£
 	//add for user refresh custom tree
 	//script
 

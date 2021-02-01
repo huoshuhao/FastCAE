@@ -1,7 +1,8 @@
-#include "ParaDoubleSpin.h"
+﻿#include "ParaDoubleSpin.h"
 #include "DataProperty/ParameterDouble.h"
 #include "mainWindow/mainWindow.h"
 #include <QWheelEvent>
+#include <QDebug>
 
 namespace SelfDefObj
 {
@@ -62,7 +63,11 @@ namespace SelfDefObj
 
 	QString ParaDoubleSpin::generateCode()
 	{
-		QString v = QString::number(this->value());
+		double va = this->value();
+		QString format = QString("%.%1f").arg(_data->getAccuracy());
+		QByteArray ba = format.toLatin1();
+		
+		QString v = QString::asprintf(ba.data(),va);
 		QString bc = SelfDefParaWidgetBase::generateCode();
 		bc.replace("%Value%", v);
 		return bc;

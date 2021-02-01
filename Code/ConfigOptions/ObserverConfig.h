@@ -1,4 +1,4 @@
-#ifndef _OBSERVERCONFIG_H_
+﻿#ifndef _OBSERVERCONFIG_H_
 #define  _OBSERVERCONFIG_H_
 
 #include <QHash>

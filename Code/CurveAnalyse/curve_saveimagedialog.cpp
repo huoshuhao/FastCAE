@@ -1,4 +1,4 @@
-#include "curve_saveimagedialog.h"
+﻿#include "curve_saveimagedialog.h"
 #include "ui_curve_saveimagedialog.h"
 
 curve_saveImageDialog::curve_saveImageDialog(QWidget *parent) :

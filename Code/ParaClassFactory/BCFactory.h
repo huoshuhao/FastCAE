@@ -1,4 +1,4 @@
-#ifndef _BCFACTORY_H_
+﻿#ifndef _BCFACTORY_H_
 #define _BCFACTORY_H_
 
 #include "ParaClassFactoryAPI.h"

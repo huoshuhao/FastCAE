@@ -1,4 +1,4 @@
-SET "PATH=C:\Qt\Qt5.4.2\5.4\msvc2013_64_opengl\bin;%PATH%"
+SET "PATH=C:\Qt\Qt5.14.2\5.14.2\msvc2017_64\bin;%PATH%"
 
 lupdate -verbose pluginCustomizer.pro
 

@@ -1,4 +1,4 @@
-#include "rubberZoomInteractorStyle.h"
+﻿#include "rubberZoomInteractorStyle.h"
 
 void rubberZoomInteractorStyle::OnLeftButtonUp()
 {

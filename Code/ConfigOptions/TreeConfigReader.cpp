@@ -1,4 +1,4 @@
-#include "TreeConfigReader.h"
+﻿#include "TreeConfigReader.h"
 #include "ProjectTreeConfig.h"
 #include "ConfigOptions/ConfigOptions.h"
 #include <QDomDocument>
@@ -11,11 +11,11 @@
 
 namespace ConfigOption
 {
-	TreeConfigReader::TreeConfigReader(const QString &filename, ProjectTreeConfig* treeconfig) /*: IOBase(filename)*/
+	TreeConfigReader::TreeConfigReader(const QString &fileName, ProjectTreeConfig* treeconfig) /*: IOBase(fileName)*/
 	{
 //		_info = ConfigOption::getInstance()->getProjectTreeConfig();
 		_info = treeconfig;
-		_file.setFileName(filename);
+		_file.setFileName(fileName);
 	}
 	TreeConfigReader::~TreeConfigReader()
 	{

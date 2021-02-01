@@ -1,4 +1,4 @@
-#include "geometryParaExtrusion.h"
+ï»¿#include "geometryParaExtrusion.h"
 #include <QDomElement>
 #include <QDomDocument>
 #include <QDomAttr>
@@ -12,8 +12,6 @@ namespace Geometry
 	{
 		_type = GeometryParaMakeExtrusion;
 	}
-
-
 	
 	void GeometryParaExtrusion::setShapeHash(QMultiHash<Geometry::GeometrySet*, int> shapehash)
 	{
@@ -75,7 +73,7 @@ namespace Geometry
 
 	QDomElement& GeometryParaExtrusion::writeToProjectFile(QDomDocument* doc, QDomElement* parent)
 	{
-		QDomElement element = doc->createElement("Parameter");  //´´½¨×Ó½Úµã
+		QDomElement element = doc->createElement("Parameter");  //åˆ›å»ºå­èŠ‚ç‚¹
 		QDomAttr typeattr = doc->createAttribute("Type");
 		typeattr.setValue(this->typeToString());
 		element.setAttributeNode(typeattr);
@@ -190,7 +188,6 @@ namespace Geometry
 		QString solidsr = solidList.at(0).toElement().text();
 		if (solidsr == "1") _issolid = true;
 		else if (solidsr == "0") _issolid = false;
-
 
 	}
 

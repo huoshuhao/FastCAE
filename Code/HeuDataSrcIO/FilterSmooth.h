@@ -1,4 +1,4 @@
-#ifndef FILTERSMOOTH_H
+﻿#ifndef FILTERSMOOTH_H
 #define FILTERSMOOTH_H
 
 #include "PipelineObject.h"

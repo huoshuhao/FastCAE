@@ -1,7 +1,8 @@
-#include "ProjectTree/ProjectTreeWithBasicNode.h"
+ï»¿#include "ProjectTree/ProjectTreeWithBasicNode.h"
 #include "ProjectTreeExtendAPI.h"
 
 class QMenu;
+class QSignalMapper;
 
 namespace ProjectTree
 {
@@ -13,17 +14,24 @@ namespace ProjectTree
 		~ProjectTreeExtend();
 
 	protected:
-		//Êó±êÓÒ¼üÊÂ¼ş
+		//é¼ æ ‡å³é”®äº‹ä»¶
 		virtual void contextMenu(QMenu* menu) override;
-		//Êó±ê×ó¼üµ¥»÷ÊÂ¼ş
+		//é¼ æ ‡å·¦é”®å•å‡»äº‹ä»¶
 		virtual void singleClicked() override;
-		//Êó±ê×ó¼üË«»÷ÊÂ¼ş
+		//é¼ æ ‡å·¦é”®åŒå‡»äº‹ä»¶
 		virtual void doubleClicked() override;
-		//´´½¨Ê÷
+		//åˆ›å»ºæ ‘
 		virtual void createTree(QTreeWidgetItem* root, GUI::MainWindow* mainwindow) override;
-		//¸üĞÂÍø¸ñ×ÓÊ÷
-		virtual void updateMeshSubTree() override;
+		//æ›´æ–°ç½‘æ ¼å­æ ‘
+		virtual void updateComponentSubTree() override;
 
+	private slots:
+     	void rootConMenu(QString );
+		void itemConMenu(QString);
+
+	private:
+		QSignalMapper* _rootMapper{};
+		QSignalMapper* _conMapper{};
 	};
 
 

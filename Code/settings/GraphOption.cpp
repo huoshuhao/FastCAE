@@ -1,4 +1,4 @@
-#include "GraphOption.h"
+﻿#include "GraphOption.h"
 #include <QSettings>
 #include <QDebug>
 

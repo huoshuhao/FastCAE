@@ -1,4 +1,4 @@
-#include "XBeautyUI.h"
+﻿#include "XBeautyUI.h"
 #include <QStyleFactory>
 #include <QApplication>
 

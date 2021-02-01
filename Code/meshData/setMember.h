@@ -1,4 +1,4 @@
-#ifndef SETMEMBER_H_
+﻿#ifndef SETMEMBER_H_
 #define SETMEMBER_H_
 
 #include "meshDataAPI.h"

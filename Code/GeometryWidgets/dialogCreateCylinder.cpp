@@ -1,4 +1,4 @@
-#include "dialogCreateCylinder.h"
+﻿#include "dialogCreateCylinder.h"
 #include "ui_dialogCreateCylinder.h"
 #include "geometry/geometrySet.h"
 #include "geoPointWidget.h"
@@ -38,11 +38,11 @@ namespace GeometryWidget
 		if (_ui != nullptr) delete _ui;
 	}
 
-	void CreateCylinderDialog::closeEvent(QCloseEvent *e)
-	{
-		QDialog::closeEvent(e);
-		delete this;
-	}
+// 	void CreateCylinderDialog::closeEvent(QCloseEvent *e)
+// 	{
+// 		QDialog::closeEvent(e);
+// 		delete this;
+// 	}
 
 	void CreateCylinderDialog::init()
 	{	

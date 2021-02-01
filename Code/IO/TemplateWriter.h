@@ -1,4 +1,4 @@
-#ifndef _TEMPLATEWRITER_H_
+﻿#ifndef _TEMPLATEWRITER_H_
 #define _TEMPLATEWRITER_H_
 
 #include "IOAPI.h"

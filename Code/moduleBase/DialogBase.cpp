@@ -1,4 +1,4 @@
-#include "DialogBase.h"
+﻿#include "DialogBase.h"
 #include "QFDialog.h"
 #include "SelfDefObject/SelfDefWidget.h"
 #include <QVBoxLayout>

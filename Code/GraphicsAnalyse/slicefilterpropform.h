@@ -1,4 +1,4 @@
-#ifndef SLICEFILTERPROPFORM_H
+﻿#ifndef SLICEFILTERPROPFORM_H
 #define SLICEFILTERPROPFORM_H
 
 #include <QWidget>

@@ -1,4 +1,4 @@
-#ifndef _PARAPATH_H_
+﻿#ifndef _PARAPATH_H_
 #define _PARAPATH_H_
 
 #include "ParaMore.h"

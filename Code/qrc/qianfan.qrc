@@ -17,7 +17,6 @@
         <file>QUI/icon/save.png</file>
         <file>QUI/icon/saveAnimate.png</file>
         <file>QUI/icon/saveAs.png</file>
-        <file>QUI/icon/savePicture.png</file>
         <file>QUI/icon/selectElement.png</file>
         <file>QUI/icon/selectGeo.png</file>
         <file>QUI/icon/selectNode.png</file>
@@ -132,6 +131,27 @@
         <file>QUI/geometry/selectbody.png</file>
         <file>QUI/icon/Plugin_ava.png</file>
         <file>QUI/icon/Plugin_ins.png</file>
+        <file>QUI/icon/FastCAEFrame.png</file>
+        <file>QUI/icon/ruler.png</file>
+        <file>QUI/geometry/split.png</file>
+        <file>QUI/geometry/select.png</file>
+        <file>QUI/geometry/geoFillHole.png</file>
+        <file>QUI/geometry/geoFixSurface.png</file>
+        <file>QUI/geometry/geoRemoveFace.png</file>
+        <file>QUI/geometry/geoSSplit.png</file>
+        <file>QUI/geometry/geoMeasure.png</file>
+        <file>QUI/icon/meshComponent.png</file>
+        <file>QUI/icon/meshFilter.png</file>
+        <file>QUI/icon/meshFluid.png</file>
+        <file>QUI/icon/meshmodeling.png</file>
+        <file>QUI/icon/pluginManager.png</file>
+        <file>QUI/icon/language.png</file>
+        <file>QUI/window/2dplot.png</file>
+        <file>QUI/window/3dgraph.png</file>
+        <file>QUI/window/preWindow.png</file>
+        <file>QUI/window/startpage.png</file>
+        <file>QUI/icon/userguidance.png</file>
+        <file>QUI/geometry/geoComponent.png</file>
     </qresource>
     <qresource prefix="/Beauty">
         <file>QUI/beauty/radio_selected.png</file>

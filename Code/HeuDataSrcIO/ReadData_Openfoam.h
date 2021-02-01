@@ -1,4 +1,4 @@
-#ifndef READDATAOPENFOAM_H
+﻿#ifndef READDATAOPENFOAM_H
 #define READDATAOPENFOAM_H
 #include "global_define.h"
 #include "qstring.h"

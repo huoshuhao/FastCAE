@@ -1,4 +1,4 @@
-#ifndef _IOBASECLASS_H_
+ï»¿#ifndef _IOBASECLASS_H_
 #define _IOBASECLASS_H_
 
 #include <QString>
@@ -18,12 +18,12 @@ namespace ModuleBase
 	class MODULEBASEAPI IOBase
 	{
 	public:
-		IOBase(const QString& filename);
+		IOBase(const QString& fileName);
 		IOBase();
 		~IOBase();
 		void setFileName(const QString &name);
-		///¶ÁÈ¡ÊµÊ±ÇúÏßÊı¾İ
-		void readRealTimeData(QList<QVector<double>> &x, QList<QVector<double>> &y, QString filename);
+		///è¯»å–å®æ—¶æ›²çº¿æ•°æ®
+		void readRealTimeData(QList<QVector<double>> &x, QList<QVector<double>> &y, QString fileName);
 
 	public:
 		virtual bool read();

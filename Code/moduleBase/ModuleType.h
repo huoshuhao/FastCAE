@@ -1,4 +1,4 @@
-#ifndef _MODULETYPE_H_
+﻿#ifndef _MODULETYPE_H_
 #define _MODULETYPE_H_
 
 namespace ModuleBase

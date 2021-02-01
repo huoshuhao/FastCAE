@@ -1,4 +1,4 @@
-#ifndef GEOCOMMANDMAKEEXTRUSION_H_
+﻿#ifndef GEOCOMMANDMAKEEXTRUSION_H_
 #define GEOCOMMANDMAKEEXTRUSION_H_
 
 #include "geometryCommandAPI.h"

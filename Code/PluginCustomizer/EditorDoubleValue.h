@@ -1,4 +1,4 @@
-#ifndef EDITORDOUBLEVALUE_H
+﻿#ifndef EDITORDOUBLEVALUE_H
 #define EDITORDOUBLEVALUE_H
 
 #include <QDialog>

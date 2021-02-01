@@ -1,4 +1,4 @@
-#ifndef GEOCOMMANDCREATEPOINT_H_
+﻿#ifndef GEOCOMMANDCREATEPOINT_H_
 #define GEOCOMMANDCREATEPOINT_H_
 
 #include "GeoCommandBase.h"

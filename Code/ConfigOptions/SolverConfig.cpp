@@ -1,4 +1,4 @@
-#include "SolverConfig.h"
+﻿#include "SolverConfig.h"
 #include "SolverInfo.h"
 #include "MesherInfo.h"
 #include <QFile>

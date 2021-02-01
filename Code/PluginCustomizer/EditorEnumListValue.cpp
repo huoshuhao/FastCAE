@@ -1,4 +1,4 @@
-#include "EditorEnumListValue.h"
+ï»¿#include "EditorEnumListValue.h"
 #include "ui_EditorEnumListValue.h"
 #include "EditorNameValue.h"
 #include <QListWidgetItem>
@@ -45,7 +45,7 @@ namespace FastCAEDesigner
 		return usedNameList;
 	}
 
-	//È·ÈÏÉè¶¨²Ûº¯Êý
+	//ç¡®è®¤è®¾å®šæ§½å‡½æ•°
 	void EditorEnumListValue::OnBtnOkClicked()
 	{
 		_valList.clear();

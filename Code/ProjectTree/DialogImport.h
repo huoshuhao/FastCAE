@@ -1,4 +1,4 @@
-#ifndef _DIALOGIMPORTMESHSET_
+﻿#ifndef _DIALOGIMPORTMESHSET_
 #define _DIALOGIMPORTMESHSET_
 
 #include "moduleBase/componentDialogBase.h"
@@ -36,9 +36,10 @@ namespace ProjectTree
 	private:
 		void initGeo();
 		void initMeshSet();
+		void initGeoComponent();
 
 		void acceptGeo();
-		void acceptMeshSet();
+//		void acceptComponents();
 
 	private:
 		ImportType _type{ None };

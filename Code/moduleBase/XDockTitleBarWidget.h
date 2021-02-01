@@ -1,4 +1,4 @@
-#ifndef MYDOCKTITLEBAR_H
+﻿#ifndef MYDOCKTITLEBAR_H
 #define MYDOCKTITLEBAR_H
 
 #include <QSize>
@@ -32,7 +32,7 @@ protected:
 private:
 	QPixmap minPix, closePix, floatPix;
 
-	QColor m_fromColor{ QColor(21, 83, 214) }, m_toColor{ QColor(72, 206, 185) };
+	QColor m_fromColor{ QColor(18,145,243) }, m_toColor{ QColor(18,145,243) };
 
 	QFont m_titleFont{ QFont("Arial" , 10 , 60) };
 };

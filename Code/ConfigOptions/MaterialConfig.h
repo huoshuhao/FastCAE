@@ -1,4 +1,4 @@
-#ifndef _MATERIALCONFIG_H
+﻿#ifndef _MATERIALCONFIG_H
 #define _MATERIALCONFIG_H_
 
 #include "ConfigOptionsAPI.h"

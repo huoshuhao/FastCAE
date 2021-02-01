@@ -2,7 +2,7 @@ TEMPLATE	=   lib
 CONFIG		+=  debug  c++11 
 CONFIG		+=  qt
 TARGET		=   MainWidgets
-QT          +=  core gui widgets 
+QT          +=  core gui widgets xml
 DEFINES     +=  MAINWIDGETS_API
 
 include(./mainwidgets.pri)
@@ -43,6 +43,10 @@ win32{
   -L../../output/bin -lPythonModule \
   -L../../output/bin -lPostWidgets \
   -L../../output/bin -lGeometryWidgets \
+#  -L../../output/bin -lGmshModule \
+#  -L../../output/bin -lMainWindow \
+  -L../../output/bin -lCurveAnalyse \
+
  
   Debug:CONFIG	    	+=  console
   Debug:DESTDIR         = ../../output/bin_d 
@@ -71,6 +75,9 @@ win32{
   -L../../output/bin_d -lPythonModule \
   -L../../output/bin_d -lPostWidgets \
   -L../../output/bin_d -lGeometryWidgets \
+#  -L../../output/bin_d -lGmshModule \
+#  -L../../output/bin_d -lMainWindow \
+  -L../../output/bin_d -lCurveAnalyse \
   
   message("Windows mainWidgets build")
   
@@ -108,6 +115,8 @@ unix{
   -L../../output/bin -lPythonModule \  
    -L../../output/bin -lPostWidgets \
    -L../../output/bin -lGeometryWidgets \
+ #  -L../../output/bin -lGmshModule \
+#   -L../../output/bin -lMainWindow \
 	
   message("Linux mainWidgets build")
   

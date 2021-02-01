@@ -1,4 +1,4 @@
-#ifndef _SIMLUTATIONSETTINGBASE_H_
+﻿#ifndef _SIMLUTATIONSETTINGBASE_H_
 #define _SIMLUTATIONSETTINGBASE_H_
 
 #include "modelDataAPI.h"

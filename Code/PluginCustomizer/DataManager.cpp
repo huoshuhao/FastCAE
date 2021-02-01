@@ -1,4 +1,4 @@
-#include "DataManager.h"
+ï»¿#include "DataManager.h"
 #include "ConfigOptions/ConfigOptions.h"
 #include "ConfigOptions/BCConfig.h"
 #include "ConfigOptions/BCConfigReader.h"
@@ -89,6 +89,12 @@ namespace FastCAEDesigner
 
 		_physicsList.clear();
 		DictTreeItemToModel.clear();
+
+		_iconNameList.clear();//20200324 xuxinwei
+
+		_allParameterDict.clear();
+		_allParameterGroupDict.clear();
+		_treeList.clear();
 	}
 	
 	DataManager* DataManager::getInstance()
@@ -98,7 +104,7 @@ namespace FastCAEDesigner
 		return _instance;
 	}
 
-	//³õÊ¼»¯
+	//åˆå§‹åŒ–
 	void DataManager::Init()
 	{
 		_bcConfig = new ConfigOption::BCConfig();
@@ -160,11 +166,11 @@ namespace FastCAEDesigner
 		DictTreeItemToModel.insert(treeItem, model);
 	}
 
-	//Ğ´ÅäÖÃĞÅÏ¢µ½ÏµÍ³
-	bool DataManager::WriteInfoToServerPath()
+	//å†™é…ç½®ä¿¡æ¯åˆ°ç³»ç»Ÿ
+	bool DataManager::WriteInfoToServerPath(GUI::MainWindow* mainWindow)
 	{
-		WriterGlobalConfig globalConfigWriter;
-		_globalConfig->enableMaterial((_materialList.count() > 0) ? true : false);//Added xvdongming 2020-02-15 Èç¹ûµ±Ç°²ÄÁÏÊı²»Îª¿Õ£¬ÔòÉè¶¨²ÄÁÏ½ÚµãÏÔÊ¾£¬·ñÔòÉèÖÃÒş²Ø
+		WriterGlobalConfig globalConfigWriter(mainWindow);
+		_globalConfig->enableMaterial((_materialList.count() > 0) ? true : false);//Added xvdongming 2020-02-15 å¦‚æœå½“å‰ææ–™æ•°ä¸ä¸ºç©ºï¼Œåˆ™è®¾å®šææ–™èŠ‚ç‚¹æ˜¾ç¤ºï¼Œå¦åˆ™è®¾ç½®éšè—
 		globalConfigWriter.Write(_globalConfig,_geoConfig,_meshConfig);
 		CopyLogoAndWelcomImageToSystem();
 		CopyUserManualToSystem();
@@ -185,7 +191,7 @@ namespace FastCAEDesigner
 		return true;
 	}
 
-	//»ñÈ¡Ê÷ÁĞ±íÖĞ£¬Ö¸¶¨ÀàĞÍ½ÚµãµÄ¶ÔÏóÁĞ±í
+	//è·å–æ ‘åˆ—è¡¨ä¸­ï¼ŒæŒ‡å®šç±»å‹èŠ‚ç‚¹çš„å¯¹è±¡åˆ—è¡¨
 	QList<ModelBase*> DataManager::GetSpecifiedTypeModelList(QList<ModelBase*> modelList, TreeItemType type)
 	{
 		QList<ModelBase*> bcModelList;
@@ -216,6 +222,42 @@ namespace FastCAEDesigner
 		return bcModelList;
 	}
 	
+	void DataManager::appendParameterNameList(QString name)
+	{
+		if (_parameterNameList.contains(name))
+			return;
+
+		_parameterNameList.append(name);
+	}
+
+	QList<QString> DataManager::getParameterNameList()
+	{
+		return _parameterNameList;
+	}
+
+	void DataManager::removeParameterName(QString name)
+	{
+		_parameterNameList.removeOne(name);
+	}
+
+	void DataManager::appendParaGroupNameList(QString name)
+	{
+		if (_paraGroupNameList.contains(name))
+			return;
+
+		_paraGroupNameList.append(name);
+	}
+
+	QList<QString> DataManager::getParaGroupNameList()
+	{
+		return _paraGroupNameList;
+	}
+
+	void DataManager::removeParaGroupName(QString name)
+	{
+		_paraGroupNameList.removeOne(name);
+	}
+
 	void DataManager::CopyFileToSystem(QString fileName, QString path)
 	{
 		QDir iconDir(path);
@@ -245,7 +287,7 @@ namespace FastCAEDesigner
 		}
 	}
 
-	//¿½±´ÓÃ»§ÊÖ²áµ½ÏµÍ³
+	//æ‹·è´ç”¨æˆ·æ‰‹å†Œåˆ°ç³»ç»Ÿ
 	void DataManager::CopyUserManualToSystem()
 	{
 		QString destPath = FileHelper::GetSystemConfigPath() + "..//Doc//";
@@ -253,7 +295,7 @@ namespace FastCAEDesigner
 		CopyUserManualFileToSystem(_userManual, destPath);//20200306
 	}
 
-	//¿½±´logo¡¢welcomeÎÄ¼şµ½ÏµÍ³
+	//æ‹·è´logoã€welcomeæ–‡ä»¶åˆ°ç³»ç»Ÿ
 	void DataManager::CopyLogoAndWelcomImageToSystem()
 	{
 		QString destPath = FileHelper::GetSystemConfigPath() + "icon//";
@@ -261,7 +303,7 @@ namespace FastCAEDesigner
 		CopyFileToSystem(_welcomeFileName, destPath);
 	}
 
-	//´ÓÏµÍ³¶ÁÈ¡ÅäÖÃĞÅÏ¢µ½±¾µØ
+	//ä»ç³»ç»Ÿè¯»å–é…ç½®ä¿¡æ¯åˆ°æœ¬åœ°
 	bool DataManager::ReadInfoFromServerToLocal()
 	{
 		ReadGlobalConfig();
@@ -271,7 +313,7 @@ namespace FastCAEDesigner
 		return true;
 	}
 	
-	//¶ÁÈ¡»ù´¡ÅäÖÃĞÅÏ¢
+	//è¯»å–åŸºç¡€é…ç½®ä¿¡æ¯
 	bool DataManager::ReadGlobalConfig()
 	{
 		ConfigOption::GlobalConfig* globalConfig = ConfigOption::ConfigOption::getInstance()->getGlobalConfig();
@@ -293,17 +335,29 @@ namespace FastCAEDesigner
 		_globalConfig->enableMaterial(globalConfig->isMaterialEnabled());
 		_globalConfig->SetUserManual(globalConfig->GetUserManual());
 
-		//¼ÓÔØlogo¡¢welcomÎÄ¼şÃû³Æ
+		//åŠ è½½logoã€welcomæ–‡ä»¶åç§°
 		QString destPath = FileHelper::GetSystemConfigPath() + "icon//";
 		QString logoFile = _globalConfig->getLogo();
 		
 		if (!logoFile.isEmpty())
+		{
 			_logoFileName = destPath + logoFile;
+			setIconNameList(logoFile);
+		}
+// 		if (!logoFile.isEmpty())
+// 			_logoFileName = destPath + logoFile;
 		
 		QString welcomeFile = _globalConfig->getWelcome();
 
 		if (!welcomeFile.isEmpty())
+		{
 			_welcomeFileName = destPath + welcomeFile;
+			setIconNameList(welcomeFile);
+		}
+			
+
+// 		if (!welcomeFile.isEmpty())
+// 			_welcomeFileName = destPath + welcomeFile;
 
 // 		destPath = FileHelper::GetSystemConfigPath() + "doc//";
 // 		QString userManualFile = _globalConfig->GetUserManual();
@@ -323,7 +377,7 @@ namespace FastCAEDesigner
 		
 		return true;
 	}
-	//¶ÁÈ¡geometryÏà¹ØĞÅÏ¢
+	//è¯»å–geometryç›¸å…³ä¿¡æ¯
 	bool DataManager::ReadGeometryConfig()
 	{
 		ConfigOption::GeometryConfig* geoConfig = ConfigOption::ConfigOption::getInstance()->getGeometryConfig();
@@ -348,10 +402,16 @@ namespace FastCAEDesigner
 		_geoConfig->setImportSuffix(geoConfig->getImportSuffix());
 		_exportGeoSuffix = geoConfig->getExportSuffix();
 		_geoConfig->setExportSuffix(geoConfig->getExportSuffix());
+		_isGeometryEdit = geoConfig->isGeometryEditEnabled();
+		_geoConfig->enableGeometryEdit(geoConfig->isGeometryEditEnabled());
+		_isGeoCreateSet = geoConfig->isGeometryCreateSetEnabled();
+		_geoConfig->enableGeometryCreateSet(geoConfig->isGeometryCreateSetEnabled());
+		_isMeasureDistance = geoConfig->isMeasureDistanceEnabled();
+		_geoConfig->enableMeasureDsitance(geoConfig->isMeasureDistanceEnabled());
 
 		return true;
 	}
-	//¶ÁÈ¡meshÏà¹İĞÅÏ¢
+	//è¯»å–meshç›¸é¦†ä¿¡æ¯
 	bool DataManager::ReadMeshConfig()
 	{
 		ConfigOption::MeshConfig* meshConfig = ConfigOption::ConfigOption::getInstance()->getMeshConfig();
@@ -379,6 +439,15 @@ namespace FastCAEDesigner
 		_isCheckMesh = meshConfig->getCheckMeshEnabled();
 		_meshConfig->setCheckMesh(meshConfig->getCheckMeshEnabled());
 		
+		_isFluidMesh = meshConfig->isFluidMeshEnabled();
+		_meshConfig->enableFluidMesh(meshConfig->isFluidMeshEnabled());
+
+		_isFilterMesh = meshConfig->isFilterMeshEnabled();
+		_meshConfig->enableFilterMesh(meshConfig->isFilterMeshEnabled());
+		
+		_isMeshModeling = meshConfig->isMeshModelingEnabled();
+		_meshConfig->enableMeshModeling(meshConfig->isMeshModelingEnabled());
+
 		return true;
 	}
 
@@ -408,8 +477,8 @@ namespace FastCAEDesigner
 		return true;
 	}
 
-	//ÊôĞÔ¸³Öµ¡¢¶ÁÈ¡º¯Êı
-	//·µ»Ø»ù´¡ÅäÖÃÊı¾İÖ¸Õë
+	//å±æ€§èµ‹å€¼ã€è¯»å–å‡½æ•°
+	//è¿”å›åŸºç¡€é…ç½®æ•°æ®æŒ‡é’ˆ
 	void DataManager::SetGeometryFeatureModeling(bool on)
 	{
 		//qDebug() << on;
@@ -420,7 +489,7 @@ namespace FastCAEDesigner
 		_geoConfig->enableGeometryModeling(on);
 		//return true;
 	}
-	//¼¸ºÎ²ÎÊıÉèÖÃ
+	//å‡ ä½•å‚æ•°è®¾ç½®
 	void DataManager::SetGeometryFeatureOperatins(bool on)
 	{
 		if (nullptr == _geoConfig)
@@ -433,6 +502,28 @@ namespace FastCAEDesigner
 			return;
 		_geoConfig->enableCreateSketch(on);
 	}
+
+	void DataManager::setGeometryEdit(bool on)
+	{
+		if (nullptr == _geoConfig)
+			return;
+		_geoConfig->enableGeometryEdit(on);
+	}
+
+	void DataManager::setGeometryCreateSet(bool on)
+	{
+		if (nullptr == _geoConfig)
+			return;
+		_geoConfig->enableGeometryCreateSet(on);
+	}
+
+	void DataManager::setMeasureDistance(bool on)
+	{
+		if (nullptr == _geoConfig)
+			return;
+		_geoConfig->enableMeasureDsitance(on);
+	}
+
 	void DataManager::SetImportGeometry(QString suffix)
 	{
 		if (nullptr == _geoConfig)
@@ -458,7 +549,7 @@ namespace FastCAEDesigner
 		return _projectTreeConfig;
 	}
 
-	//Íø¸ñ²ÎÊıÉèÖÃ
+	//ç½‘æ ¼å‚æ•°è®¾ç½®
 	void DataManager::SetSurfaceMesh(bool on)
 	{
 		if (nullptr == _meshConfig)
@@ -499,51 +590,72 @@ namespace FastCAEDesigner
 	}
 
 
+	void DataManager::setFluidMesh(bool on)
+	{
+		if (nullptr == _meshConfig)
+			return;
+		_meshConfig->enableFluidMesh(on);
+	}
+
+	void DataManager::setFilterMesh(bool on)
+	{
+		if (nullptr == _meshConfig)
+			return;
+		_meshConfig->enableFilterMesh(on);
+	}
+
+	void DataManager::setMeshModeling(bool on)
+	{
+		if (nullptr == _meshConfig)
+			return;
+		_meshConfig->enableMeshModeling(on);
+	}
+
 	ConfigOption::GlobalConfig* DataManager::getGlobalConfig()
 	{
 		return _globalConfig;
 	}
 
-	//·µ»ØlogoÎÄ¼şÃû³Æ
+	//è¿”å›logoæ–‡ä»¶åç§°
 	QString DataManager::GetLogoFileName()
 	{
 		return _logoFileName;
 	}
 
-	//ÉèÖÃlogoÎÄ¼şÃû³Æ
+	//è®¾ç½®logoæ–‡ä»¶åç§°
 	void DataManager::SetLogoFileName(QString fileName)
 	{
 		_logoFileName = fileName;
 	}
 
-	//·µ»ØwelcomeÎÄ¼şÃû³Æ
+	//è¿”å›welcomeæ–‡ä»¶åç§°
 	QString DataManager::GetWelcomeFileName()
 	{
 		return _welcomeFileName;
 	}
 
-	//ÉèÖÃwelcomeÎÄ¼şÃû³Æ
+	//è®¾ç½®welcomeæ–‡ä»¶åç§°
 	void DataManager::SetWelcomeFileName(QString fileName)
 	{
 		_welcomeFileName = fileName;
 	}
 	
-	//»ñÈ¡ÓÃ»§ÊÖ²áÎÄ¼şÃû³Æ
+	//è·å–ç”¨æˆ·æ‰‹å†Œæ–‡ä»¶åç§°
 	QString DataManager::GetUserManual()
 	{
 		return _userManual;
 	}
 
-	//ÉèÖÃÓÃ»§ÊÖ²áÓÃ»§Ãû³Æ
+	//è®¾ç½®ç”¨æˆ·æ‰‹å†Œç”¨æˆ·åç§°
 	void DataManager::SetUserManual(QString userManual)
 	{
 		_userManual = userManual;
 	}
 
-	//ÊôĞÔ¸³Öµ¡¢¶ÁÈ¡º¯Êı
+	//å±æ€§èµ‹å€¼ã€è¯»å–å‡½æ•°
 
 
-	//·µ»ØgeometryºÍmeshÏà¹ØĞÅÏ¢
+	//è¿”å›geometryå’Œmeshç›¸å…³ä¿¡æ¯
 	bool DataManager::GetGeometryFeatureModeling()
 	{
 		return _isGeoModeling;
@@ -556,6 +668,22 @@ namespace FastCAEDesigner
 	{
 		return _isCreateSketch;
 	}
+
+	bool DataManager::getGeometryEdit()
+	{
+		return _isGeometryEdit;
+	}
+
+	bool DataManager::getGeometryCreateSet()
+	{
+		return _isGeoCreateSet;
+	}
+
+	bool DataManager::getMeasureDistance()
+	{
+		return _isMeasureDistance;
+	}
+
 	QString DataManager::GetImportGeometrySuffix()
 	{
 		return _importGeoSuffix;
@@ -580,6 +708,22 @@ namespace FastCAEDesigner
 	{
 		return _isCheckMesh;
 	}
+
+	bool DataManager::getFluidMesh()
+	{
+		return  _isFluidMesh;
+	}
+
+	bool DataManager::getFilterMesh()
+	{
+		return _isFilterMesh;
+	}
+
+	bool DataManager::getMeshModeling()
+	{
+		return _isMeshModeling;
+	}
+
 	QString DataManager::GetImportMeshSuffix()
 	{
 		return _importMeshSuffix;
@@ -632,5 +776,77 @@ namespace FastCAEDesigner
 			bool b = FileHelper::CopyFileToPath(fileName, path + desFileName, true);
 			qDebug() << b;
 		}
+	}
+
+	//20200324
+	void DataManager::setIconNameList(QString iconName)
+	{
+		if (iconName.isEmpty())
+			return;
+		_iconNameList.append(iconName);
+	}
+
+	bool DataManager::getIconNameIsAvailable(QString iconName)
+	{
+		for (int i = 0; i < _iconNameList.count(); i++)
+		{
+			if (_iconNameList.contains(iconName))
+				return false;
+		}
+
+		return true;
+	}
+
+	void DataManager::clearIconNameList()
+	{
+		this->_iconNameList.clear();
+	}
+
+	void DataManager::removeIconNameFromList(QString iconName)
+	{
+		_iconNameList.removeOne(iconName);
+	}
+
+	//20200325 xuxinwei
+	void DataManager::setAllParameterListDict(int type, QList<DataProperty::ParameterBase*> list)
+	{
+		_allParameterDict.insert(type, list);
+	}
+
+	QList<DataProperty::ParameterBase*> DataManager::getAllParameterList(int type)
+	{
+		return _allParameterDict[type];
+	}
+
+// 	void DataManager::setParametersLinkageList(QList<FastCAEDesigner::ParametersLinkage*> list)
+// 	{
+// 		_parametersLinkageList = list;
+// 	}
+// 
+// 	QList<FastCAEDesigner::ParametersLinkage*> DataManager::getParametersLinkageList()
+// 	{
+// 		return _parametersLinkageList;
+// 	}
+	//20200325 xuxinwei
+
+
+	void DataManager::setAllParameterGroupListDict(int type, QList<DataProperty::ParameterGroup*> list)
+	{
+		_allParameterGroupDict.insert(type, list);
+	}
+
+	QList<DataProperty::ParameterGroup*> DataManager::getAllParameterGroupList(int type)
+	{
+		return _allParameterGroupDict[type];
+	}
+
+	void DataManager::setTreeList(QString name)
+	{
+		_treeList.append(name);
+	}
+
+	QList<QString> DataManager::getTreeList()
+	{
+		return _treeList;
 	}
 }

@@ -1,4 +1,4 @@
-#include "PipelineObject.h"
+﻿#include "PipelineObject.h"
 #include "qlist.h"
 #include "qmutex.h"
 QList<PipelineObject*> g_ani_objList;

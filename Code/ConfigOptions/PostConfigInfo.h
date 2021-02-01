@@ -1,4 +1,4 @@
-#ifndef _POST2DCONFIG_H_
+﻿#ifndef _POST2DCONFIG_H_
 #define _POST2DCONFIG_H_
 
 #include "DataProperty/DataBase.h"

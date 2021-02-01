@@ -1,4 +1,4 @@
-#ifndef READDATANEU_H
+﻿#ifndef READDATANEU_H
 #define READDATANEU_H
 #include "global_define.h"
 #include "qstring.h"

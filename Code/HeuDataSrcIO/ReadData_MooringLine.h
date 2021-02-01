@@ -1,4 +1,4 @@
-#ifndef READMOORINGLINE_H
+﻿#ifndef READMOORINGLINE_H
 #define READMOORINGLINE_H
 #include "global_define.h"
 #include "qstring.h"

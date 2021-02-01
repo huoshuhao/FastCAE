@@ -1,4 +1,4 @@
-#ifndef READDATASTL_H
+﻿#ifndef READDATASTL_H
 #define READDATASTL_H
 #include "global_define.h"
 #include "qstring.h"

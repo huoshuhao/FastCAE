@@ -1,4 +1,4 @@
-#ifndef GRAPHICSANALYSE_H
+﻿#ifndef GRAPHICSANALYSE_H
 #define GRAPHICSANALYSE_H
 
 #include "graphicsanalyse_global.h"

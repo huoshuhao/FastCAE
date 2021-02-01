@@ -1,4 +1,4 @@
-#include "pipelineobjglopropform.h"
+﻿#include "pipelineobjglopropform.h"
 #include "ui_pipelineobjglopropform.h"
 
 pipelineObjGloPropForm::pipelineObjGloPropForm(QWidget *parent) :

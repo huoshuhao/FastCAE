@@ -1,4 +1,4 @@
-#ifndef CURVEMODEL_H
+﻿#ifndef CURVEMODEL_H
 #define CURVEMODEL_H
 
 #include "ModelBase.h"

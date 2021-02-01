@@ -1,4 +1,4 @@
-#include "LineEditDialog.h"
+﻿#include "LineEditDialog.h"
 #include "ui_LineEditDialog.h"
 
 namespace SelfDefObj

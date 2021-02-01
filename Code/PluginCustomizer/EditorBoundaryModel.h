@@ -1,4 +1,4 @@
-#ifndef EDITORBOUNDARYMODEL_H
+﻿#ifndef EDITORBOUNDARYMODEL_H
 #define EDITORBOUNDARYMODEL_H
 
 #include <QDialog>

@@ -1,4 +1,4 @@
-#ifndef COLUMNDATADOCKWIDGET_H
+﻿#ifndef COLUMNDATADOCKWIDGET_H
 #define COLUMNDATADOCKWIDGET_H
 #include <QDockWidget>
 #include <QWidget>

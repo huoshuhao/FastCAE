@@ -1,4 +1,4 @@
-#include "dialogCreateSphere.h"
+﻿#include "dialogCreateSphere.h"
 #include "ui_dialogCreateSphere.h"
 #include "geoPointWidget.h"
 #include "geometry/geometrySet.h"
@@ -34,12 +34,12 @@ namespace GeometryWidget
 		if (_ui != nullptr)
 			delete _ui;
 	}
-
-	void CreateSphereDialog::closeEvent(QCloseEvent *e)
-	{
-		QDialog::closeEvent(e);
-		delete this;
-	}
+// 
+// 	void CreateSphereDialog::closeEvent(QCloseEvent *e)
+// 	{
+// 		QDialog::closeEvent(e);
+// 		delete this;
+// 	}
 
 	void CreateSphereDialog::init()
 	{

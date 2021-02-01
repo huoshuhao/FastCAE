@@ -1,4 +1,4 @@
-#ifndef _PARACOMBOX_H_
+﻿#ifndef _PARACOMBOX_H_
 #define _PARACOMBOX_H_
 
 #include "SelfDefObjectAPI.h"

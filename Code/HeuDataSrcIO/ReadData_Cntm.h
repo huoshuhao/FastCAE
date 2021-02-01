@@ -1,4 +1,4 @@
-#ifndef CNTMREADER_H_
+﻿#ifndef CNTMREADER_H_
 #define CNTMREADER_H_
 
 #include "ReadData_Base.h"
@@ -16,7 +16,7 @@ public:
 	ReadeData_Cntm() = default;
 	~ReadeData_Cntm();
 
-	bool Read(QString filename) override;
+	bool Read(QString fileName) override;
 
 private:
 	QString readLine();

@@ -1,9 +1,9 @@
-#ifndef _GEOMETRYPARAROTATEFEATURE_H_
+ï»¿#ifndef _GEOMETRYPARAROTATEFEATURE_H_
 #define _GEOMETRYPARAROTATEFEATURE_H_
 
 #include "geometryModelParaBase.h"
 #include <QPair>
-
+#include <QMultiHash>
 namespace Geometry
 {
 	class GeometrySet;
@@ -17,8 +17,9 @@ namespace Geometry
 		void setOriginObject(GeometrySet* set);
 		GeometrySet* getOriginObject();
 
-		void setBodys(QList<GeometrySet*> s);
-		QList<GeometrySet*> getBodys();
+		void appendBody(Geometry::GeometrySet* set, int bodyindex);
+		QMultiHash<Geometry::GeometrySet*, int> getBodys();
+
 
 		void setBasicPoint(double* p);
 		void getBasicPoint(double* p);
@@ -41,13 +42,14 @@ namespace Geometry
 		void isReverse(bool r);
 		bool isReverse();
 
-		///Êı¾İĞ´Èë¹¤³ÌÎÄ¼ş
+		///æ•°æ®å†™å…¥å·¥ç¨‹æ–‡ä»¶
 		QDomElement& writeToProjectFile(QDomDocument* doc, QDomElement* parent) override;
-		///´Ó¹¤³ÌÎÄ¼ş¶ÁÈëÊı¾İ
+		///ä»å·¥ç¨‹æ–‡ä»¶è¯»å…¥æ•°æ®
 		virtual void readDataFromProjectFile(QDomElement* e) override;
 
 	private:
-		QList<GeometrySet*> _bodys;
+
+		QMultiHash<Geometry::GeometrySet*, int>_solidHash{};
 		GeometrySet* _originSet{};
 		double _basicPoint[3];
 		double _angle{ 0.00 };

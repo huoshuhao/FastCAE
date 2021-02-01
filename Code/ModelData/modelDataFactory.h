@@ -1,4 +1,4 @@
-#ifndef _MODELDATAFACTORY_H_
+ï»¿#ifndef _MODELDATAFACTORY_H_
 #define _MODELDATAFACTORY_H_
 
 #include "modelDataAPI.h"
@@ -26,9 +26,9 @@ namespace ModelData
 		static void removeType(int type);
 		static QHash<int, QString> getRegedType();
 
-		//²Ù×÷´´½¨
+		//æ“ä½œåˆ›å»º
 		static ModelDataBase* createModel(QString chartype);
-		//ÎÄ¼ş¶ÁÈ¡
+		//æ–‡ä»¶è¯»å–
 		static ModelDataBase* createModel(ProjectTreeType type);
 	
 	private:

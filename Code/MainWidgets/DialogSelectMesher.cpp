@@ -1,4 +1,4 @@
-#include "DialogSelectMesher.h"
+﻿#include "DialogSelectMesher.h"
 #include "ui_DialogSelectMesher.h"
 #include "ConfigOptions/ConfigOptions.h"
 #include "ConfigOptions/SolverConfig.h"

@@ -1,4 +1,4 @@
-#include "GeoCommandCreateFace.h"
+﻿#include "GeoCommandCreateFace.h"
 #include "geometry/geometrySet.h"
 #include "geometry/geometryData.h"
 #include <BRepFilletAPI_MakeChamfer.hxx>
@@ -52,6 +52,11 @@ namespace Command
 
 		std::vector<TopoDS_Wire> wireList = GeoCommandCommon::bulidWire(edgeList);
 		TopoDS_Shape resShape = GeoCommandCommon::makeFace(wireList);
+		if (resShape.IsNull() && _isEdit)
+		{
+			emit showSet(_editSet);
+			return false;
+		}
 		if (resShape.IsNull()) return false;
 
 		TopoDS_Shape* successShape = new TopoDS_Shape;

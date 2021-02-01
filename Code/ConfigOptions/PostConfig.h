@@ -1,4 +1,4 @@
-#ifndef _POSTCONFIG_H_
+﻿#ifndef _POSTCONFIG_H_
 #define _POSTCONFIG_H_
 
 #include "ConfigOptionsAPI.h"
@@ -12,7 +12,7 @@ namespace ConfigOption
 	class CONFIGOPTIONSAPI PostConfig
 	{
 	public:
-		PostConfig() = default;
+		PostConfig();
 		~PostConfig() = default;
 
 		void enablePost(bool on);

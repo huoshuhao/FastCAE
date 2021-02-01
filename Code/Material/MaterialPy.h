@@ -1,4 +1,4 @@
-#ifndef MATERIALPY_H_
+ï»¿#ifndef MATERIALPY_H_
 #define MATERIALPY_H_
 
 #include "MaterialAPI.h"
@@ -12,7 +12,7 @@ namespace Material
 	};
 }
 
-//ÉùÃ÷Îªc½Ó¿Ú£¬¹©python½Å±¾µ÷ÓÃ
+//å£°æ˜ä¸ºcæ¥å£ï¼Œä¾›pythonè„šæœ¬è°ƒç”¨
 extern "C"
 {
 	void MATERIALAPI setValue(int ID, char* variable, char* stype, char* svalue);

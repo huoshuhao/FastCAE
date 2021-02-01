@@ -1,4 +1,4 @@
-#ifndef CONFIGGATAREADER_H_
+﻿#ifndef CONFIGGATAREADER_H_
 #define CONFIGGATAREADER_H_
 
 #include "ConfigOptionsAPI.h"

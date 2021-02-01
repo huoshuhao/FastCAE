@@ -1,4 +1,4 @@
-#ifndef CONFIRMATION_H
+﻿#ifndef CONFIRMATION_H
 #define CONFIRMATION_H
 
 #include <QDialog>

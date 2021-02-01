@@ -1,4 +1,4 @@
-#include "StartPage.h"
+﻿#include "StartPage.h"
 #include "ui_StartPage.h"
 #include "DownloadManager.h"
 #include "ConfigOptions/ConfigOptions.h"
@@ -10,19 +10,22 @@
 #include <QFileDialog>
 #include <QDebug>
 #include <QString>
+#include <QtWebView/QtWebView>
+#include <QWebEngineView>
 
 namespace GUI
 {
 
 	StartPage::StartPage()
 	{
-#ifdef Q_OS_WIN32
+//#ifdef Q_OS_WIN32
+		QtWebView::initialize();
 		_ui = new Ui::StartPage;
 		_ui->setupUi(this);
-		_ui->webView->page()->setForwardUnsupportedContent(true);
-		_ui->webView->page()->setLinkDelegationPolicy(QWebPage::DelegateExternalLinks);
+//		_ui->webView->page()->setForwardUnsupportedContent(true);
+//		_ui->webView->page()->setLinkDelegationPolicy(QWebPage::DelegateExternalLinks);
 
-		connect(_ui->webView->page(), SIGNAL(linkClicked(QUrl)), this, SLOT(linkClicked(QUrl)));
+		//connect(_ui->webView->page(), SIGNAL(linkClicked(QUrl)), this, SLOT(linkClicked(QUrl)));
 
 		QString html = QCoreApplication::applicationDirPath() + "/FastCAE.html";
 		QFile f(html);
@@ -33,7 +36,7 @@ namespace GUI
 		}
 		else
 		{
-			QString web = "http://www.fastcae.com/";
+            QString web = "http://www.fastcae.com/";
 			ConfigOption::GlobalConfig* g = ConfigOption::ConfigOption::getInstance()->getGlobalConfig();
 			QString w = g->getWebsite();
 			if (!w.isEmpty())
@@ -41,7 +44,7 @@ namespace GUI
 			this->load(web);
 		}
 		 //  _ui->webView->load(QUrl("http://www.fastcae.com/")); 
-#endif
+//#endif
 	}
 	StartPage::~StartPage()
 	{
@@ -85,7 +88,7 @@ namespace GUI
 
 	void StartPage::linkClicked(QUrl url)
 	{
-#ifdef Q_OS_WIN32
+//#ifdef Q_OS_WIN32
 		qDebug() << url;
 		QString path = url.path();
 		if (path.contains(".qq.")) return;
@@ -97,26 +100,26 @@ namespace GUI
 			return;
 		}
 
-		QString f= QFileDialog::getSaveFileName(nullptr, "Save As", "", QString("%1(*.%1)").arg(suffix));
+/*		QString f= QFileDialog::getSaveFileName(nullptr, "Save As", "", QString("%1(*.%1)").arg(suffix));
 		if (f.isEmpty())
 		{
 			_ui->webView->load(url);
 			return;
 		}
 		DownloadManager *ma = new DownloadManager;
-		ma->download(url, f);
-#endif
+        ma->download(url, f);*/
+//#endif
 	}
 
 	void StartPage::load(QString web)
 	{
-#ifdef Q_OS_WIN32
+//#ifdef Q_OS_WIN32
 		if (web.isEmpty())
 			web = "www.fastcae.com";
 		if (!web.toLower().startsWith("http"))
 			web = "http://" + web;
 		_ui->webView->load(QUrl(web));
-#endif
+//#endif
 	}
 
 } 

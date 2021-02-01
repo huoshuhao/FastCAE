@@ -1,4 +1,4 @@
-#ifndef _GEOMETRYWIDGETSEAPI_H_
+﻿#ifndef _GEOMETRYWIDGETSEAPI_H_
 #define _GEOMETRYWIDGETSEAPI_H_
 
 #include <QtCore/QtGlobal>

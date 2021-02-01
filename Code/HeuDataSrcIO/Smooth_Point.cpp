@@ -1,4 +1,4 @@
-#include "Smooth_Point.h"
+﻿#include "Smooth_Point.h"
 #include <math.h>
 
 Smooth_Point::Smooth_Point()

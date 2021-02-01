@@ -1,4 +1,4 @@
-#ifndef _GEOMETRYPARAFACE_H_
+ï»¿#ifndef _GEOMETRYPARAFACE_H_
 #define _GEOMETRYPARAFACE_H_
 
 #include "geometryModelParaBase.h"
@@ -23,23 +23,16 @@ namespace Geometry
 
 		void setShapeHash(QMultiHash<Geometry::GeometrySet*, int> shapehash);
 		QMultiHash<Geometry::GeometrySet*, int> getShapeHash();
-/*
 
-		void setEdges(int s);
-		int getEdges();*/
-
-		void setActor(QList<vtkActor*> a);
-		QList<vtkActor*> getActor();
-		///Êı¾İĞ´Èë¹¤³ÌÎÄ¼ş
+		///æ•°æ®å†™å…¥å·¥ç¨‹æ–‡ä»¶
 		QDomElement& writeToProjectFile(QDomDocument* doc, QDomElement* parent) override;
-		///´Ó¹¤³ÌÎÄ¼ş¶ÁÈëÊı¾İ
+		///ä»å·¥ç¨‹æ–‡ä»¶è¯»å…¥æ•°æ®
 		virtual void readDataFromProjectFile(QDomElement* e) override;
 
 	private:
 		QString _name{};
 	
 		QMultiHash<Geometry::GeometrySet*, int> _shapeHash;
-		QList<vtkActor*> _actor;
 		int _edges;
 	};
 }

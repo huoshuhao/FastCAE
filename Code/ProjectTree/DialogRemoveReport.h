@@ -1,4 +1,4 @@
-#ifndef _REMOVEREPORTDIALOG_H_
+﻿#ifndef _REMOVEREPORTDIALOG_H_
 #define _REMOVEREPORTDIALOG_H_
 
 #include "SelfDefObject/QFDialog.h"

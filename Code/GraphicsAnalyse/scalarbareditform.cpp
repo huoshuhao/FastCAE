@@ -1,4 +1,4 @@
-#include "scalarbareditform.h"
+﻿#include "scalarbareditform.h"
 #include "ui_scalarbareditform.h"
 #include "ctkVTKScalarsToColorsWidget.h"
 #include "ctkVTKScalarsToColorsView.h"

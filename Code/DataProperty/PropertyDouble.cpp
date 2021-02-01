@@ -1,4 +1,4 @@
-#include "PropertyDouble.h"
+﻿#include "PropertyDouble.h"
 
 namespace DataProperty
 {

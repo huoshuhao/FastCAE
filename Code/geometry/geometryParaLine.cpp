@@ -1,4 +1,4 @@
-#include "geometryParaLine.h"
+ï»¿#include "geometryParaLine.h"
 #include <QDomElement>
 #include <QDomDocument>
 #include <QDomAttr>
@@ -42,18 +42,6 @@ namespace Geometry
 		return _index;
 	}
 
-	/*void GeometryParaLine::setEndPoint(double* endpt)
-	{
-		for (int i = 0; i < 3; ++i)
-			_endpoint[i] = endpt[i];
-	}
-
-	void GeometryParaLine::getEndPoint(double* endpt)
-	{
-		for (int i = 0; i < 3; ++i)
-			endpt[i] = _endpoint[i];
-	}*/
-
 	void GeometryParaLine::setCoor(double* coor)
 	{
 		
@@ -61,8 +49,6 @@ namespace Geometry
 		{
 			_coor[i] = coor[i];
 		}
-		
-
 	}
 
 	void GeometryParaLine::getCoor(double* coor)
@@ -112,7 +98,7 @@ namespace Geometry
 
 	QDomElement& GeometryParaLine::writeToProjectFile(QDomDocument* doc, QDomElement* parent)
 	{
-		QDomElement element = doc->createElement("Parameter");  //´´½¨×Ó½Úµã
+		QDomElement element = doc->createElement("Parameter");  //åˆ›å»ºå­èŠ‚ç‚¹
 		QDomAttr typeattr = doc->createAttribute("Type");
 		typeattr.setValue(this->typeToString());
 		element.setAttributeNode(typeattr);
@@ -187,8 +173,6 @@ namespace Geometry
 			_coor[i] = coorsl.at(i).toDouble();
 		}
 
-
-
 		QDomNodeList startList = e->elementsByTagName("StartPoint");
 		if (startList.size() != 1) return;
 		QDomElement startele = startList.at(0).toElement();
@@ -210,9 +194,6 @@ namespace Geometry
 		{
 			_direction[i] = parasl.at(i).toDouble();
 		}
-
-
-
 	}
 
 	
